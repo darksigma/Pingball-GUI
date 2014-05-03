@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Run this script to compile and run the code.
+# The first argument should be the full path to the
+# main class to be run (such as warmup.Main)
+# all other arguments are passed to the program
+# that is run.
+
+DIRNAME=$(dirname $0)
+CP="${DIRNAME}/antlr.jar:${DIRNAME}/physics.jar"
+
+find "${DIRNAME}/src/" -name '*.java' \
+    | grep -v -i 'Test' \
+    | xargs javac -cp "${CP}"
+
+java -cp "${CP}:${DIRNAME}/src" $*

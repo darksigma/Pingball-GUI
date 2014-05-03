@@ -1,0 +1,31 @@
+TEAM CONTRACT
+==================================================
+enguyen-nconsul-spefley
+
+
+Goals
+-----------
+Do as well as possible.
+
+Meeting Norms
+------------------
+We will use inclass time to talk logistics. We will talk about what we have accomplished since the last meeting and plan future meetings, and division of labor.
+
+Standing meetings:
+    Wed 9 5:00 - late-ish
+
+Work Norms
+--------------
+We will record who is responsible for which tasks in this document.
+
+
+======
+Tasks:
+======
+Physics - enguyen, nconsul, spefley
+Bumpers
+Flippers
+Absorber
+Outer Walls
+Parsing
+Server Stuff (making things threadsafe)
