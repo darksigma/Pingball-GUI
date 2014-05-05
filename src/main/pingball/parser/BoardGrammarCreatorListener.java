@@ -1,5 +1,6 @@
 package pingball.parser;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +42,14 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
     
     public Double listenerFric2(){
     	return this.mu2;
+    }
+    
+    public Board listenerBoard(){
+    	return this.gameBoard;
+    }
+    
+    public void setListenerBoard(Board board) {
+        this.gameBoard = board;
     }
     
 	@Override 
