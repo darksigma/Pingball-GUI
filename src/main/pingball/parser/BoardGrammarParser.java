@@ -1,6 +1,6 @@
 // Generated from BoardGrammar.g4 by ANTLR 4.0
 
-package parser;
+package pingball.parser;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;

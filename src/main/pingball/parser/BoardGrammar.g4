@@ -2,7 +2,7 @@ grammar BoardGrammar;
 
  	
 @header{
-package parser;
+package pingball.parser;
 }
 
 // This adds code to the generated lexer and parser.
