@@ -16,7 +16,7 @@ import pingball.simulation.Board;
 
 public class BoardGrammarCentral {
 
-	private String username = "";
+	private String name = "";
     private Board gameBoard;
     private double gravity;
     private double friction1;
@@ -26,7 +26,7 @@ public class BoardGrammarCentral {
         ;
     }
     
-    public Board parse(File file, Board board) throws IOException {
+    public void parse(File file, Board board) throws IOException {
 
         CharStream stream = new ANTLRFileStream(file.getPath());
         BoardGrammarLexer lexer = new BoardGrammarLexer(stream);
@@ -43,11 +43,26 @@ public class BoardGrammarCentral {
         walker.walk(listener, tree);
 
         this.gameBoard = listener.listenerBoard();
-        this.username = listener.listenerName();
+        this.name = listener.listenerName();
         this.friction1 = listener.listenerFric1();
         this.friction2 = listener.listenerFric2();
         this.gravity = listener.listenerGravity();
-
-        return this.gameBoard;
     }
+    
+    public String getName(){
+        return this.name;
+    }
+    
+    public double getFriction1(){
+        return this.friction1;
+    }
+    
+    public double getFriction2(){
+        return this.friction2;
+    }
+    
+    public double getGravity(){
+        return this.gravity;
+    }
+    
 }
