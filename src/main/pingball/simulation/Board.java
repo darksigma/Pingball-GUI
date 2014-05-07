@@ -514,4 +514,16 @@ public class Board {
             gameObject.evolve(time);
         }
     }
+
+    public double getFriction1() {
+        return this.mu1;
+    }
+
+    public double getFriction2() {
+        return this.mu2;
+    }
+
+    public double getGravity() {
+        return this.gravity;
+    }
 }
