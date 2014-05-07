@@ -10,7 +10,8 @@ import javax.swing.JPanel;
  * This class is the CONTROLLER of our Model-View-Controller. Here, the board
  * file is created as a JPanel and is passed to the PingballGUI (View). This
  * class also contains all the listener methods that update the Model and the
- * View based on user input.
+ * View based on user input. Whenever there is a key press, we will put the
+ * key press message on the Board's blocking queue (Model).
  * 
  * @author nconsul, nkbuduma, prafulla
  *
