@@ -20,6 +20,13 @@ import pingball.model.PingballModel;
  * model. These updates will be made by using a Timer. Buttons can start, pause or stop the timer.
  * Timer will always run listener code on Swing event-handling thread.
  * 
+ * Thread safety argument:
+ * We will ensure that any change in the GUI will be enclosed in the run() method of 
+ * SwingUtilities.invokeLater. This will ensure that we don't have problems manipulating the
+ * user interface. 
+ * 
+ * 
+ * 
  * @author nconsul, nkbuduma, prafulla
  *
  */
