@@ -46,11 +46,11 @@ public class TriangleBumper extends Gadget {
         for(int[] displacement: displaceBy){
             collidables.add(new FixedCircle(location.add(displacement).toVect(), 0, this.reflectionCoeff));
         }
-        
-        collidables.add(new Line(location.toVect(), location.add(displaceBy[1]).toVect(), reflectionCoeff));
-        collidables.add(new Line(location.toVect(), location.add(displaceBy[2]).toVect(), reflectionCoeff));
+       
+        collidables.add(new Line(location.add(displaceBy[0]).toVect(), location.add(displaceBy[1]).toVect(), reflectionCoeff));
+        collidables.add(new Line(location.add(displaceBy[0]).toVect(), location.add(displaceBy[2]).toVect(), reflectionCoeff));
         collidables.add(new Line(location.add(displaceBy[1]).toVect(), location.add(displaceBy[2]).toVect(), reflectionCoeff));
-        
+       
         if (this.orientation.equals(Orientation.ANGLE_0) || this.orientation.equals(Orientation.ANGLE_180)){
             representation = Collections.unmodifiableList(Arrays.asList("/"));
         }

@@ -52,6 +52,12 @@ public class PingballGUI extends JFrame {
     public PingballGUI(String[] args) throws IOException{
        // We add all the labels, text fields,buttons,file chooser etc.
        // We add a BoardGUI object, which is a JPanel
+        /*
+         * There will be buttons to start the game, which takes in the current values
+         * the host and file fields to start the game. This will essentially change the args
+         * to PingballModel
+         */
+        
         pingballModel = new PingballModel(args);
         
         boardGUI = new BoardGUI(pingballModel,boardWidth,boardHeight) ;
@@ -86,7 +92,7 @@ public class PingballGUI extends JFrame {
                 pingballModel.start();
             }
         };
-        timer.start();
+        //timer.start();
     }
     
     public static void main(final String[] args) {

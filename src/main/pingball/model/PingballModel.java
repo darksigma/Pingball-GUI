@@ -16,13 +16,15 @@ import pingball.simulation.Board;
 /**
  * Model for a Pingball simulator.
  *
- * This client supports operation in single player mode and multiplayer
+ * This model supports operation in single player mode and multiplayer
  * mode, where it can connect to a server.
  *
  * Thread safety argument:
- *
- * PingballModel will have a main render thread, and two background threads
- * for sending and receiving messages from the server. Messages can include
+ * All methods on the pingball model will be synchronized, so by the monitor 
+ * pattern is threadsafe.
+ * 
+ * PingballModel has two background threads for sending and receiving 
+ * messages from the server. Messages can include
  * adding/removing of balls, adding/removing transparent walls, etc.
  *
  * Each of the background threads will have a blocking queue shared with the
@@ -122,7 +124,7 @@ public class PingballModel {
     /**
      * Evolve the board for a frame.
      */
-    public void evolveFrame() {
+    public synchronized void evolveFrame() {
         List<String> messages = new ArrayList<String>();
         receiveQueue.drainTo(messages);
         for (String message: messages) {
@@ -131,39 +133,38 @@ public class PingballModel {
         board.evolve(1.0 / FRAMERATE);
     }
 
-    /**
-     * Main render loop of the client.
-     *
-     * This method evolves and renders the board. It tries to achieve a frame
-     * rate as close to FRAMERATE as possible.
-     */
-    private void mainLoop(Board board, BlockingQueue<String> receiveQueue) {
-        while (true) {
-            long start = System.nanoTime();
-            evolveFrame();
-            List<String> representation = board.gridRepresentation();
-            for (String line: representation) {
-                System.out.println(line);
-            }
-            long mid = System.nanoTime();
-            try {
-                long sleepTime = (long) (1e3 / FRAMERATE - (mid - start) / 1e6);
-                if (sleepTime > 0) {
-                    Thread.sleep(sleepTime);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            long end = System.nanoTime();
-            
-            // compute stats
-            double frameRender = ((double) (mid - start) / 1e6);
-            double closeness = frameRender * FRAMERATE / 1e3 * 1e2; // percent
-            double fps = 1 / ((double) (end - start) / 1e9);
-            System.out.printf("%.1f FPS | %.1f msec render (%02.0f%%)%n", fps, frameRender, closeness);
-        }
+    //Pause will send a pause message to all clients connected to this ie to the server.
+    public synchronized void pause() {
+        //TODO
+    }
+    
+    //Restart will restart the model
+    public synchronized void restart() {
+        // TODO Auto-generated method stub
+        
     }
 
+    //start will start the model
+    public synchronized void start() {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    /*
+     * Is used by GUI listeners to send a message to the model.
+     * Messages can be key press messages etc
+     * 
+     */
+    
+    public synchronized void sendMessage(String message) {
+        try {
+            receiveQueue.put(message);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * A receiver to asynchronously receive data from a socket.
      */
@@ -233,22 +234,6 @@ public class PingballModel {
             }
         }
 
-    }
-
-
-    public void pause() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void restart() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void start() {
-        // TODO Auto-generated method stub
-        
     }
 
 }
