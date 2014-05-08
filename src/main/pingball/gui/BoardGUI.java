@@ -1,10 +1,15 @@
 package pingball.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JPanel;
+
+import pingball.simulation.Board;
 
 /**
  * This class is the CONTROLLER of our Model-View-Controller. Here, the board
@@ -18,9 +23,22 @@ import javax.swing.JPanel;
  */
 public class BoardGUI extends JPanel {
     Color backgroundColor = Color.white;
+    Board board;
     
-    public BoardGUI(){
-        
+    public BoardGUI(Board board,int width,int height){
+        this.board = board;
+        this.setPreferredSize(new Dimension(width, height));
+        setFocusable(true);
+        requestFocusInWindow();
+        addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                //Add the keyPress message to the clients receiveQueue message queue
+            }
+
+            public void keyReleased(KeyEvent e) {
+                //Add the keyRelease message to the clients receiveQueue message queue
+            }
+        });
     }
     
     public void updateFrame(){
@@ -28,17 +46,17 @@ public class BoardGUI extends JPanel {
     }
     
     @Override
-    public void paintComponent(Graphics g){
+    public void paintComponent(final Graphics g){
         Graphics2D g2 = (Graphics2D) g;
         fillWindow(g2);
         drawBoard(g2);
     }
 
-    private void drawBoard(Graphics2D g2) {
+    private void drawBoard(final Graphics2D g) {
         
     }
 
-    private void fillWindow(Graphics2D g2) {
+    private void fillWindow(final Graphics2D g) {
         g.setColor(backgroundColor);
         g.fillRect(0,  0,  getWidth(), getHeight());
     }
