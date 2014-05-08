@@ -41,6 +41,14 @@ public class PingballGUI extends JFrame {
     private int boardHeight;
     private BoardGUI boardGUI;
     
+    /**
+     * Constructor for PingballGUI. Creates the View that the user sees. This will
+     * contain buttons and textfields for user input, as well as a BoardGUI JPanel
+     * displaying the game that is constantly evolving. 
+     * 
+     * @param args
+     * @throws IOException
+     */
     public PingballGUI(String[] args) throws IOException{
        // We add all the labels, text fields,buttons,file chooser etc.
        // We add a BoardGUI object, which is a JPanel
@@ -62,6 +70,7 @@ public class PingballGUI extends JFrame {
              */
             private static final long serialVersionUID = 1L;
 
+           
             @Override
             public void stop(){
                 pingballModel.pause();

@@ -27,6 +27,13 @@ public class BoardGUI extends JPanel {
     //Board board;
     PingballModel pingballModel;
     
+    /**
+     * Constructor method that creates the JPanel representing the game board.
+     * Keeps track of user input as well to modify the Model's board. 
+     * @param pingballModel - contains the board that is displayed to the user
+     * @param width - sets the width of the game (JPanel) in the PingballGUI
+     * @param height - sets the height of the game (JPanel) in the PingballGUI
+     */
     public BoardGUI(PingballModel pingballModel,int width,int height){
         this.pingballModel = pingballModel;
         this.setPreferredSize(new Dimension(width, height));
@@ -46,10 +53,16 @@ public class BoardGUI extends JPanel {
         });
     }
     
+    /**
+     * Updates the board that the user sees / the View
+     */
     public void updateFrame(){
         this.repaint();
     }
     
+    /**
+     * Method to repaint the board
+     */
     @Override
     public void paintComponent(final Graphics g){
         Graphics2D g2 = (Graphics2D) g;
@@ -57,10 +70,18 @@ public class BoardGUI extends JPanel {
         drawBoard(g2);
     }
 
+    /**
+     * Draws the current form of the board with all the objects in it
+     * @param g Graphics2D used to draw the board
+     */
     private void drawBoard(final Graphics2D g) {
         //This will draw the current form of all the objects on the board.
     }
 
+    /**
+     * Sets the board's background color
+     * @param g Graphics2D used to fill the background color of the board
+     */
     private void fillWindow(final Graphics2D g) {
         g.setColor(backgroundColor);
         g.fillRect(0,  0,  getWidth(), getHeight());
