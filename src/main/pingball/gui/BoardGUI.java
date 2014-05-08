@@ -16,7 +16,7 @@ import pingball.simulation.Board;
  * file is created as a JPanel and is passed to the PingballGUI (View). This
  * class also contains all the listener methods that update the Model and the
  * View based on user input. Whenever there is a key press, we will put the
- * key press message on the Board's blocking queue (Model).
+ * key press message on the Clients's blocking queue (Model).
  * 
  * @author nconsul, nkbuduma, prafulla
  *

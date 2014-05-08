@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
  * with. The board is represented as a BoardGUI JPanel.
  * 
  * This class will update the GUI at each time frame, based on changes to the
- * model.
+ * model. These updates will be made by using a Timer.
  * 
  * @author nconsul, nkbuduma, prafulla
  *
