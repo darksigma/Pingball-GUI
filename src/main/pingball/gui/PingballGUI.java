@@ -4,7 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -41,6 +44,14 @@ public class PingballGUI extends JFrame {
     private int boardHeight;
     private BoardGUI boardGUI;
     
+    private final JButton resumeButton;
+    private final JButton pauseButton;
+    private final JButton restartButton;
+    private final JTextField setPort;
+    private final JTextField setHost;
+    private final JLabel host;
+    private final JLabel port;
+    
     /**
      * Constructor for PingballGUI. Creates the View that the user sees. This will
      * contain buttons and textfields for user input, as well as a BoardGUI JPanel
@@ -57,8 +68,38 @@ public class PingballGUI extends JFrame {
          * the host and file fields to start the game. This will essentially change the args
          * to PingballModel
          */
-        
+        super("Pingball");
+
         pingballModel = new PingballModel(args);
+        
+        //PLEASE LOOK AT THIS AND CHANGE WHAT YOU DON'T LIKE!!!
+        
+        //buttons: start, restart, pause
+        resumeButton = new JButton();
+        resumeButton.setName("resumeButton");
+        resumeButton.setText("Resume");
+        
+        pauseButton = new JButton();
+        pauseButton.setName("pauseButton");
+        pauseButton.setText("Pause");
+        
+        restartButton = new JButton();
+        restartButton.setName("restartButton");
+        restartButton.setText("Start/Restart");
+        
+        //textfield and labels: set the host/port, display the host/port (is this necessary?)
+        setPort = new JTextField();
+        setPort.setName("setPort");
+        port = new JLabel();
+        port.setText("Port: "); //append port # to this
+        
+        setHost = new JTextField();
+        setHost.setName("setHost");
+        host = new JLabel();
+        host.setText("Hostname: "); //append hostname to this
+        
+        //menu: select file, exit, disconnect from server
+        
         
         boardGUI = new BoardGUI(pingballModel,boardWidth,boardHeight) ;
         taskPerformer = new ActionListener() {
