@@ -46,7 +46,12 @@ public abstract class Gadget extends GameObject {
             }
         }
     }
-
+    
+    public enum TriggerState {
+        TRIGGERED,
+        UNTRIGGERED;
+    }
+    
     protected final Set<Gadget> linkedGadgets = new HashSet<>();
 
     protected final GridLocation location;

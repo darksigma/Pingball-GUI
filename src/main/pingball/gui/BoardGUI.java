@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 
 import pingball.model.PingballModel;
 import pingball.simulation.Board;
+import pingball.simulation.Wall.Side;
+import pingball.simulation.gadget.Gadget.TriggerState;
 import pingball.util.StringUtils;
 
 /**
@@ -91,5 +93,34 @@ public class BoardGUI extends JPanel {
     //May change this code
     public void displayFile() {
         updateFrame();
+    }
+    
+    public void drawBall(final Graphics2D g, double x, double y, double radius){
+        
+    }
+    
+    public void drawCircularBumper(final Graphics2D g, double x, double y, double radius, TriggerState state){
+        
+    }
+    
+    public void drawSquareBumper(final Graphics2D g, double x, double y, double side, TriggerState state){
+        
+    }
+    
+    public void drawTriangularBumper(final Graphics2D g,  ,TriggerState state){
+        
+    }
+    
+    
+    public void drawFlipper(final Graphics2D g, double start, double end){
+        
+    }
+    
+    public void drawAbosorber(final Graphics2D g, int width, int height){
+        
+    }
+    
+    public void drawWall(final Graphics2D g, int length, Side side, boolean connected, String connectedBoardName){
+        
     }
 }
