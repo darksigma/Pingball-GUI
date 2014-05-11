@@ -12,6 +12,7 @@ import org.junit.Test;
 import physics.Vect;
 import pingball.parser.BoardGrammarCentral;
 import pingball.simulation.Board;
+import pingball.simulation.gadget.Gadget;
 import pingball.util.StringUtils;
 
 
@@ -27,6 +28,11 @@ public class BoardGrammarTests {
      * have single comments.
      * -Integers and doubles: values that are FLOAT or double can be given as integers in the file, but
      * should be double  when creating the board.
+     * 
+     * Parsing for key presses:
+     * 		We created a temporary Board object method that would get the map of key
+     * presses to gadgets. We checked parsing for multiple valid and invalid keys to
+     * gadgets, and also parsing for a single key to multiple gadgets. This works.
      *
      */
 
@@ -366,7 +372,10 @@ public class BoardGrammarTests {
                         ".                    .\n" +
                         ".                    .\n" +
                         "......................" ;
+        
         assertEquals(actual, StringUtils.join("\n", b.gridRepresentation()));
+
+        
 
     }
 

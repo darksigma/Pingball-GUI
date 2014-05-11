@@ -575,4 +575,13 @@ public class Board {
     public double getGravity() {
         return this.gravity;
     }
+  
+    //FOR TESTING PURPOSES ONLY-- remove later
+    public Map<String, List<Gadget>> getUpMap(){
+    	return this.keyUpMap;
+    }
+    
+    public Map<String, List<Gadget>> getDownMap(){
+    	return this.keyDownMap;
+    }
 }

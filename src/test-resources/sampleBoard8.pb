@@ -17,6 +17,19 @@ circleBumper name= CircleA x = 10 y = 3
 rightFlipper name=FlipR1 x=1 y=4 orientation=0
 leftFlipper name=BallA x=1 y=3 orientation=0
 
+#define key presses
+keydown key = 2 action= FlipR1
+keyup key = 3 action = FlipR1
+keyup key =a action = Tri1
+keyup key=ctrl action = ctrl1
+keyup key = ctrl action = ctrl2
+keyup key = right action = r
+keyup key = left action = l
+
+keydown key = down action = d
+keydown key=up action = u
+
+
 #define the absorber
 absorber name=Abs x=3 y=14 width=1 height=1
 absorber name=Abs2 x=5 y=10 width=6 height=1

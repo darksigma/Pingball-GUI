@@ -26,7 +26,7 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 	
 	private final String singleChar = "[a-z]";
 	private final List<String> keys = new ArrayList<String>(Arrays.asList(
-			singleChar, "shift", "ctrl", "alt", "meta",
+		    "shift", "ctrl", "alt", "meta",
 			"space", "left", "right", "up", "down", "minus",
 			"equals", "backspace", "openbracket", "closebracket",
 			"backslash", "semicolon", "quote", "enter", "comma",
@@ -199,7 +199,7 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 		String action = ctx.NAME(1).getText();		
 		Gadget g = gadgets.get(action);
 		
-		if(keys.contains(keyName)){
+		if(keys.contains(keyName) || keyName.matches(singleChar)){
 			gameBoard.addKeyUpEvent(keyName, g);
 		}
 	
@@ -211,7 +211,7 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 		String action = ctx.NAME(1).getText();
 		Gadget g = gadgets.get(action);
 		
-		if(keys.contains(keyName)){
+		if(keys.contains(keyName) || keyName.matches(singleChar)){
 			gameBoard.addKeyDownEvent(keyName, g);
 		}
 	}
