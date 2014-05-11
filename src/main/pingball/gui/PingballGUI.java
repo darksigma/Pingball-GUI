@@ -40,7 +40,7 @@ import pingball.model.PingballModel;
 public class PingballGUI extends JFrame {
     
     private PingballModel pingballModel;
-    private Timer timer;
+    private MyTimer timer;
     private ActionListener taskPerformer;
     private int delay;
     private int boardWidth;
@@ -121,7 +121,9 @@ public class PingballGUI extends JFrame {
         
         
         boardGUI = new BoardGUI(pingballModel,boardWidth,boardHeight) ;
-        
+       
+        timer = new MyTimer(delay,taskPerformer);
+    
         openfileButton.addActionListener(new ActionListener(){
 
             @Override
@@ -137,6 +139,44 @@ public class PingballGUI extends JFrame {
             
         });
         
+        startButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                //Put this in swingUtils.invokeLater ?
+                timer.start();
+                //LOCK other buttons
+                
+            }
+        });
+        
+        pauseButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timer.pause();
+               //UNLOCK BUTTONS?
+            }
+        });
+
+        resumeButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timer.resume();
+               //UNLOCK BUTTONS?
+            }
+        });
+
+        restartButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               timer.restart();
+               //UNLOCK BUTTONS?
+            }
+        });
+        
         taskPerformer = new ActionListener() {
            
             @Override
@@ -146,29 +186,7 @@ public class PingballGUI extends JFrame {
             }
             
         };
-        timer = new Timer(delay,taskPerformer){
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 1L;
-
-           
-            @Override
-            public void stop(){
-                pingballModel.pause();
-            }
-            
-            @Override
-            public void restart(){
-                pingballModel.restart();
-            }
-            
-            @Override
-            public void start(){
-                pingballModel.start();
-            }
-        };
-        //timer.start();
+           //timer.start();
     }
     
     public static void main(final String[] args) {
@@ -186,4 +204,41 @@ public class PingballGUI extends JFrame {
             }
         });
     }
+    
+    private class MyTimer extends Timer {
+
+        private final long serialVersionUID = 1L;
+
+        public MyTimer(int delay, ActionListener listener) {
+            super(delay, listener);
+        }
+
+        @Override
+        public void start(){
+            pingballModel.start();
+            super.start();
+        }
+
+        public void pause() {
+            pingballModel.pause();
+        }
+
+        public void resume() {
+            pingballModel.resume();
+        }
+
+        @Override
+        public void stop(){
+            pingballModel.stop();
+            super.stop();
+        }
+
+        @Override
+        public void restart(){
+            pingballModel.restart();
+            super.restart();
+        }
+
+    };
+
 }

@@ -152,20 +152,27 @@ public class PingballModel {
         this.port = _port;
     }
     
+  //start will start the model
+    public synchronized void start() {
+        // TODO Auto-generated method stub
+        
+    }
+    
     //Pause will send a pause message to all clients connected to this ie to the server.
     public synchronized void pause() {
         //TODO
     }
     
+    public synchronized void resume() {
+        
+    }
     //Restart will restart the model
     public synchronized void restart() {
         // TODO Auto-generated method stub
         
     }
 
-    //start will start the model
-    public synchronized void start() {
-        // TODO Auto-generated method stub
+    public synchronized void stop(){
         
     }
     
@@ -254,5 +261,4 @@ public class PingballModel {
         }
 
     }
-
 }
