@@ -138,7 +138,7 @@ public class BoardGUI extends JPanel {
 	    }
     	g.setPaint(gp);
     	g.fillPolygon(xPoints, yPoints, 3);
-    }
+}
     
     
     public void drawFlipper(final Graphics2D g, Line2D flipper){

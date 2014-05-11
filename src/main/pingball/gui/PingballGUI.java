@@ -91,19 +91,22 @@ public class PingballGUI extends JFrame {
         resumeButton = new JButton();
         resumeButton.setName("resumeButton");
         resumeButton.setText("Resume");
+        resumeButton.setEnabled(false);
         
         pauseButton = new JButton();
         pauseButton.setName("pauseButton");
         pauseButton.setText("Pause");
+        pauseButton.setEnabled(false);
         
         restartButton = new JButton();
         restartButton.setName("restartButton");
         restartButton.setText("Restart");
-        
+        restartButton.setEnabled(false);        
 
         startButton = new JButton();
         startButton.setName("startButton");
         startButton.setText("Start");
+        startButton.setEnabled(false);
         
         exitButton = new JButton();
         exitButton.setName("exitButton");
@@ -204,6 +207,7 @@ public class PingballGUI extends JFrame {
                     fileName.setText("File Name: ".concat(openFile.getName()));
                     //Display the file
                     boardGUI.displayFile();
+                    startButton.setEnabled(true);                    
                 } 
             }
             
@@ -238,6 +242,11 @@ public class PingballGUI extends JFrame {
         		setPort.setEnabled(false);
         		setHost.setEnabled(false);
         		openfileButton.setEnabled(false);
+        		startButton.setEnabled(false);
+        		
+        		pauseButton.setEnabled(true);
+        		restartButton.setEnabled(true);
+        		
 
         	}
         });
@@ -248,6 +257,8 @@ public class PingballGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 timer.pause();
                //UNLOCK BUTTONS?
+                pauseButton.setEnabled(false);
+                resumeButton.setEnabled(true);
             }
         });
 
@@ -257,6 +268,8 @@ public class PingballGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 timer.resume();
                //UNLOCK BUTTONS?
+                pauseButton.setEnabled(true);
+                resumeButton.setEnabled(false);
             }
         });
 
@@ -266,6 +279,9 @@ public class PingballGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                timer.restart();
                //UNLOCK BUTTONS?
+               pauseButton.setEnabled(true);
+               resumeButton.setEnabled(false);
+               startButton.setEnabled(false);
             }
         });
         
