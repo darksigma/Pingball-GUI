@@ -235,6 +235,9 @@ public class PingballGUI extends JFrame {
         		//Put this in swingUtils.invokeLater ?
         		timer.start();
         		//LOCK other buttons
+        		setPort.setEnabled(false);
+        		setHost.setEnabled(false);
+        		openfileButton.setEnabled(false);
 
         	}
         });
