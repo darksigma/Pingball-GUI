@@ -2,8 +2,10 @@ package pingball.simulation.gadget;
 
 import java.util.List;
 
+import pingball.simulation.Ball;
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
+import pingball.simulation.collidable.Collidable;
 
 
 /**
@@ -41,7 +43,14 @@ public class Portal extends Gadget {
         // TODO Auto-generated method stub
         return null;
     }
-
+    
+    /**
+     * If the portal is not connected, then the collide method allows the ball 
+     */
+    @Override 
+    public void collide(Ball ball, Collidable collidable) {{
+        
+    }
     /**
      * Connect the portal to a particular portal on a particular board. 
      * In special case, this will be the same board.
