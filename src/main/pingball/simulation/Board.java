@@ -2,6 +2,7 @@ package pingball.simulation;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
@@ -47,6 +48,10 @@ public class Board {
 
     private final Set<GameObject> gameObjects = new HashSet<>();
 
+    private final Map<String,List<Gadget>> keyUpMap = new HashMap<>(); 
+
+    private final Map<String,List<Gadget>> keyDownMap = new HashMap<>(); 
+    
     private final BlockingQueue<String> sendQueue;
 
     private final Wall topWall, bottomWall, leftWall, rightWall;
@@ -298,7 +303,8 @@ public class Board {
         String connectmsg = "connect (left|right|top|bottom) [A-Za-z_][A-Za-z_0-9]*";
         String disconnectmsg = "disconnect (left|right|top|bottom)";
         String ballmsg = "^ball [A-Za-z_][A-Za-z_0-9]* (left|right|top|bottom)( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4}$";
-
+        String keyUpmsg = "^keyup [a-z0-9]+";
+        String keyDownmsg = "^keydown [a-z0-9]+";
         if (message.matches(connectmsg)) {
             connectWall(Wall.Side.fromString(split[1]), split[2]);
         } else if (message.matches(disconnectmsg)) {
@@ -320,11 +326,17 @@ public class Board {
                     break;
             }
             addBall(new Ball(new Vect(x, y), new Vect(vx, vy), ballName, gravity, mu1, mu2));
+        } else if (message.matches(keyUpmsg)){
+          String key = split[1];
+          triggerKeyUp(key);
+        } else if (message.matches(keyDownmsg)){
+          String key = split[1];
+          triggerKeyDown(key);  
         } else {
             System.err.println("ignoring invalid message from server");
         }
     }
-    
+
     /**
      * Simulate the board for a specified time.
      *
@@ -426,6 +438,44 @@ public class Board {
             gridRepresentation.add(new String(representation[line]));
         }
         return gridRepresentation;
+    }
+    
+    
+    public void addKeyUpEvent(String key,Gadget gadget) {
+      //Check for left/right shift? 
+        if (keyUpMap.containsKey(key)) {
+            keyUpMap.get(key).add(gadget);
+        }
+        else {
+            keyUpMap.put(key, new ArrayList<Gadget>(Arrays.asList(gadget)));
+        }
+    }
+    
+    public void addKeyDownEvent(String key,Gadget gadget){
+        if (keyDownMap.containsKey(key)) {
+            keyDownMap.get(key).add(gadget);
+        }
+        else {
+            keyDownMap.put(key, new ArrayList<Gadget>(Arrays.asList(gadget)));
+        }
+    }
+    
+    private void triggerKeyUp(String key){
+        //Check for left/right shift, cntrl, alt?
+        //Check key name documentation
+        if(keyUpMap.containsKey(key)){
+            for (Gadget gadget:keyUpMap.get(key)){
+                gadget.action();
+            }
+        }
+    }
+
+    private void triggerKeyDown(String key) {
+        if(keyDownMap.containsKey(key)){
+            for(Gadget gadget:keyDownMap.get(key)){
+                gadget.action();
+            }
+        }
     }
 
     /**

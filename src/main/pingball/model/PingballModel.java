@@ -48,6 +48,12 @@ public class PingballModel {
     private BlockingQueue<String> sendQueue;
     
     private BlockingQueue<String> receiveQueue;
+    
+    private File file = null;
+    
+    private String host = null;
+    
+    private Integer port = DEFAULT_PORT;
 
     /**
      * Start a PingballClient using the given arguments.
@@ -61,10 +67,6 @@ public class PingballModel {
      * The FILE argument is the board file to read from.
      */
     public PingballModel(String[] args) throws IOException {
-        File file = null;
-        String host = null;
-        Integer port = DEFAULT_PORT;
-
         Queue<String> arguments = new LinkedList<String>(Arrays.asList(args));
         try {
             while (!arguments.isEmpty()) {
@@ -91,15 +93,32 @@ public class PingballModel {
                     throw new IllegalArgumentException("unable to parse number for " + flag);
                 }
             }
-            if (file == null) {
-                throw new IllegalArgumentException("missing positional argument FILE");
-            }
         } catch (IllegalArgumentException iae) {
             System.err.println(iae.getMessage());
             System.err.println("usage: PingballClient [--host HOST] [--port PORT] FILE");
             return;
         }
         
+    }
+
+    /**
+     * Evolve the board for a frame.
+     */
+    public synchronized void evolveFrame() {
+        List<String> messages = new ArrayList<String>();
+        receiveQueue.drainTo(messages);
+        for (String message: messages) {
+            board.processMessage(message);
+        }
+        board.evolve(1.0 / FRAMERATE);
+    }
+    
+    private boolean isReady() {
+        return file!=null;
+    }
+    
+    //Set's up game, assumes is ready
+    private void setup() throws IOException {
         sendQueue = new LinkedBlockingQueue<>();
         receiveQueue = new LinkedBlockingQueue<>();
         board = new Board(sendQueue, file);
@@ -118,21 +137,9 @@ public class PingballModel {
             }
         } else {
             //mainLoop(board, receiveQueue);
-        }
+        }   
     }
-
-    /**
-     * Evolve the board for a frame.
-     */
-    public synchronized void evolveFrame() {
-        List<String> messages = new ArrayList<String>();
-        receiveQueue.drainTo(messages);
-        for (String message: messages) {
-            board.processMessage(message);
-        }
-        board.evolve(1.0 / FRAMERATE);
-    }
-
+    
     //Pause will send a pause message to all clients connected to this ie to the server.
     public synchronized void pause() {
         //TODO

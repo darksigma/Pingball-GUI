@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import pingball.model.PingballModel;
 import pingball.simulation.Board;
+import pingball.util.StringUtils;
 
 /**
  * This class is the CONTROLLER of our Model-View-Controller. Here, the board
@@ -34,8 +35,8 @@ public class BoardGUI extends JPanel {
      * @param width - sets the width of the game (JPanel) in the PingballGUI
      * @param height - sets the height of the game (JPanel) in the PingballGUI
      */
-    public BoardGUI(PingballModel pingballModel,int width,int height){
-        this.pingballModel = pingballModel;
+    public BoardGUI(PingballModel _pingballModel,int width,int height){
+        this.pingballModel = _pingballModel;
         this.setPreferredSize(new Dimension(width, height));
         setFocusable(true);
         requestFocusInWindow();
@@ -43,12 +44,12 @@ public class BoardGUI extends JPanel {
             
             @Override
             public void keyPressed(KeyEvent e) {
-                //Add the keyPress message to the clients receiveQueue message queue
+                pingballModel.sendMessage("keydown "+StringUtils.join("",KeyEvent.getKeyText(e.getKeyCode()).split("\\s+")).toLowerCase());
             }
             
             @Override
             public void keyReleased(KeyEvent e) {
-                //Add the keyRelease message to the clients receiveQueue message queue
+                pingballModel.sendMessage("keyup "+StringUtils.join("",KeyEvent.getKeyText(e.getKeyCode()).split("\\s+")).toLowerCase());
             }
         });
     }
