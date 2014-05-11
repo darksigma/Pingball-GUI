@@ -1,10 +1,12 @@
 package pingball.gui;
 
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -50,13 +52,18 @@ public class PingballGUI extends JFrame {
     private final JButton resumeButton;
     private final JButton pauseButton;
     private final JButton restartButton;
+    private final JButton exitButton;
+    private final JButton startButton;
+
     private final JTextField setPort;
     private final JTextField setHost;
     private final JLabel host;
     private final JLabel port;
-    private JButton startButton;
-    private JButton openfileButton;
-    private JFileChooser fc;
+    
+    private final JButton openfileButton;
+    private final JFileChooser fc;
+    private final JLabel selectFile;
+    private JLabel fileName;
     
     /**
      * Constructor for PingballGUI. Creates the View that the user sees. This will
@@ -98,9 +105,18 @@ public class PingballGUI extends JFrame {
         startButton.setName("startButton");
         startButton.setText("Start");
         
+        exitButton = new JButton();
+        exitButton.setName("exitButton");
+        exitButton.setText("Exit");
+        
         openfileButton = new JButton();
         openfileButton.setName("openfileButton");
         openfileButton.setText("Open File");
+        selectFile = new JLabel();
+        selectFile.setName("selectFile");
+        selectFile.setText("Select File :");
+        fileName = new JLabel();
+        fileName.setText("File Name: ");
         
         fc = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -110,21 +126,74 @@ public class PingballGUI extends JFrame {
         setPort = new JTextField();
         setPort.setName("setPort");
         port = new JLabel();
-        port.setText("Port: "); //append port # to this
+        port.setText("Port: ");
         
         setHost = new JTextField();
         setHost.setName("setHost");
         host = new JLabel();
-        host.setText("Hostname: "); //append hostname to this
-        
-        //menu: select file, exit, disconnect from server
+        host.setText("Hostname: ");
         
         
-        boardGUI = new BoardGUI(pingballModel,boardWidth,boardHeight) ;
-       
+        boardGUI = new BoardGUI(pingballModel,boardWidth,boardHeight) ;     
         timer = new MyTimer(delay,taskPerformer);
     
-        openfileButton.addActionListener(new ActionListener(){
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        Container cp = this.getContentPane();
+        
+        GroupLayout layout = new GroupLayout(cp);
+        cp.setLayout(layout);
+        // get some margins around components by default
+        layout.setAutoCreateContainerGaps(true);
+        layout.setAutoCreateGaps(true);
+        
+        layout.setHorizontalGroup(
+        		layout.createParallelGroup()
+        			.addGroup(layout.createSequentialGroup()
+        					.addComponent(selectFile)
+        					.addComponent(openfileButton)
+        					.addComponent(fileName))
+        			.addGroup(layout.createSequentialGroup()
+        					.addComponent(host)
+        					.addComponent(setHost))
+        			.addGroup(layout.createSequentialGroup()
+        					.addComponent(port)
+        					.addComponent(setPort))
+        			.addGroup(layout.createSequentialGroup()
+        					.addComponent(startButton)
+        					.addComponent(pauseButton)
+        					.addComponent(resumeButton)
+        					.addComponent(restartButton)
+        					.addComponent(exitButton))
+        			.addGroup(layout.createSequentialGroup()
+        					.addComponent(boardGUI))        			
+        );
+        
+        layout.setVerticalGroup(
+        		layout.createSequentialGroup()
+        		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        					.addComponent(selectFile)
+        					.addComponent(openfileButton)
+        					.addComponent(fileName))
+        		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        			 		.addComponent(host)
+        					.addComponent(setHost))
+        		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        					.addComponent(port)
+        					.addComponent(setPort))
+        		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        					.addComponent(startButton)
+        					.addComponent(pauseButton)
+        					.addComponent(resumeButton)
+        					.addComponent(restartButton)
+        					.addComponent(exitButton))
+        		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        					.addComponent(boardGUI))        			
+        );
+        
+        this.pack();
+        
+        
+    openfileButton.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -132,24 +201,44 @@ public class PingballGUI extends JFrame {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File openFile = fc.getSelectedFile();
                     pingballModel.setFile(openFile);
+                    fileName.setText("File Name: ".concat(openFile.getName()));
                     //Display the file
                     boardGUI.displayFile();
                 } 
             }
             
         });
-        
-        startButton.addActionListener(new ActionListener(){
 
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                //Put this in swingUtils.invokeLater ?
-                timer.start();
-                //LOCK other buttons
-                
-            }
+        setHost.addActionListener(new ActionListener(){
+        	
+        	@Override
+        	public void actionPerformed(ActionEvent e){
+        		String hostname = setHost.getText();
+        		pingballModel.setHost(hostname);
+        	}
         });
         
+        setPort.addActionListener(new ActionListener(){
+        	
+        	@Override
+        	public void actionPerformed(ActionEvent e){
+        		int portNum = Integer.valueOf(setPort.getText());
+        		pingballModel.setPort(portNum);
+        	}
+        });
+        
+        
+        
+        startButton.addActionListener(new ActionListener(){
+        	@Override
+        	public void actionPerformed(ActionEvent arg0) {
+        		//Put this in swingUtils.invokeLater ?
+        		timer.start();
+        		//LOCK other buttons
+
+        	}
+        });
+
         pauseButton.addActionListener(new ActionListener(){
 
             @Override
