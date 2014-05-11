@@ -442,7 +442,6 @@ public class Board {
     
     
     public void addKeyUpEvent(String key,Gadget gadget) {
-      //Check for left/right shift? 
         if (keyUpMap.containsKey(key)) {
             keyUpMap.get(key).add(gadget);
         }
@@ -462,7 +461,7 @@ public class Board {
     
     private void triggerKeyUp(String key){
         //Check for left/right shift, cntrl, alt?
-        //Check key name documentation
+        //Check key name documentation - CHECKED NO LEFT/RIGHT
         if(keyUpMap.containsKey(key)){
             for (Gadget gadget:keyUpMap.get(key)){
                 gadget.action();

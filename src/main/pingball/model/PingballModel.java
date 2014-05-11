@@ -140,6 +140,18 @@ public class PingballModel {
         }   
     }
     
+    public synchronized void setFile(File _file){
+        this.file = _file;
+    }
+    
+    public synchronized void setHost(String _host){
+        this.host = _host;
+    }
+    
+    public synchronized void setPort(int _port){
+        this.port = _port;
+    }
+    
     //Pause will send a pause message to all clients connected to this ie to the server.
     public synchronized void pause() {
         //TODO

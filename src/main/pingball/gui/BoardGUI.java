@@ -87,4 +87,9 @@ public class BoardGUI extends JPanel {
         g.setColor(backgroundColor);
         g.fillRect(0,  0,  getWidth(), getHeight());
     }
+
+    //May change this code
+    public void displayFile() {
+        updateFrame();
+    }
 }

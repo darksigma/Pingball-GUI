@@ -2,14 +2,17 @@ package pingball.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import pingball.model.PingballModel;
 
@@ -51,6 +54,9 @@ public class PingballGUI extends JFrame {
     private final JTextField setHost;
     private final JLabel host;
     private final JLabel port;
+    private JButton startButton;
+    private JButton openfileButton;
+    private JFileChooser fc;
     
     /**
      * Constructor for PingballGUI. Creates the View that the user sees. This will
@@ -85,8 +91,21 @@ public class PingballGUI extends JFrame {
         
         restartButton = new JButton();
         restartButton.setName("restartButton");
-        restartButton.setText("Start/Restart");
+        restartButton.setText("Restart");
         
+
+        startButton = new JButton();
+        startButton.setName("startButton");
+        startButton.setText("Start");
+        
+        openfileButton = new JButton();
+        openfileButton.setName("openfileButton");
+        openfileButton.setText("Open File");
+        
+        fc = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "Pingball Boards", "txt", "pb");
+        fc.setFileFilter(filter);
         //textfield and labels: set the host/port, display the host/port (is this necessary?)
         setPort = new JTextField();
         setPort.setName("setPort");
@@ -102,6 +121,22 @@ public class PingballGUI extends JFrame {
         
         
         boardGUI = new BoardGUI(pingballModel,boardWidth,boardHeight) ;
+        
+        openfileButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int returnVal = fc.showOpenDialog(PingballGUI.this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File openFile = fc.getSelectedFile();
+                    pingballModel.setFile(openFile);
+                    //Display the file
+                    boardGUI.displayFile();
+                } 
+            }
+            
+        });
+        
         taskPerformer = new ActionListener() {
            
             @Override
