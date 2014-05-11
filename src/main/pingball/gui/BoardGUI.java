@@ -123,4 +123,6 @@ public class BoardGUI extends JPanel {
     public void drawWall(final Graphics2D g, int length, Side side, boolean connected, String connectedBoardName){
         
     }
+    
+    
 }
