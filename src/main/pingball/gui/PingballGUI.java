@@ -290,6 +290,8 @@ public class PingballGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 pingballModel.evolveFrame();
+                //TODO: Remove console output at end
+                pingballModel.consoleOutput();
                 boardGUI.updateFrame();
             }
             
@@ -323,8 +325,13 @@ public class PingballGUI extends JFrame {
 
         @Override
         public void start(){
-            pingballModel.start();
-            super.start();
+                try {
+                    pingballModel.start();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                super.start();
         }
 
         public void pause() {
@@ -343,6 +350,7 @@ public class PingballGUI extends JFrame {
 
         @Override
         public void restart(){
+            //RESTART IS DIFFERENT FROM START AS IT SENDS RESTART MESSAGE
             pingballModel.restart();
             super.restart();
         }

@@ -113,6 +113,13 @@ public class PingballModel {
         board.evolve(1.0 / FRAMERATE);
     }
     
+    public synchronized void consoleOutput(){
+        List<String> representation = board.gridRepresentation();
+        for (String line: representation) {
+            System.out.println(line);
+        }
+    }
+    
     private boolean isReady() {
         return file!=null;
     }
@@ -152,10 +159,13 @@ public class PingballModel {
         this.port = _port;
     }
     
-  //start will start the model
-    public synchronized void start() {
-        // TODO Auto-generated method stub
-        
+    //start will start the model, called only if ready
+    public synchronized boolean start() throws IOException {
+        boolean ready = isReady();
+        if(ready){
+            this.setup();
+        }
+        return ready;
     }
     
     //Pause will send a pause message to all clients connected to this ie to the server.
@@ -168,7 +178,7 @@ public class PingballModel {
     }
     //Restart will restart the model
     public synchronized void restart() {
-        // TODO Auto-generated method stub
+        //send restart message
         
     }
 
