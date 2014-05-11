@@ -2,10 +2,16 @@ package pingball.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.font.GlyphVector;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.JPanel;
 
@@ -95,33 +101,67 @@ public class BoardGUI extends JPanel {
         updateFrame();
     }
     
-    public void drawBall(final Graphics2D g, double x, double y, double radius){
-        
+    public void drawBall(final Graphics2D g, Ellipse2D ball){
+    	GradientPaint gp = new GradientPaint(0f,0f,Color.BLUE,0f,30f,Color.GREEN);
+    	g.setPaint(gp);
+    	g.fill(ball);
     }
     
-    public void drawCircularBumper(final Graphics2D g, double x, double y, double radius, TriggerState state){
-        
+    public void drawCircularBumper(final Graphics2D g, Ellipse2D bumper, TriggerState state){
+    	GradientPaint gp;
+    	if (state == TriggerState.TRIGGERED){
+	    	gp = new GradientPaint(0f,0f,Color.RED.darker(),0f,30f,Color.MAGENTA.darker());
+	    } else{
+	    	gp = new GradientPaint(0f,0f,Color.RED,0f,30f,Color.MAGENTA);
+	    }
+    	g.setPaint(gp);
+    	g.fill(bumper);
     }
     
-    public void drawSquareBumper(final Graphics2D g, double x, double y, double side, TriggerState state){
-        
+    public void drawSquareBumper(final Graphics2D g, Rectangle2D bumper, TriggerState state){
+    	GradientPaint gp;
+    	if (state == TriggerState.TRIGGERED){
+	    	gp = new GradientPaint(0f,0f,Color.ORANGE.darker(),0f,30f,Color.RED.darker());
+	    } else{
+	    	gp = new GradientPaint(0f,0f,Color.ORANGE,0f,30f,Color.RED);
+	    }
+    	g.setPaint(gp);
+    	g.fill(bumper);
     }
     
-    public void drawTriangularBumper(final Graphics2D g,  ,TriggerState state){
-        
+    public void drawTriangularBumper(final Graphics2D g, int[] xPoints, int[] yPoints,TriggerState state){
+    	GradientPaint gp;
+    	if (state == TriggerState.TRIGGERED){
+	    	gp = new GradientPaint(0f,0f,Color.MAGENTA.darker(),0f,30f,Color.ORANGE.darker());
+	    } else{
+	    	gp = new GradientPaint(0f,0f,Color.MAGENTA,0f,30f,Color.ORANGE);
+	    }
+    	g.setPaint(gp);
+    	g.fillPolygon(xPoints, yPoints, 3);
     }
     
     
-    public void drawFlipper(final Graphics2D g, double start, double end){
-        
+    public void drawFlipper(final Graphics2D g, Line2D flipper){
+    	GradientPaint gp = new GradientPaint(0f,0f,Color.CYAN,0f,30f,Color.BLUE);
+    	g.setPaint(gp);
     }
     
-    public void drawAbosorber(final Graphics2D g, int width, int height){
-        
+    public void drawAbosorber(final Graphics2D g, Rectangle2D absorber, TriggerState state){
+    	GradientPaint gp;
+    	if (state == TriggerState.TRIGGERED){
+	    	gp = new GradientPaint(0f,0f,Color.BLUE.darker(),0f,30f,Color.GREEN.darker());
+	    } else{
+	    	gp = new GradientPaint(0f,0f,Color.BLUE,0f,30f,Color.GREEN);
+	    }
+    	g.setPaint(gp);
+    	g.fill(absorber);
     }
     
-    public void drawWall(final Graphics2D g, int length, Side side, boolean connected, String connectedBoardName){
-        
+    public void drawWall(final Graphics2D g, Rectangle2D wall, boolean connected, String connectedBoardName){
+    	g.setPaint(Color.GRAY);
+    	g.fill(wall);
+    	GlyphVector v = (new Font("Helvetica", Font.PLAIN, 12)).createGlyphVector(g.getFontRenderContext(), connectedBoardName);
+    	g.drawGlyphVector(v, alignmentX, alignmentX)
     }
     
     
