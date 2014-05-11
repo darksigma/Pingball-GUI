@@ -65,4 +65,8 @@ public class BoardGrammarCentral {
         return this.gravity;
     }
     
+    public static void main(String[] args){
+    	
+    }
+    
 }

@@ -18,6 +18,9 @@ public class BoardGrammarBaseListener implements BoardGrammarListener {
 	@Override public void enterBoardFric1(BoardGrammarParser.BoardFric1Context ctx) { }
 	@Override public void exitBoardFric1(BoardGrammarParser.BoardFric1Context ctx) { }
 
+	@Override public void enterKeyNameDownLine(BoardGrammarParser.KeyNameDownLineContext ctx) { }
+	@Override public void exitKeyNameDownLine(BoardGrammarParser.KeyNameDownLineContext ctx) { }
+
 	@Override public void enterCirBumperLine(BoardGrammarParser.CirBumperLineContext ctx) { }
 	@Override public void exitCirBumperLine(BoardGrammarParser.CirBumperLineContext ctx) { }
 
@@ -29,6 +32,9 @@ public class BoardGrammarBaseListener implements BoardGrammarListener {
 
 	@Override public void enterBoardLine(BoardGrammarParser.BoardLineContext ctx) { }
 	@Override public void exitBoardLine(BoardGrammarParser.BoardLineContext ctx) { }
+
+	@Override public void enterKeyIntUpLine(BoardGrammarParser.KeyIntUpLineContext ctx) { }
+	@Override public void exitKeyIntUpLine(BoardGrammarParser.KeyIntUpLineContext ctx) { }
 
 	@Override public void enterFireLine(BoardGrammarParser.FireLineContext ctx) { }
 	@Override public void exitFireLine(BoardGrammarParser.FireLineContext ctx) { }
@@ -48,8 +54,14 @@ public class BoardGrammarBaseListener implements BoardGrammarListener {
 	@Override public void enterFileLines(BoardGrammarParser.FileLinesContext ctx) { }
 	@Override public void exitFileLines(BoardGrammarParser.FileLinesContext ctx) { }
 
+	@Override public void enterKeyIntDownLine(BoardGrammarParser.KeyIntDownLineContext ctx) { }
+	@Override public void exitKeyIntDownLine(BoardGrammarParser.KeyIntDownLineContext ctx) { }
+
 	@Override public void enterRtFlipLine(BoardGrammarParser.RtFlipLineContext ctx) { }
 	@Override public void exitRtFlipLine(BoardGrammarParser.RtFlipLineContext ctx) { }
+
+	@Override public void enterKeyNameUpLine(BoardGrammarParser.KeyNameUpLineContext ctx) { }
+	@Override public void exitKeyNameUpLine(BoardGrammarParser.KeyNameUpLineContext ctx) { }
 
 	@Override public void enterBoardName(BoardGrammarParser.BoardNameContext ctx) { }
 	@Override public void exitBoardName(BoardGrammarParser.BoardNameContext ctx) { }

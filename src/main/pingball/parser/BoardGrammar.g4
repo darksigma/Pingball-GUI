@@ -57,14 +57,17 @@ EQUALS : '=' ;
 FLOAT : INTEGER | [0-9]*('.'[0-9]+) | '-'[0-9]*('.'[0-9]+) | '-'[0-9]+ ;
 INTEGER : [0-9]+ ;
 NAME : [A-Za-z_][A-Za-z_0-9]* ;
+KEY : 'shift' | 'ctrl' | 'alt' | 'meta' | 'space' | 'left' | 'right' | 'up' | 'down'
+        | 'minus' | 'equals' | 'backspace' | 'openbracket' | 'closebracket' 
+        | 'backslash' | 'semicolon' | 'quote' | 'enter' | 'comma' | 'period' | 'slash' ;
 
 //parsing rules
 
 root : fileLines EOF;
-fileLines : boardLine (ballLine | sqBumperLine | cirBumperLine | triBumperLine | rtFlipLine | lftFlipLine | absorberLine | fireLine ) * ;
+fileLines : boardLine (ballLine | sqBumperLine | cirBumperLine | triBumperLine | rtFlipLine | lftFlipLine | absorberLine | fireLine | keyIntDownLine | keyIntUpLine | keyNameDownLine | keyNameUpLine) * ;
 boardLine : 'board' (boardName | boardGravity | boardFric1 | boardFric2)* ;
 boardName : 'name' EQUALS NAME;
-boardGravity : 'gravity' EQUALS FLOAT ;
+boardGravity : 'gravity' EQUALS (FLOAT | NAME) ;
 boardFric1 : 'friction1' EQUALS FLOAT ;
 boardFric2 : 'friction2' EQUALS FLOAT ;
 ballLine : 'ball name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'xVelocity' EQUALS FLOAT 'yVelocity' EQUALS FLOAT ;
@@ -75,4 +78,9 @@ rtFlipLine : 'rightFlipper name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT '
 lftFlipLine : 'leftFlipper name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'orientation' EQUALS FLOAT ;
 absorberLine : 'absorber name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'width' EQUALS FLOAT 'height' EQUALS FLOAT ;
 fireLine : 'fire trigger' EQUALS NAME 'action' EQUALS NAME ;
+
+keyIntDownLine : 'keydown' 'key' EQUALS FLOAT 'action' EQUALS NAME ;
+keyNameDownLine : 'keydown' 'key' EQUALS NAME 'action' EQUALS NAME ;
+keyIntUpLine : 'keyup' 'key' EQUALS FLOAT 'action' EQUALS NAME ;
+keyNameUpLine : 'keyup' 'key' EQUALS NAME 'action' EQUALS NAME ;
 

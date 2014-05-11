@@ -1,7 +1,10 @@
 package pingball.parser;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import physics.Vect;
@@ -21,6 +24,17 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 
 	private Map<String, Gadget> gadgets = new HashMap<>();
 	
+	private final String singleChar = "[a-z]";
+	private final List<String> keys = new ArrayList<String>(Arrays.asList(
+			singleChar, "shift", "ctrl", "alt", "meta",
+			"space", "left", "right", "up", "down", "minus",
+			"equals", "backspace", "openbracket", "closebracket",
+			"backslash", "semicolon", "quote", "enter", "comma",
+			"period", "slash"));
+	
+	private final List<Integer> keyInts = new ArrayList<Integer>(Arrays.asList(
+			0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+	
 	private String username = "";
     private double gravity = Constants.DEFAULT_GRAVITY;
     private double mu = Constants.DEFAULT_FRICTION_MU1;
@@ -29,7 +43,7 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 	
 	
     public String listenerName(){
-    	return this.username;
+    	return this.username;    	
     }
     
     public Double listenerGravity(){
@@ -179,6 +193,51 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
         gadgets.get(trigger).linkGadget(gadgets.get(action));
         
         
+	}
+	
+	@Override 
+	public void exitKeyNameUpLine(BoardGrammarParser.KeyNameUpLineContext ctx) { 
+		String keyName = ctx.NAME(0).getText();
+		String action = ctx.NAME(1).getText();		
+		Gadget g = gadgets.get(action);
+		
+		if(keys.contains(keyName)){
+			gameBoard.addKeyUpEvent(keyName, g);
+		}
+	
+	}
+	
+	@Override 
+	public void exitKeyNameDownLine(BoardGrammarParser.KeyNameDownLineContext ctx) {
+		String keyName = ctx.NAME(0).getText();
+		String action = ctx.NAME(1).getText();
+		Gadget g = gadgets.get(action);
+		
+		if(keys.contains(keyName)){
+			gameBoard.addKeyDownEvent(keyName, g);
+		}
+	}
+	
+	@Override
+	public void exitKeyIntUpLine(BoardGrammarParser.KeyIntUpLineContext ctx) { 
+		int keyName = Double.valueOf(ctx.FLOAT().getText()).intValue();
+		String action = ctx.NAME().getText();
+		Gadget g = gadgets.get(action);
+		
+		if(keyInts.contains(keyName)){
+			gameBoard.addKeyUpEvent(keyName, g);
+		}
+	}
+
+	@Override
+	public void exitKeyIntDownLine(BoardGrammarParser.KeyIntDownLineContext ctx) {
+		int keyName = Double.valueOf(ctx.FLOAT().getText()).intValue();
+		String action = ctx.NAME().getText();
+		Gadget g = gadgets.get(action);
+		
+		if(keyInts.contains(keyName)){
+			gameBoard.addKeyDownEvent(keyName, g);
+		}
 	}
 
 }
