@@ -30,10 +30,8 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 			"space", "left", "right", "up", "down", "minus",
 			"equals", "backspace", "openbracket", "closebracket",
 			"backslash", "semicolon", "quote", "enter", "comma",
-			"period", "slash"));
-	
-	private final List<Integer> keyInts = new ArrayList<Integer>(Arrays.asList(
-			0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+			"period", "slash", "0", "1", "2", "3", "4", "5", "6",
+			"7", "8", "9"));
 	
 	private String username = "";
     private double gravity = Constants.DEFAULT_GRAVITY;
@@ -220,22 +218,22 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 	
 	@Override
 	public void exitKeyIntUpLine(BoardGrammarParser.KeyIntUpLineContext ctx) { 
-		int keyName = Double.valueOf(ctx.FLOAT().getText()).intValue();
+		String keyName = ctx.FLOAT().getText();
 		String action = ctx.NAME().getText();
 		Gadget g = gadgets.get(action);
 		
-		if(keyInts.contains(keyName)){
+		if(keys.contains(keyName)){
 			gameBoard.addKeyUpEvent(keyName, g);
 		}
 	}
 
 	@Override
 	public void exitKeyIntDownLine(BoardGrammarParser.KeyIntDownLineContext ctx) {
-		int keyName = Double.valueOf(ctx.FLOAT().getText()).intValue();
+		String keyName = ctx.FLOAT().getText();
 		String action = ctx.NAME().getText();
 		Gadget g = gadgets.get(action);
 		
-		if(keyInts.contains(keyName)){
+		if(keys.contains(keyName)){
 			gameBoard.addKeyDownEvent(keyName, g);
 		}
 	}
