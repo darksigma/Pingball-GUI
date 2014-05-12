@@ -21,6 +21,7 @@ public abstract class GameObject {
         CIRCLEBUMPER,
         TRIANGLEBUMPER,
         FLIPPER,
+        ABSORBER,
         PORTAL
     }
 

@@ -1,6 +1,7 @@
 package pingball.simulation.gadget;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import pingball.simulation.Board;
 import pingball.simulation.Constants;
 import pingball.simulation.Ball;
 import pingball.simulation.GridLocation;
+import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.collidable.Collidable;
 import pingball.simulation.collidable.FixedCircle;
 import pingball.simulation.collidable.Line;
@@ -172,7 +174,12 @@ public class Absorber extends Gadget {
 
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.width,this.height,this.triggerState));
+        return Pair.of(GameObjectType.ABSORBER, objData);
     }
+
+    private Pair<Double,Double> topLeft() {
+       return Pair.of((double) this.location.getFirst(),(double) this.location.getSecond());
+    }
+    
 }

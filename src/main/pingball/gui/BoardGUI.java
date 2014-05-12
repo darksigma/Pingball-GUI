@@ -161,6 +161,13 @@ public class BoardGUI extends JPanel {
                     double dimension = 22;
                     drawWall(g, topLeft.getFirst(), topLeft.getSecond(), dimension , connected, connectedBoardName, side);
                 }
+                else if (type.equals(GameObjectType.ABSORBER)){
+                    Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
+                    double width = (double) data.get(1);
+                    double height = (double) data.get(2);
+                    TriggerState state = (TriggerState) data.get(3);
+                    drawSAbsorber(g,topLeft.getFirst(),topLeft.getSecond(),width,height,state);
+                }
                 //            else if (gameObject instanceof SquareBumper){
                 //                SquareBumper squareBumper = (SquareBumper) gameObject;
                 //                Pair<Double, Double> topLeft = squareBumper.topLeft();
