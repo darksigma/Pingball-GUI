@@ -160,16 +160,22 @@ public class PingballServer {
          */
         public void run() {
             try (BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+                System.out.println("Br worked");
                 for (String line = br.readLine(); line != null; line = br.readLine()) {
                     router.processClientMessage(line, socket);
                 }
+                while(true);
             } catch (IOException e) {
+                System.out.println("PE - Handle Client exception");
+                e.printStackTrace();
                 // socket closed, this is okay
             } finally {
                 try {
                     socket.close();
+                    System.out.println("PE - Closed socket");
                 } catch (IOException e) {
                     // ignore
+                    System.out.println("PE -Closed socket error");
                 }
                 router.removeUser(socket);
             }
