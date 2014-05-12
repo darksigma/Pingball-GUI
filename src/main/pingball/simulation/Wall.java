@@ -11,6 +11,7 @@ import pingball.util.StringUtils;
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
 import pingball.simulation.Ball;
+import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.collidable.Collidable;
 import pingball.simulation.collidable.Line;
 
@@ -277,8 +278,14 @@ public class Wall extends GameObject {
 
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.side,this.connected,this.connectedBoardName));
+        return Pair.of(GameObjectType.WALL, objData);
+    
     }
+
+    private Pair<Double,Double> topLeft() {
+        return Pair.of((double) this.location.getFirst(),(double) this.location.getSecond());
+     }
+     
 
 }

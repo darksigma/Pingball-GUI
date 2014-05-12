@@ -9,6 +9,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.font.GlyphVector;
@@ -152,6 +153,14 @@ public class BoardGUI extends JPanel {
                     TriggerState state = (TriggerState) data.get(2);
                     drawFlipper(g, end1, end2, state);
                 }
+                else if (type.equals(GameObjectType.WALL)){
+                    Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
+                    Side side = (Side) data.get(1);
+                    boolean connected = (boolean) data.get(2);
+                    String connectedBoardName = (String) data.get(3);
+                    double dimension = 22;
+                    drawWall(g, topLeft.getFirst(), topLeft.getSecond(), dimension , connected, connectedBoardName, side);
+                }
                 //            else if (gameObject instanceof SquareBumper){
                 //                SquareBumper squareBumper = (SquareBumper) gameObject;
                 //                Pair<Double, Double> topLeft = squareBumper.topLeft();
@@ -243,37 +252,49 @@ public class BoardGUI extends JPanel {
     	g.fill(absorber);
     }
     
-    public void drawWall(final Graphics2D g, Rectangle2D wall, boolean connected, String connectedBoardName, Side side){
-    	g.setPaint(Color.GRAY);
-    	g.fill(wall);
+    public void drawWall(final Graphics2D g, double x, double y, double dimension, boolean connected, String connectedBoardName, Side side){
+    	Rectangle2D wall;
+        if (side.equals(Side.TOP)){
+    	    wall = new Rectangle2D.Double(x, y, dimension, 1.0);    
+    	} else if (side.equals(Side.BOTTOM)){
+            wall = new Rectangle2D.Double(x, y, dimension, 1.0);
+    	} else if (side.equals(Side.LEFT)){
+            wall = new Rectangle2D.Double(x, y, 1.0, dimension);
+        } else {
+            wall = new Rectangle2D.Double(x, y, 1.0, dimension);
+        }
+    	
+        g.setPaint(Color.GRAY);
+        g.fill(wall);
     	FontMetrics fm = g.getFontMetrics();
-    	
-    	if(side.equals(Side.TOP)){
-    		g.drawString(connectedBoardName, 50, 0);
-    	}
-    	
-    	if(side.equals(Side.BOTTOM)){
-    		g.drawString(connectedBoardName, 50, 425);
-    	}
-    	
-    	if(side.equals(Side.RIGHT)){
-    		int curX = 0;
-    		int curY = 50;
-    		for(Character c : connectedBoardName.toCharArray()){
-    			g.drawString(c.toString(), curX, curY);
-    			curY += 1;
-    		}
-    	}
-    	
-    	if(side.equals(Side.LEFT)){
-    		int curX = 425;
-    		int curY = 50;
-    		for(Character c : connectedBoardName.toCharArray()){
-    			g.drawString(c.toString(), curX, curY);
-    			curY += 1;
-    		}
-    	}
+    	if (connected){
 
+    	    if(side.equals(Side.TOP)){
+    	        g.drawString(connectedBoardName, 50, 0);
+    	    }
+
+    	    if(side.equals(Side.BOTTOM)){
+    	        g.drawString(connectedBoardName, 50, 425);
+    	    }
+
+    	    if(side.equals(Side.RIGHT)){
+    	        int curX = 0;
+    	        int curY = 50;
+    	        for(Character c : connectedBoardName.toCharArray()){
+    	            g.drawString(c.toString(), curX, curY);
+    	            curY += 1;
+    	        }
+    	    }
+
+    	    if(side.equals(Side.LEFT)){
+    	        int curX = 425;
+    	        int curY = 50;
+    	        for(Character c : connectedBoardName.toCharArray()){
+    	            g.drawString(c.toString(), curX, curY);
+    	            curY += 1;
+    	        }
+    	    }
+    	}
         //GlyphVector v = (new Font("Helvetica", Font.PLAIN, 12)).createGlyphVector(g.getFontRenderContext(), connectedBoardName);
 
     	//g.drawGlyphVector(v, alignmentX, alignmentX)
