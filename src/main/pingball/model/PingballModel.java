@@ -130,8 +130,10 @@ public class PingballModel {
 
     public synchronized List<Pair<GameObjectType, List<Object>>> getObjectData(){
         List<Pair<GameObjectType,List<Object>>> objectData = new ArrayList<>();
-        for (GameObject gameObject: this.board.getGameObjects()){
-            objectData.add(gameObject.getObjectData());
+        if(board!=null) {
+            for (GameObject gameObject: this.board.getGameObjects()){
+                objectData.add(gameObject.getObjectData());
+            }
         }
         return objectData;
     }
