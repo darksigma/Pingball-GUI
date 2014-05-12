@@ -189,9 +189,18 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
         String action = ctx.NAME(1).getText();
         
         gadgets.get(trigger).linkGadget(gadgets.get(action));
-        
-        
+         
 	}
+	
+	@Override
+	public void exitPortalLine(BoardGrammarParser.PortalLineContext ctx) { 
+		String startPortal = ctx.NAME(0).getText();
+		int x = Double.valueOf(ctx.FLOAT(0).getText()).intValue();
+		int y = Double.valueOf(ctx.FLOAT(1).getText()).intValue();
+		String endBoard = ctx.NAME(1).getText();
+		String endPortal = ctx.NAME(2).getText();
+	}
+
 	
 	@Override 
 	public void exitKeyNameUpLine(BoardGrammarParser.KeyNameUpLineContext ctx) { 

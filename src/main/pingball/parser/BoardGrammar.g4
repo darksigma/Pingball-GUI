@@ -64,20 +64,22 @@ KEY : 'shift' | 'ctrl' | 'alt' | 'meta' | 'space' | 'left' | 'right' | 'up' | 'd
 //parsing rules
 
 root : fileLines EOF;
-fileLines : boardLine (ballLine | sqBumperLine | cirBumperLine | triBumperLine | rtFlipLine | lftFlipLine | absorberLine | fireLine | keyIntDownLine | keyIntUpLine | keyNameDownLine | keyNameUpLine) * ;
+fileLines : boardLine (ballLine | sqBumperLine | cirBumperLine | triBumperLine | rtFlipLine | lftFlipLine | absorberLine | fireLine | portalLine | keyIntDownLine | keyIntUpLine | keyNameDownLine | keyNameUpLine) * ;
 boardLine : 'board' (boardName | boardGravity | boardFric1 | boardFric2)* ;
 boardName : 'name' EQUALS NAME;
 boardGravity : 'gravity' EQUALS (FLOAT | NAME) ;
 boardFric1 : 'friction1' EQUALS FLOAT ;
 boardFric2 : 'friction2' EQUALS FLOAT ;
-ballLine : 'ball name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'xVelocity' EQUALS FLOAT 'yVelocity' EQUALS FLOAT ;
-sqBumperLine :  'squareBumper name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT ;
-cirBumperLine :  'circleBumper name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT ;
-triBumperLine : 'triangleBumper name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'orientation' EQUALS FLOAT ;
-rtFlipLine : 'rightFlipper name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'orientation' EQUALS FLOAT ;
-lftFlipLine : 'leftFlipper name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'orientation' EQUALS FLOAT ;
-absorberLine : 'absorber name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'width' EQUALS FLOAT 'height' EQUALS FLOAT ;
-fireLine : 'fire trigger' EQUALS NAME 'action' EQUALS NAME ;
+ballLine : 'ball' 'name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'xVelocity' EQUALS FLOAT 'yVelocity' EQUALS FLOAT ;
+sqBumperLine :  'squareBumper' 'name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT ;
+cirBumperLine :  'circleBumper' 'name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT ;
+triBumperLine : 'triangleBumper' 'name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'orientation' EQUALS FLOAT ;
+rtFlipLine : 'rightFlipper' 'name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'orientation' EQUALS FLOAT ;
+lftFlipLine : 'leftFlipper' 'name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'orientation' EQUALS FLOAT ;
+absorberLine : 'absorber' 'name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'width' EQUALS FLOAT 'height' EQUALS FLOAT ;
+fireLine : 'fire' 'trigger' EQUALS NAME 'action' EQUALS NAME ;
+
+portalLine : 'portal' 'name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'otherBoard' EQUALS NAME 'otherPortal' EQUALS NAME ;
 
 keyIntDownLine : 'keydown' 'key' EQUALS FLOAT 'action' EQUALS NAME ;
 keyNameDownLine : 'keydown' 'key' EQUALS NAME 'action' EQUALS NAME ;

@@ -63,6 +63,9 @@ public class BoardGrammarBaseListener implements BoardGrammarListener {
 	@Override public void enterKeyNameUpLine(BoardGrammarParser.KeyNameUpLineContext ctx) { }
 	@Override public void exitKeyNameUpLine(BoardGrammarParser.KeyNameUpLineContext ctx) { }
 
+	@Override public void enterPortalLine(BoardGrammarParser.PortalLineContext ctx) { }
+	@Override public void exitPortalLine(BoardGrammarParser.PortalLineContext ctx) { }
+
 	@Override public void enterBoardName(BoardGrammarParser.BoardNameContext ctx) { }
 	@Override public void exitBoardName(BoardGrammarParser.BoardNameContext ctx) { }
 

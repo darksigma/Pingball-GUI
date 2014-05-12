@@ -60,6 +60,9 @@ public interface BoardGrammarListener extends ParseTreeListener {
 	void enterKeyNameUpLine(BoardGrammarParser.KeyNameUpLineContext ctx);
 	void exitKeyNameUpLine(BoardGrammarParser.KeyNameUpLineContext ctx);
 
+	void enterPortalLine(BoardGrammarParser.PortalLineContext ctx);
+	void exitPortalLine(BoardGrammarParser.PortalLineContext ctx);
+
 	void enterBoardName(BoardGrammarParser.BoardNameContext ctx);
 	void exitBoardName(BoardGrammarParser.BoardNameContext ctx);
 }

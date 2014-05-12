@@ -49,7 +49,7 @@ public class BoardGUI extends JPanel {
     public BoardGUI(PingballModel _pingballModel,int _scale){
         this.pingballModel = _pingballModel;
         this.scale = _scale;
-        this.setPreferredSize(new Dimension(22*scale,22*scale));
+        //this.setPreferredSize(new Dimension(22*scale,22*scale));
         setFocusable(true);
         requestFocusInWindow();
         addKeyListener(new KeyAdapter() {
@@ -64,6 +64,22 @@ public class BoardGUI extends JPanel {
                 pingballModel.sendMessage("keyup "+StringUtils.join("",KeyEvent.getKeyText(e.getKeyCode()).split("\\s+")).toLowerCase());
             }
         });
+    }
+    
+    
+    @Override
+    public Dimension getMinimumSize() {
+        return getPreferredSize();
+    }
+
+    @Override
+    public Dimension getMaximumSize() {
+        return getPreferredSize();
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(425, 425);
     }
     
     /**
