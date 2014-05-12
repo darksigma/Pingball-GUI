@@ -65,13 +65,13 @@ public class PingballModel {
     /**
      * Start a PingballClient using the given arguments.
      *
-     * Usage: PingballClient [--port PORT] [--host HOST] FILE
+     * Usage: PingballClient [--port PORT] [--host HOST] [FILE]
      *
      * The optional [--port PORT] argument is the port to connect to on the server.
      *
      * The optional [--host HOST] argument is the host to connect to.
      *
-     * The FILE argument is the board file to read from.
+     * The optional [FILE] argument is the board file to read from.
      */
     public PingballModel(String[] args) throws IOException {
         Queue<String> arguments = new LinkedList<String>(Arrays.asList(args));
@@ -214,7 +214,7 @@ public class PingballModel {
     }
 
     public synchronized void stop(){
-        //System.exit(0);
+        //this.
     }
     
     /*
