@@ -221,9 +221,9 @@ public class BoardGUI extends JPanel {
     private void drawTriangularBumper(final Graphics2D g, int[] xPoints, int[] yPoints,TriggerState state){
     	GradientPaint gp;
     	if (state == TriggerState.TRIGGERED){
-	    	gp = new GradientPaint(xPoints[0],yPoints[0],Color.MAGENTA.darker(),xPoints[1],yPoints[1],Color.ORANGE.darker());
+	    	gp = new GradientPaint(xPoints[0],yPoints[0],Color.MAGENTA.darker(),xPoints[1],yPoints[1],Color.RED.darker());
 	    } else{
-	    	gp = new GradientPaint(xPoints[0],yPoints[0],Color.MAGENTA,xPoints[1],yPoints[1],Color.ORANGE);
+	    	gp = new GradientPaint(xPoints[0],yPoints[0],Color.MAGENTA,xPoints[1],yPoints[1],Color.RED);
 	    }
     	g.setPaint(gp);
     	g.fillPolygon(xPoints, yPoints, 3);
