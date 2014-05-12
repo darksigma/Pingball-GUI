@@ -311,7 +311,6 @@ public class PingballGUI extends JFrame {
         	}
         });
         
-        
            //timer.start();
     }
     
