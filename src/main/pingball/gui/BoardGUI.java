@@ -188,19 +188,19 @@ public class BoardGUI extends JPanel {
     }
     
     private void drawBall(final Graphics2D g, double x,double y,double r){
-        Ellipse2D ball = new Ellipse2D.Double(x, y, r, r);
+        Ellipse2D ball = new Ellipse2D.Double(x, y, 2*r, 2*r);
     	GradientPaint gp = new GradientPaint(0f,0f,Color.BLUE,0f,30f,Color.GREEN);
     	g.setPaint(gp);
     	g.fill(ball);
     }
     
     private void drawCircularBumper(final Graphics2D g, double x,double y,double r, TriggerState state){
-        Ellipse2D bumper = new Ellipse2D.Double(x, y, r, r);
+        Ellipse2D bumper = new Ellipse2D.Double(x, y, 2*r, 2*r);
         GradientPaint gp;
     	if (state == TriggerState.TRIGGERED){
-	    	gp = new GradientPaint(0f,0f,Color.RED.darker(),0f,30f,Color.MAGENTA.darker());
+	    	gp = new GradientPaint((int)x, (int)y,Color.RED.darker(),(int)(x +2*r), (int)(y +2*r),Color.MAGENTA.darker());
 	    } else{
-	    	gp = new GradientPaint(0f,0f,Color.RED,0f,30f,Color.MAGENTA);
+	    	gp = new GradientPaint((int)x, (int)y,Color.RED,(int)(x +2*r), (int)(y +2*r),Color.MAGENTA);
 	    }
     	g.setPaint(gp);
     	g.fill(bumper);
@@ -210,9 +210,9 @@ public class BoardGUI extends JPanel {
         Rectangle2D bumper = new Rectangle2D.Double(x, y, s, s);
     	GradientPaint gp;
     	if (state == TriggerState.TRIGGERED){
-	    	gp = new GradientPaint(0f,0f,Color.ORANGE.darker(),0f,30f,Color.RED.darker());
+    		gp = new GradientPaint((int)x, (int)y,Color.ORANGE.darker(),(int)(x +s), (int)(y +s),Color.RED.darker());
 	    } else{
-	    	gp = new GradientPaint(0f,0f,Color.ORANGE,0f,30f,Color.RED);
+	    	gp = new GradientPaint((int)x, (int)y,Color.ORANGE,(int)(x +s), (int)(y +s),Color.RED);
 	    }
     	g.setPaint(gp);
     	g.fill(bumper);
@@ -221,7 +221,7 @@ public class BoardGUI extends JPanel {
     private void drawTriangularBumper(final Graphics2D g, int[] xPoints, int[] yPoints,TriggerState state){
     	GradientPaint gp;
     	if (state == TriggerState.TRIGGERED){
-	    	gp = new GradientPaint(0f,0f,Color.MAGENTA.darker(),0f,30f,Color.ORANGE.darker());
+	    	gp = new GradientPaint(xPoints[0],yPoints[0],Color.MAGENTA.darker(),xPoints[1],yPoints[1],Color.ORANGE.darker());
 	    } else{
 	    	gp = new GradientPaint(0f,0f,Color.MAGENTA,0f,30f,Color.ORANGE);
 	    }
