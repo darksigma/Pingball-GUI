@@ -1,5 +1,6 @@
 package pingball.gui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -225,8 +226,9 @@ public class BoardGUI extends JPanel {
         Point2D pend1 = new Point2D.Double(end1.getFirst(), end1.getSecond());
         Point2D pend2 = new Point2D.Double(end2.getFirst(), end2.getSecond());
         Line2D flipper = new Line2D.Double(pend1,pend2);
-    	GradientPaint gp = new GradientPaint(0f,0f,Color.CYAN,0f,30f,Color.BLUE);
+    	GradientPaint gp = new GradientPaint(0f,0f,Color.PINK,0f,30f,Color.MAGENTA);
     	g.setPaint(gp);
+    	g.setStroke(new BasicStroke(0.10f));
     	g.draw(flipper);
     }
     
