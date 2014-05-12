@@ -116,18 +116,20 @@ public class BoardGUI extends JPanel {
         //This will draw the current form of all the objects on the board.
         List<Pair<GameObjectType,List<Object>>> objectData = pingballModel.getObjectData();
         for (Pair<GameObjectType,List<Object>> p: objectData){
-            GameObjectType type = p.getFirst();
-            List<Object> data = p.getSecond();
-            if (type.equals(GameObjectType.BALL)){
-                Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
-                double radius = (double) data.get(1);
-                drawBall(g,topLeft.getFirst(),topLeft.getSecond(),radius);
+            if(p!=null){
+                GameObjectType type = p.getFirst();
+                List<Object> data = p.getSecond();
+                if (type.equals(GameObjectType.BALL)){
+                    Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
+                    double radius = (double) data.get(1);
+                    drawBall(g,topLeft.getFirst(),topLeft.getSecond(),radius);
+                }
+                //            else if (gameObject instanceof SquareBumper){
+                //                SquareBumper squareBumper = (SquareBumper) gameObject;
+                //                Pair<Double, Double> topLeft = squareBumper.topLeft();
+                //                drawSquareBumper(g,topLeft.getFirst(),topLeft.getSecond(),1,TriggerState.UNTRIGGERED);
+                //            }
             }
-//            else if (gameObject instanceof SquareBumper){
-//                SquareBumper squareBumper = (SquareBumper) gameObject;
-//                Pair<Double, Double> topLeft = squareBumper.topLeft();
-//                drawSquareBumper(g,topLeft.getFirst(),topLeft.getSecond(),1,TriggerState.UNTRIGGERED);
-//            }
         }
     }
 
