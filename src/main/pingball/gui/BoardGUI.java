@@ -314,10 +314,16 @@ public class BoardGUI extends JPanel {
 
     	    if(side.equals(Side.TOP)){
     	        g.drawString(connectedBoardName, 50, 0);
+    	        wall = new Rectangle2D.Double(x, y, dimension, 1.0);
+    	        g.setPaint(Color.BLUE);
+    	        g.fill(wall);
     	    }
 
     	    if(side.equals(Side.BOTTOM)){
     	        g.drawString(connectedBoardName, 50, 425);
+    	        wall = new Rectangle2D.Double(x, y, dimension, 1.0);
+    	        g.setPaint(Color.BLUE);
+    	        g.fill(wall);
     	    }
 
     	    if(side.equals(Side.RIGHT)){
@@ -327,6 +333,9 @@ public class BoardGUI extends JPanel {
     	            g.drawString(c.toString(), curX, curY);
     	            curY += 1;
     	        }
+                wall = new Rectangle2D.Double(x, y, 1.0, dimension);
+                g.setPaint(Color.BLUE);
+                g.fill(wall);
     	    }
 
     	    if(side.equals(Side.LEFT)){
@@ -336,6 +345,9 @@ public class BoardGUI extends JPanel {
     	            g.drawString(c.toString(), curX, curY);
     	            curY += 1;
     	        }
+                wall = new Rectangle2D.Double(x, y, 1.0, dimension);
+                g.setPaint(Color.BLUE);
+                g.fill(wall);
     	    }
     	}
         //GlyphVector v = (new Font("Helvetica", Font.PLAIN, 12)).createGlyphVector(g.getFontRenderContext(), connectedBoardName);
