@@ -298,6 +298,19 @@ public class PingballGUI extends JFrame {
             }
         });
         
+        //TODO: handle exit!
+        exitButton.addActionListener(new ActionListener(){
+        	@Override
+        	public void actionPerformed(ActionEvent e){
+        		timer.stop();
+        		//UNLOCK buttons
+        		setHost.setEnabled(true);
+        		setPort.setEnabled(true);
+        		openfileButton.setEnabled(true);
+        		
+        	}
+        });
+        
         
            //timer.start();
     }
@@ -351,7 +364,8 @@ public class PingballGUI extends JFrame {
         public void stop(){
             pingballModel.stop();
             try {
-                pingballModel = new PingballModel(new String[] {""});
+                pingballModel = new PingballModel(new String[] {});
+                
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

@@ -3,6 +3,7 @@ package pingball.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -20,6 +21,7 @@ import javax.swing.JPanel;
 import pingball.model.PingballModel;
 import pingball.simulation.*;
 import pingball.simulation.GameObject.GameObjectType;
+import pingball.simulation.Wall.Side;
 import pingball.simulation.gadget.Gadget.TriggerState;
 import pingball.simulation.gadget.SquareBumper;
 import pingball.util.Pair;
@@ -212,12 +214,41 @@ public class BoardGUI extends JPanel {
     	g.fill(absorber);
     }
     
-//    public void drawWall(final Graphics2D g, Rectangle2D wall, boolean connected, String connectedBoardName){
-//    	g.setPaint(Color.GRAY);
-//    	g.fill(wall);
-//    	GlyphVector v = (new Font("Helvetica", Font.PLAIN, 12)).createGlyphVector(g.getFontRenderContext(), connectedBoardName);
-//    	g.drawGlyphVector(v, alignmentX, alignmentX)
-//    }
-//    
+    public void drawWall(final Graphics2D g, Rectangle2D wall, boolean connected, String connectedBoardName, Side side){
+    	g.setPaint(Color.GRAY);
+    	g.fill(wall);
+    	FontMetrics fm = g.getFontMetrics();
+    	
+    	if(side.equals(Side.TOP)){
+    		g.drawString(connectedBoardName, 50, 0);
+    	}
+    	
+    	if(side.equals(Side.BOTTOM)){
+    		g.drawString(connectedBoardName, 50, 425);
+    	}
+    	
+    	if(side.equals(Side.RIGHT)){
+    		int curX = 0;
+    		int curY = 50;
+    		for(Character c : connectedBoardName.toCharArray()){
+    			g.drawString(c.toString(), curX, curY);
+    			curY += 1;
+    		}
+    	}
+    	
+    	if(side.equals(Side.LEFT)){
+    		int curX = 425;
+    		int curY = 50;
+    		for(Character c : connectedBoardName.toCharArray()){
+    			g.drawString(c.toString(), curX, curY);
+    			curY += 1;
+    		}
+    	}
+
+        //GlyphVector v = (new Font("Helvetica", Font.PLAIN, 12)).createGlyphVector(g.getFontRenderContext(), connectedBoardName);
+
+    	//g.drawGlyphVector(v, alignmentX, alignmentX)
+    }
+    
     
 }
