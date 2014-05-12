@@ -74,7 +74,7 @@ public class CircleBumper extends Gadget {
 
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
-        List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.getRadius()));
+        List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.getRadius(),this.triggerState));
         return Pair.of(GameObjectType.CIRCLEBUMPER, objData);
     }
 
