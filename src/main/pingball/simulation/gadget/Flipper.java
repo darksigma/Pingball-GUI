@@ -2,6 +2,7 @@ package pingball.simulation.gadget;
 
 import java.util.Arrays;
 import java.util.List;
+
 import physics.Vect;
 import pingball.simulation.Constants;
 import pingball.simulation.GridLocation;
@@ -9,6 +10,7 @@ import pingball.simulation.Board;
 import pingball.simulation.collidable.Collidable;
 import pingball.simulation.collidable.FixedCircle;
 import pingball.simulation.collidable.Line;
+import pingball.util.Pair;
 
 /**
  * Represents a flipper. The location of this object is relative to the board. It is basically
@@ -259,5 +261,11 @@ public class Flipper extends Gadget {
      */
     public FlipperType getType() {
         return this.type;
+    }
+
+    @Override
+    public Pair<GameObjectType, List<Object>> getObjectData() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

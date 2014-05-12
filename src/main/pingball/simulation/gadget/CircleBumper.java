@@ -3,12 +3,13 @@ package pingball.simulation.gadget;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import physics.Vect;
 
+import physics.Vect;
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
 import pingball.simulation.Constants;
 import pingball.simulation.collidable.FixedCircle;
+import pingball.util.Pair;
 
 /**
  * Represents a circlebumper of size 1x1 grid. The location of this object is relative to the board. 
@@ -67,6 +68,12 @@ public class CircleBumper extends Gadget {
     @Override public List<String> gridRepresentation() {
         assert(checkRep());
         return representation;
+    }
+
+    @Override
+    public Pair<GameObjectType, List<Object>> getObjectData() {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }

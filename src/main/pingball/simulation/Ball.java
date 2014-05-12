@@ -1,5 +1,6 @@
 package pingball.simulation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -170,5 +171,11 @@ public class Ball extends GameObject{
      */
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Pair<GameObjectType, List<Object>> getObjectData() {
+        List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.getRadius()));
+        return Pair.of(GameObjectType.BALL, objData);
     }
 }

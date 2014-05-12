@@ -13,6 +13,16 @@ import pingball.simulation.collidable.Collidable;
  * The game objects can be a ball, a bounding wall or a gadget.
  */
 public abstract class GameObject {
+    
+    public enum GameObjectType {
+        BALL,
+        WALL,
+        SQUAREBUMPER,
+        CIRCLEBUMPER,
+        TRIANGLEBUMPER,
+        FLIPPER,
+        PORTAL
+    }
 
     protected final Set<Collidable> collidables = new HashSet<>();
     
@@ -79,5 +89,6 @@ public abstract class GameObject {
         return Pair.of(minTime,collidesWith);
     }
     
+    public abstract Pair<GameObjectType,List<Object>> getObjectData();
 
 }

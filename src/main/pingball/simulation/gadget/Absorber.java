@@ -3,6 +3,7 @@ package pingball.simulation.gadget;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import physics.Vect;
 import pingball.simulation.Board;
 import pingball.simulation.Constants;
@@ -167,5 +168,11 @@ public class Absorber extends Gadget {
         assert(checkRep());
         return (topLeftX - radius < ballX) && (ballX < topLeftX + width + radius) && (topLeftY - radius < ballY) && (ballY < topLeftY + height + radius) ;
         
+    }
+
+    @Override
+    public Pair<GameObjectType, List<Object>> getObjectData() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

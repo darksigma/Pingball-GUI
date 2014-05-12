@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 import physics.Vect;
+import pingball.util.Pair;
 import pingball.util.StringUtils;
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
@@ -272,6 +273,12 @@ public class Wall extends GameObject {
         }
         assert(checkRep());
         return gridRepresentation;
+    }
+
+    @Override
+    public Pair<GameObjectType, List<Object>> getObjectData() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

@@ -86,4 +86,10 @@ public class SquareBumper extends Gadget {
         return 1;
     }
 
+    @Override
+    public Pair<GameObjectType, List<Object>> getObjectData() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

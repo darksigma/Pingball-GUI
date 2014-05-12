@@ -13,11 +13,13 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 
 import javax.swing.JPanel;
 
 import pingball.model.PingballModel;
 import pingball.simulation.*;
+import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.gadget.Gadget.TriggerState;
 import pingball.simulation.gadget.SquareBumper;
 import pingball.util.Pair;
@@ -112,17 +114,20 @@ public class BoardGUI extends JPanel {
      */
     private void drawBoard(final Graphics2D g) {
         //This will draw the current form of all the objects on the board.
-        for (GameObject gameObject: pingballModel.getGameObjects()){
-            if (gameObject instanceof Ball){
-                Ball ball = (Ball) gameObject;
-                Pair<Double, Double> topLeft = ball.topLeft();
-                drawBall(g,topLeft.getFirst(),topLeft.getSecond(),ball.getRadius());
+        List<Pair<GameObjectType,List<Object>>> objectData = pingballModel.getObjectData();
+        for (Pair<GameObjectType,List<Object>> p: objectData){
+            GameObjectType type = p.getFirst();
+            List<Object> data = p.getSecond();
+            if (type.equals(GameObjectType.BALL)){
+                Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
+                double radius = (double) data.get(1);
+                drawBall(g,topLeft.getFirst(),topLeft.getSecond(),radius);
             }
-            else if (gameObject instanceof SquareBumper){
-                SquareBumper squareBumper = (SquareBumper) gameObject;
-                Pair<Double, Double> topLeft = squareBumper.topLeft();
-                drawSquareBumper(g,topLeft.getFirst(),topLeft.getSecond(),1,TriggerState.UNTRIGGERED);
-            }
+//            else if (gameObject instanceof SquareBumper){
+//                SquareBumper squareBumper = (SquareBumper) gameObject;
+//                Pair<Double, Double> topLeft = squareBumper.topLeft();
+//                drawSquareBumper(g,topLeft.getFirst(),topLeft.getSecond(),1,TriggerState.UNTRIGGERED);
+//            }
         }
     }
 

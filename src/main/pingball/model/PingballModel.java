@@ -15,6 +15,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import pingball.simulation.Board;
 import pingball.simulation.GameObject;
+import pingball.simulation.GameObject.GameObjectType;
+import pingball.util.Pair;
 
 /**
  * Model for a Pingball simulator.
@@ -121,14 +123,18 @@ public class PingballModel {
     }
     
     //VERY UNSAFE
-    public synchronized Set<GameObject> getGameObjects(){
-        if(board!=null) return this.board.getGameObjects();
-        else return new HashSet<GameObject>();
-    }
-//    
-//    public synchronized getObjectData(){
-//        
+//    public synchronized Set<GameObject> getGameObjects(){
+//        if(board!=null) return this.board.getGameObjects();
+//        else return new HashSet<GameObject>();
 //    }
+
+    public synchronized List<Pair<GameObjectType, List<Object>>> getObjectData(){
+        List<Pair<GameObjectType,List<Object>>> objectData = new ArrayList<>();
+        for (GameObject gameObject: this.board.getGameObjects()){
+            objectData.add(gameObject.getObjectData());
+        }
+        return objectData;
+    }
     
     public synchronized void consoleOutput(){
         List<String> representation = board.gridRepresentation();

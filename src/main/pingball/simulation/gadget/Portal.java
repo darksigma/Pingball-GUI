@@ -6,6 +6,7 @@ import pingball.simulation.Ball;
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
 import pingball.simulation.collidable.Collidable;
+import pingball.util.Pair;
 
 
 /**
@@ -48,7 +49,7 @@ public class Portal extends Gadget {
      * If the portal is not connected, then the collide method allows the ball 
      */
     @Override 
-    public void collide(Ball ball, Collidable collidable) {{
+    public void collide(Ball ball, Collidable collidable) {
         
     }
     /**
@@ -78,5 +79,11 @@ public class Portal extends Gadget {
         this.connectedPortalName = null;
         this.connected = false;
         assert(checkRep());
+    }
+
+    @Override
+    public Pair<GameObjectType, List<Object>> getObjectData() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
