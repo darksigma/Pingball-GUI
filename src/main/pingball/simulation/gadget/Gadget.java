@@ -62,6 +62,7 @@ public abstract class Gadget extends GameObject {
 
     private final String name;
     
+    protected final TriggerState triggerState = TriggerState.UNTRIGGERED;
     /**
      * Creates a Gadget.
      * 

@@ -1,5 +1,6 @@
 package pingball.simulation.gadget;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
 import pingball.simulation.Constants;
+import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.collidable.FixedCircle;
 import pingball.simulation.collidable.Line;
 import pingball.util.Pair;
@@ -88,8 +90,8 @@ public class SquareBumper extends Gadget {
 
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),1.0,this.triggerState));
+        return Pair.of(GameObjectType.SQUAREBUMPER, objData);
     }
 
 }

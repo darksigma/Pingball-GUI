@@ -124,10 +124,16 @@ public class BoardGUI extends JPanel {
                     double radius = (double) data.get(1);
                     drawBall(g,topLeft.getFirst(),topLeft.getSecond(),radius);
                 }
+                else if (type.equals(GameObjectType.SQUAREBUMPER)){
+                    Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
+                    double side = (double) data.get(1);
+                    TriggerState state = (TriggerState) data.get(2);
+                    drawSquareBumper(g,topLeft.getFirst(),topLeft.getSecond(),1,state);
+                }
                 //            else if (gameObject instanceof SquareBumper){
                 //                SquareBumper squareBumper = (SquareBumper) gameObject;
                 //                Pair<Double, Double> topLeft = squareBumper.topLeft();
-                //                drawSquareBumper(g,topLeft.getFirst(),topLeft.getSecond(),1,TriggerState.UNTRIGGERED);
+                //                
                 //            }
             }
         }
