@@ -260,7 +260,7 @@ public class PingballGUI extends JFrame {
         		pauseButton.setEnabled(true);
         		restartButton.setEnabled(true);
         		
-
+        		boardGUI.requestFocus(true);
         	}
         });
 
