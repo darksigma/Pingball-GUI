@@ -1,5 +1,6 @@
 package pingball.simulation.gadget;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -8,6 +9,7 @@ import physics.Vect;
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
 import pingball.simulation.Constants;
+import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.collidable.FixedCircle;
 import pingball.util.Pair;
 
@@ -72,8 +74,16 @@ public class CircleBumper extends Gadget {
 
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.getRadius()));
+        return Pair.of(GameObjectType.CIRCLEBUMPER, objData);
+    }
+
+    private double getRadius() {
+        return 0.5;
+    }
+
+    private Pair<Double,Double> topLeft() {
+       return Pair.of((double) this.location.getFirst(),(double) this.location.getSecond());
     }
     
 }

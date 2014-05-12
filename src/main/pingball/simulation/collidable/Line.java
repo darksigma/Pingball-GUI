@@ -5,6 +5,7 @@ import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
 import pingball.simulation.Ball;
+import pingball.util.Pair;
 
 /**
  * A line segment. Represent a line that can possibly be rotating. Any ball can collide with this line.
@@ -100,5 +101,8 @@ public class Line implements Collidable {
     @Override public void rotate(double angle) {
         lineSegment = Geometry.rotateAround(lineSegment, centerOfRotation, new Angle(angle));
     }
-
+    
+    public Pair<Vect, Vect> getEnds(){
+        return Pair.of(this.lineSegment.p1(),this.lineSegment.p2());
+    }
 }

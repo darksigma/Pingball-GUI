@@ -1,5 +1,6 @@
 package pingball.simulation.gadget;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
 import pingball.simulation.Constants;
+import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.collidable.FixedCircle;
 import pingball.simulation.collidable.Line;
 import pingball.util.Pair;
@@ -23,6 +25,8 @@ public class TriangleBumper extends Gadget {
     private final List<String> representation;
     
     private final Orientation orientation;
+
+    private final int[][] displaceBy;
     
     /**
      * Creates a triangular bumper
@@ -37,7 +41,6 @@ public class TriangleBumper extends Gadget {
         super(board, name, location, Constants.BUMPER_REFLECTION_COEFF);
         this.orientation = orientation;
         
-        final int[][] displaceBy;
         switch(this.orientation){
             case ANGLE_0: displaceBy = new int[][] {{0,0},{0,1},{1,0}}; break;
             case ANGLE_90: displaceBy = new int[][] {{0,0},{1,0},{1,1}}; break;
@@ -94,8 +97,10 @@ public class TriangleBumper extends Gadget {
 
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
-        // TODO Auto-generated method stub
-        return null;
+        int[] x = {location.add(displaceBy[0]).getFirst(),location.add(displaceBy[1]).getFirst(),location.add(displaceBy[2]).getFirst()};
+        int[] y = {location.add(displaceBy[0]).getSecond(),location.add(displaceBy[1]).getSecond(),location.add(displaceBy[2]).getSecond()};
+        List<Object> objData = new ArrayList<Object>(Arrays.asList(x,y,this.triggerState));
+        return Pair.of(GameObjectType.TRIANGLEBUMPER, objData);    
     }
     
 }

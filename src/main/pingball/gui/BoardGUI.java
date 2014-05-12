@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
@@ -132,6 +133,24 @@ public class BoardGUI extends JPanel {
                     TriggerState state = (TriggerState) data.get(2);
                     drawSquareBumper(g,topLeft.getFirst(),topLeft.getSecond(),1,state);
                 }
+                else if (type.equals(GameObjectType.TRIANGLEBUMPER)){
+                    int x[] = (int[]) data.get(0);
+                    int y[] = (int[]) data.get(1);
+                    TriggerState state = (TriggerState) data.get(2);
+                    drawTriangularBumper(g,x,y,state);
+                    
+                }
+                else if (type.equals(GameObjectType.CIRCLEBUMPER)){
+                    Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
+                    double radius = (double) data.get(1);
+                    drawBall(g,topLeft.getFirst(),topLeft.getSecond(),radius);
+                }
+                else if (type.equals(GameObjectType.FLIPPER)){
+                    Pair<Double, Double> end1 = (Pair<Double, Double>) data.get(0);
+                    Pair<Double, Double> end2 = (Pair<Double, Double>) data.get(1);
+                    TriggerState state = (TriggerState) data.get(2);
+                    drawFlipper(g, end1, end2, state);
+                }
                 //            else if (gameObject instanceof SquareBumper){
                 //                SquareBumper squareBumper = (SquareBumper) gameObject;
                 //                Pair<Double, Double> topLeft = squareBumper.topLeft();
@@ -141,6 +160,8 @@ public class BoardGUI extends JPanel {
         }
     }
 
+
+
     /**
      * Sets the board's background color
      * @param g Graphics2D used to fill the background color of the board
@@ -148,7 +169,7 @@ public class BoardGUI extends JPanel {
     private void fillWindow(final Graphics2D g) {
         g.setColor(backgroundColor);
         g.translate(1, 1);
-        g.fillRect(-1,  -1,  21, 21);
+        g.fillRect(-1,  -1,  22, 22);
     }
 
     //May change this code
@@ -156,15 +177,16 @@ public class BoardGUI extends JPanel {
         updateFrame();
     }
     
-    public void drawBall(final Graphics2D g, double x,double y,double r){
+    private void drawBall(final Graphics2D g, double x,double y,double r){
         Ellipse2D ball = new Ellipse2D.Double(x, y, r, r);
     	GradientPaint gp = new GradientPaint(0f,0f,Color.BLUE,0f,30f,Color.GREEN);
     	g.setPaint(gp);
     	g.fill(ball);
     }
     
-    public void drawCircularBumper(final Graphics2D g, Ellipse2D bumper, TriggerState state){
-    	GradientPaint gp;
+    private void drawCircularBumper(final Graphics2D g, double x,double y,double r, TriggerState state){
+        Ellipse2D bumper = new Ellipse2D.Double(x, y, r, r);
+        GradientPaint gp;
     	if (state == TriggerState.TRIGGERED){
 	    	gp = new GradientPaint(0f,0f,Color.RED.darker(),0f,30f,Color.MAGENTA.darker());
 	    } else{
@@ -174,7 +196,7 @@ public class BoardGUI extends JPanel {
     	g.fill(bumper);
     }
     
-    public void drawSquareBumper(final Graphics2D g, double x, double y, int s , TriggerState state){
+    private void drawSquareBumper(final Graphics2D g, double x, double y, int s , TriggerState state){
         Rectangle2D bumper = new Rectangle2D.Double(x, y, s, s);
     	GradientPaint gp;
     	if (state == TriggerState.TRIGGERED){
@@ -186,7 +208,7 @@ public class BoardGUI extends JPanel {
     	g.fill(bumper);
     }
     
-    public void drawTriangularBumper(final Graphics2D g, int[] xPoints, int[] yPoints,TriggerState state){
+    private void drawTriangularBumper(final Graphics2D g, int[] xPoints, int[] yPoints,TriggerState state){
     	GradientPaint gp;
     	if (state == TriggerState.TRIGGERED){
 	    	gp = new GradientPaint(0f,0f,Color.MAGENTA.darker(),0f,30f,Color.ORANGE.darker());
@@ -198,12 +220,17 @@ public class BoardGUI extends JPanel {
 }
     
     
-    public void drawFlipper(final Graphics2D g, Line2D flipper){
+    private void drawFlipper(final Graphics2D g, Pair<Double, Double> end1,
+            Pair<Double, Double> end2, TriggerState state){
+        Point2D pend1 = new Point2D.Double(end1.getFirst(), end1.getSecond());
+        Point2D pend2 = new Point2D.Double(end2.getFirst(), end2.getSecond());
+        Line2D flipper = new Line2D.Double(pend1,pend2);
     	GradientPaint gp = new GradientPaint(0f,0f,Color.CYAN,0f,30f,Color.BLUE);
     	g.setPaint(gp);
+    	g.draw(flipper);
     }
     
-    public void drawAbosorber(final Graphics2D g, Rectangle2D absorber, TriggerState state){
+    private void drawAbosorber(final Graphics2D g, Rectangle2D absorber, TriggerState state){
     	GradientPaint gp;
     	if (state == TriggerState.TRIGGERED){
 	    	gp = new GradientPaint(0f,0f,Color.BLUE.darker(),0f,30f,Color.GREEN.darker());
