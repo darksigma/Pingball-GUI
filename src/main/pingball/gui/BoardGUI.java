@@ -223,7 +223,7 @@ public class BoardGUI extends JPanel {
     	if (state == TriggerState.TRIGGERED){
 	    	gp = new GradientPaint(xPoints[0],yPoints[0],Color.MAGENTA.darker(),xPoints[1],yPoints[1],Color.ORANGE.darker());
 	    } else{
-	    	gp = new GradientPaint(0f,0f,Color.MAGENTA,0f,30f,Color.ORANGE);
+	    	gp = new GradientPaint(xPoints[0],yPoints[0],Color.MAGENTA,xPoints[1],yPoints[1],Color.ORANGE);
 	    }
     	g.setPaint(gp);
     	g.fillPolygon(xPoints, yPoints, 3);
@@ -231,7 +231,7 @@ public class BoardGUI extends JPanel {
     
     
     private void drawFlipper(final Graphics2D g, Pair<Double, Double> end1,
-            Pair<Double, Double> end2, TriggerState state){
+        Pair<Double, Double> end2, TriggerState state){
         Point2D pend1 = new Point2D.Double(end1.getFirst(), end1.getSecond());
         Point2D pend2 = new Point2D.Double(end2.getFirst(), end2.getSecond());
         Line2D flipper = new Line2D.Double(pend1,pend2);
@@ -241,12 +241,13 @@ public class BoardGUI extends JPanel {
     	g.draw(flipper);
     }
     
-    private void drawAbosorber(final Graphics2D g, Rectangle2D absorber, TriggerState state){
+    private void drawAbsorber(final Graphics2D g, double x,double y,double w, double h, TriggerState state){
+    	Rectangle2D absorber = new Rectangle2D.Double(x, y, w, h);
     	GradientPaint gp;
     	if (state == TriggerState.TRIGGERED){
-	    	gp = new GradientPaint(0f,0f,Color.BLUE.darker(),0f,30f,Color.GREEN.darker());
+    		gp = new GradientPaint((int)x, (int)y,Color.BLUE.darker(),(int)(x +w), (int)(y +w),Color.GREEN.darker());
 	    } else{
-	    	gp = new GradientPaint(0f,0f,Color.BLUE,0f,30f,Color.GREEN);
+	    	gp = new GradientPaint((int)x, (int)y,Color.BLUE,(int)(x +w), (int)(y +w),Color.GREEN);
 	    }
     	g.setPaint(gp);
     	g.fill(absorber);
