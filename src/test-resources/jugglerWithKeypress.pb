@@ -21,10 +21,13 @@ leftFlipper name = lfA x = 3 y = 8 orientation = 270
 rightFlipper name = rfA x = 5 y = 8 orientation = 90
 
 
+keydown key = left action = lfA
+keydown key = right action = rfA
+
 # define an absorber to catch the ball
 absorber name=Abs1 x=0 y=19 width=20 height=1  
  
 # make the absorber self-triggering
-fire trigger=Abs1 action=lfA
-fire trigger=Abs1 action=rfA
-fire trigger=Abs1 action=Abs1
+#fire trigger=Abs1 action=lfA
+#fire trigger=Abs1 action=rfA
+#fire trigger=Abs1 action=Abs1
