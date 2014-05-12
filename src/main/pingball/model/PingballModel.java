@@ -158,12 +158,8 @@ public class PingballModel {
         modelReceiveQueue = receiveQueue;
         board = new Board(sendQueue, file);
         if (host != null) {
-            System.out.println("Running server mode");
             try {
                 Socket socket = new Socket(host, port);
-            	System.out.println("Connected "+host+port);
-            	System.out.println(socket.isConnected());
-            	System.out.println(socket.isClosed());
             	Thread receiver = new Thread(new Receiver(socket, receiveQueue));
                 receiver.start();
                 Thread sender = new Thread(new Sender(socket, sendQueue));
@@ -171,9 +167,6 @@ public class PingballModel {
                 //mainLoop(board, receiveQueue);
 //                receiver.join();
 //                sender.join();
-                System.out.println(socket.isConnected());
-                System.out.println(socket.isClosed());
-                System.out.println("Works");
             }
            catch (IOException e) {
                 e.printStackTrace();
@@ -199,7 +192,6 @@ public class PingballModel {
     public synchronized boolean start() throws IOException {
         boolean ready = isReady();
         if(ready){
-            System.out.println("Ready and Started");
             this.setup();
             this.running = true;
         }
@@ -258,8 +250,6 @@ public class PingballModel {
         public Receiver(Socket socket, BlockingQueue<String> receiveQueue) throws IOException {
             this.socket = socket;
             this.receiveQueue = receiveQueue;
-            System.out.println("Receiver:"+socket.isConnected());
-            System.out.println("Receiver:"+socket.isClosed());
         }
 
         /**
@@ -267,9 +257,6 @@ public class PingballModel {
          */
         public void run() {
             try (BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()))){
-                System.out.println("Receiver in loop:"+socket.isConnected());
-                System.out.println("Receiver in loop:"+socket.isClosed());
-                System.out.println(input.readLine());
                 for (String line = input.readLine(); line != null; line = input.readLine()) {
                     receiveQueue.put(line);
                 }
@@ -298,27 +285,18 @@ public class PingballModel {
         public Sender(Socket socket, BlockingQueue<String> sendQueue) throws IOException {
             this.socket = socket;
             this.sendQueue = sendQueue;
-            System.out.println("Sender:"+socket.isConnected());
-            System.out.println("Sender:"+socket.isClosed());
         }
 
         /**
          * Send data from the socket from the queue.
          */
         public void run() {
-            System.out.println("Sender in run:"+socket.isConnected());
-            System.out.println("Sender in run:"+socket.isClosed());
             try (PrintWriter output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true)) {
-                System.out.println("Sender after try:"+socket.isConnected());
-                System.out.println("Sender after try:"+socket.isClosed());
                 while (true) {
-                    System.out.println("inloopSender:"+socket.isConnected());
-                    System.out.println("inloopSender:"+socket.isClosed());
                     String line = sendQueue.take();
                     output.println(line);
                 }
             } catch (InterruptedException | IOException e) {
-                System.out.println("Sender catch"+socket.isConnected());
                 e.printStackTrace();
             }
         }
