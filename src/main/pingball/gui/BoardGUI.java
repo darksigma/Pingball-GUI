@@ -145,7 +145,8 @@ public class BoardGUI extends JPanel {
                 else if (type.equals(GameObjectType.CIRCLEBUMPER)){
                     Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
                     double radius = (double) data.get(1);
-                    drawBall(g,topLeft.getFirst(),topLeft.getSecond(),radius);
+                    TriggerState state = (TriggerState) data.get(2);
+                    drawCircularBumper(g,topLeft.getFirst(),topLeft.getSecond(),radius, state);
                 }
                 else if (type.equals(GameObjectType.FLIPPER)){
                     Pair<Double, Double> end1 = (Pair<Double, Double>) data.get(0);
@@ -196,7 +197,7 @@ public class BoardGUI extends JPanel {
     
     private void drawBall(final Graphics2D g, double x,double y,double r){
         Ellipse2D ball = new Ellipse2D.Double(x, y, 2*r, 2*r);
-    	GradientPaint gp = new GradientPaint(0f,0f,Color.BLUE,0f,30f,Color.GREEN);
+    	GradientPaint gp = new GradientPaint((int)x, (int)y,Color.CYAN,(int)(x +2*r), (int)(y +2*r),Color.BLUE);
     	g.setPaint(gp);
     	g.fill(ball);
     }
@@ -252,9 +253,9 @@ public class BoardGUI extends JPanel {
     	Rectangle2D absorber = new Rectangle2D.Double(x, y, w, h);
     	GradientPaint gp;
     	if (state == TriggerState.TRIGGERED){
-    		gp = new GradientPaint((int)x, (int)y,Color.BLUE.darker(),(int)(x +w), (int)(y +w),Color.GREEN.darker());
+    		gp = new GradientPaint((int)x, (int)y,Color.GREEN.darker(),(int)(x +w), (int)(y +w),Color.BLUE.darker());
 	    } else{
-	    	gp = new GradientPaint((int)x, (int)y,Color.BLUE,(int)(x +w), (int)(y +w),Color.GREEN);
+	    	gp = new GradientPaint((int)x, (int)y,Color.GREEN,(int)(x +w), (int)(y +w),Color.BLUE);
 	    }
     	g.setPaint(gp);
     	g.fill(absorber);
