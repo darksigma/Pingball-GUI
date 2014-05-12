@@ -232,6 +232,7 @@ public class PingballGUI extends JFrame {
         	public void actionPerformed(ActionEvent e){
         		String hostname = setHost.getText();
         		pingballModel.setHost(hostname);
+        		System.out.println(hostname);
         	}
         });
         
@@ -241,6 +242,7 @@ public class PingballGUI extends JFrame {
         	public void actionPerformed(ActionEvent e){
         		int portNum = Integer.valueOf(setPort.getText());
         		pingballModel.setPort(portNum);
+        	
         	}
         });
         

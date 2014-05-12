@@ -157,14 +157,17 @@ public class PingballModel {
         if (host != null) {
             System.out.println("Running server mode");
             try (Socket socket = new Socket(host, port)) {
+            	System.out.println("Connected "+host+port);
                 Thread receiver = new Thread(new Receiver(socket, receiveQueue));
                 receiver.start();
                 Thread sender = new Thread(new Sender(socket, sendQueue));
                 sender.start();
                 //mainLoop(board, receiveQueue);
-                receiver.join();
-                sender.join();
-            } catch (InterruptedException e) {
+//                receiver.join();
+//                sender.join();
+                System.out.println("Works");
+            }
+           catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
