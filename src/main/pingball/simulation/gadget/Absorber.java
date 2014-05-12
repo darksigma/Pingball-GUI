@@ -174,7 +174,7 @@ public class Absorber extends Gadget {
 
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
-        List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.width,this.height,this.triggerState));
+        List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),(double) this.width, (double) this.height,this.triggerState));
         return Pair.of(GameObjectType.ABSORBER, objData);
     }
 

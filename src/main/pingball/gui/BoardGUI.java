@@ -166,7 +166,7 @@ public class BoardGUI extends JPanel {
                     double width = (double) data.get(1);
                     double height = (double) data.get(2);
                     TriggerState state = (TriggerState) data.get(3);
-                    drawSAbsorber(g,topLeft.getFirst(),topLeft.getSecond(),width,height,state);
+                    drawAbsorber(g,topLeft.getFirst(),topLeft.getSecond(),width,height,state);
                 }
                 //            else if (gameObject instanceof SquareBumper){
                 //                SquareBumper squareBumper = (SquareBumper) gameObject;
