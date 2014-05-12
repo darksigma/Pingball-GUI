@@ -45,6 +45,13 @@ public class MovingCircle implements Collidable {
         return this.circle;
     }
     
+    public Vect getCenter(){
+        return this.getCircle().getCenter();
+    }
+    
+    public double getRadius() {
+        return this.getCircle().getRadius();
+    }
     /**
      * Return the it takes for this object to collide with the ball. If the collision will not
      * occur, this method return Double.POSITIVE_INFINITY.

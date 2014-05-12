@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.font.GlyphVector;
@@ -16,9 +17,10 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
 
 import pingball.model.PingballModel;
-import pingball.simulation.Board;
-import pingball.simulation.Wall.Side;
+import pingball.simulation.*;
 import pingball.simulation.gadget.Gadget.TriggerState;
+import pingball.simulation.gadget.SquareBumper;
+import pingball.util.Pair;
 import pingball.util.StringUtils;
 
 /**
@@ -35,6 +37,7 @@ public class BoardGUI extends JPanel {
     Color backgroundColor = Color.white;
     //Board board;
     PingballModel pingballModel;
+    final int scale;
     
     /**
      * Constructor method that creates the JPanel representing the game board.
@@ -43,9 +46,10 @@ public class BoardGUI extends JPanel {
      * @param width - sets the width of the game (JPanel) in the PingballGUI
      * @param height - sets the height of the game (JPanel) in the PingballGUI
      */
-    public BoardGUI(PingballModel _pingballModel,int width,int height){
+    public BoardGUI(PingballModel _pingballModel,int _scale){
         this.pingballModel = _pingballModel;
-        this.setPreferredSize(new Dimension(width, height));
+        this.scale = _scale;
+        this.setPreferredSize(new Dimension(22*scale,22*scale));
         setFocusable(true);
         requestFocusInWindow();
         addKeyListener(new KeyAdapter() {
@@ -75,8 +79,15 @@ public class BoardGUI extends JPanel {
     @Override
     public void paintComponent(final Graphics g){
         Graphics2D g2 = (Graphics2D) g;
+        RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON); 
+        g2.addRenderingHints(rh);
+        scaleWindow(g2);
         fillWindow(g2);
         drawBoard(g2);
+    }
+
+    private void scaleWindow(Graphics2D g2) {
+        g2.scale(getWidth()/22.0, getHeight()/22.0);
     }
 
     /**
@@ -85,6 +96,18 @@ public class BoardGUI extends JPanel {
      */
     private void drawBoard(final Graphics2D g) {
         //This will draw the current form of all the objects on the board.
+        for (GameObject gameObject: pingballModel.getGameObjects()){
+            if (gameObject instanceof Ball){
+                Ball ball = (Ball) gameObject;
+                Pair<Double, Double> topLeft = ball.topLeft();
+                drawBall(g,topLeft.getFirst(),topLeft.getSecond(),ball.getRadius());
+            }
+            else if (gameObject instanceof SquareBumper){
+                SquareBumper squareBumper = (SquareBumper) gameObject;
+                Pair<Double, Double> topLeft = squareBumper.topLeft();
+                drawSquareBumper(g,topLeft.getFirst(),topLeft.getSecond(),1,TriggerState.UNTRIGGERED);
+            }
+        }
     }
 
     /**
@@ -93,7 +116,8 @@ public class BoardGUI extends JPanel {
      */
     private void fillWindow(final Graphics2D g) {
         g.setColor(backgroundColor);
-        g.fillRect(0,  0,  getWidth(), getHeight());
+        g.translate(1, 1);
+        g.fillRect(-1,  -1,  21, 21);
     }
 
     //May change this code
@@ -101,7 +125,8 @@ public class BoardGUI extends JPanel {
         updateFrame();
     }
     
-    public void drawBall(final Graphics2D g, Ellipse2D ball){
+    public void drawBall(final Graphics2D g, double x,double y,double r){
+        Ellipse2D ball = new Ellipse2D.Double(x, y, r, r);
     	GradientPaint gp = new GradientPaint(0f,0f,Color.BLUE,0f,30f,Color.GREEN);
     	g.setPaint(gp);
     	g.fill(ball);
@@ -118,7 +143,8 @@ public class BoardGUI extends JPanel {
     	g.fill(bumper);
     }
     
-    public void drawSquareBumper(final Graphics2D g, Rectangle2D bumper, TriggerState state){
+    public void drawSquareBumper(final Graphics2D g, double x, double y, int s , TriggerState state){
+        Rectangle2D bumper = new Rectangle2D.Double(x, y, s, s);
     	GradientPaint gp;
     	if (state == TriggerState.TRIGGERED){
 	    	gp = new GradientPaint(0f,0f,Color.ORANGE.darker(),0f,30f,Color.RED.darker());
@@ -157,12 +183,12 @@ public class BoardGUI extends JPanel {
     	g.fill(absorber);
     }
     
-    public void drawWall(final Graphics2D g, Rectangle2D wall, boolean connected, String connectedBoardName){
-    	g.setPaint(Color.GRAY);
-    	g.fill(wall);
-    	GlyphVector v = (new Font("Helvetica", Font.PLAIN, 12)).createGlyphVector(g.getFontRenderContext(), connectedBoardName);
-    	g.drawGlyphVector(v, alignmentX, alignmentX)
-    }
-    
+//    public void drawWall(final Graphics2D g, Rectangle2D wall, boolean connected, String connectedBoardName){
+//    	g.setPaint(Color.GRAY);
+//    	g.fill(wall);
+//    	GlyphVector v = (new Font("Helvetica", Font.PLAIN, 12)).createGlyphVector(g.getFontRenderContext(), connectedBoardName);
+//    	g.drawGlyphVector(v, alignmentX, alignmentX)
+//    }
+//    
     
 }

@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 import physics.Vect;
-
 import pingball.simulation.collidable.Collidable;
 import pingball.simulation.collidable.MovingCircle;
+import pingball.util.Pair;
 
 /**
  * A ball that will be on the board. Represent by a moving circle, plus the gravity and mu1/mu2 that applies on it
@@ -150,7 +150,19 @@ public class Ball extends GameObject{
     @Override public List<String> gridRepresentation() {
         return representation;
     }
-
+    
+    public Pair<Double, Double> topLeft(){
+        Vect center = this.getCircle().getCenter();
+        double radius = this.getCircle().getRadius();
+        Vect displace = new Vect(-radius,-radius);
+        Vect top = center.plus(displace);
+       return Pair.of(top.x(),top.y());
+    }
+    
+    public double getRadius() {
+        return this.getCircle().getRadius();
+    }
+    
     /**
      * Returns the name of this ball.
      *

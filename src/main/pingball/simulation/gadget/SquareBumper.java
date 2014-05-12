@@ -3,11 +3,13 @@ package pingball.simulation.gadget;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
 import pingball.simulation.Constants;
 import pingball.simulation.collidable.FixedCircle;
 import pingball.simulation.collidable.Line;
+import pingball.util.Pair;
 
 /**
  * Represents a squarebumper of size 1x1. The location of this object is relative to the board. 
@@ -74,6 +76,14 @@ public class SquareBumper extends Gadget {
     @Override public List<String> gridRepresentation() {
         assert(checkRep());
         return representation;
+    }
+
+    public Pair<Double, Double> topLeft() {
+        return Pair.of((double) this.location.getFirst(),(double) this.location.getSecond());
+    }
+    
+    public int size(){
+        return 1;
     }
 
 }

@@ -403,6 +403,10 @@ public class Board {
         return Constants.BOARD_HEIGHT;
     }
 
+    public Set<GameObject> getGameObjects(){
+        return this.gameObjects;
+    }
+    
     /**
      * Returns a grid representation of this board.
      *

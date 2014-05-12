@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -44,10 +45,10 @@ public class PingballGUI extends JFrame {
     private PingballModel pingballModel;
     private MyTimer timer;
     private ActionListener taskPerformer;
-    private int delay;
+    private int delay = 50;
     private int boardWidth;
     private int boardHeight;
-    private BoardGUI boardGUI;
+    private final BoardGUI boardGUI;
     
     private final JButton resumeButton;
     private final JButton pauseButton;
@@ -136,8 +137,20 @@ public class PingballGUI extends JFrame {
         host = new JLabel();
         host.setText("Hostname: ");
         
+        boardGUI = new BoardGUI(pingballModel,10);
         
-        boardGUI = new BoardGUI(pingballModel,boardWidth,boardHeight) ;     
+        taskPerformer = new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                System.out.println("Performed");
+                pingballModel.evolveFrame();
+                //TODO: Remove console output at end
+                pingballModel.consoleOutput();
+                boardGUI.updateFrame();
+            }
+            
+        };
         timer = new MyTimer(delay,taskPerformer);
     
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -285,17 +298,7 @@ public class PingballGUI extends JFrame {
             }
         });
         
-        taskPerformer = new ActionListener() {
-           
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                pingballModel.evolveFrame();
-                //TODO: Remove console output at end
-                pingballModel.consoleOutput();
-                boardGUI.updateFrame();
-            }
-            
-        };
+        
            //timer.start();
     }
     
@@ -317,7 +320,7 @@ public class PingballGUI extends JFrame {
     
     private class MyTimer extends Timer {
 
-        private final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
         public MyTimer(int delay, ActionListener listener) {
             super(delay, listener);
@@ -325,10 +328,12 @@ public class PingballGUI extends JFrame {
 
         @Override
         public void start(){
-                try {
+            System.out.println("Started");    
+            try {
                     pingballModel.start();
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
+                    System.out.println("error starting");
                     e.printStackTrace();
                 }
                 super.start();
@@ -345,14 +350,25 @@ public class PingballGUI extends JFrame {
         @Override
         public void stop(){
             pingballModel.stop();
+            try {
+                pingballModel = new PingballModel(new String[] {""});
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             super.stop();
         }
 
         @Override
         public void restart(){
             //RESTART IS DIFFERENT FROM START AS IT SENDS RESTART MESSAGE
-            pingballModel.restart();
-            super.restart();
+            try {
+                pingballModel.restart();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            super.start();
         }
 
     };

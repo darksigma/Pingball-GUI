@@ -2,16 +2,19 @@ package pingball.model;
 
 import java.io.*;
 import java.net.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Queue;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import pingball.simulation.Board;
+import pingball.simulation.GameObject;
 
 /**
  * Model for a Pingball simulator.
@@ -39,6 +42,8 @@ import pingball.simulation.Board;
  */
 public class PingballModel {
 
+    private boolean running;
+    
     private static final int DEFAULT_PORT = 10987;
 
     private static final double FRAMERATE = 20;
@@ -95,7 +100,7 @@ public class PingballModel {
             }
         } catch (IllegalArgumentException iae) {
             System.err.println(iae.getMessage());
-            System.err.println("usage: PingballClient [--host HOST] [--port PORT] FILE");
+            System.err.println("usage: PingballClient [--host HOST] [--port PORT] [FILE]");
             return;
         }
         
@@ -105,13 +110,25 @@ public class PingballModel {
      * Evolve the board for a frame.
      */
     public synchronized void evolveFrame() {
-        List<String> messages = new ArrayList<String>();
-        receiveQueue.drainTo(messages);
-        for (String message: messages) {
-            board.processMessage(message);
+        if(this.running){
+            List<String> messages = new ArrayList<String>();
+            receiveQueue.drainTo(messages);
+            for (String message: messages) {
+                board.processMessage(message);
+            }
+            board.evolve(1.0 / FRAMERATE);
         }
-        board.evolve(1.0 / FRAMERATE);
     }
+    
+    //VERY UNSAFE
+    public synchronized Set<GameObject> getGameObjects(){
+        if(board!=null) return this.board.getGameObjects();
+        else return new HashSet<GameObject>();
+    }
+//    
+//    public synchronized getObjectData(){
+//        
+//    }
     
     public synchronized void consoleOutput(){
         List<String> representation = board.gridRepresentation();
@@ -129,8 +146,8 @@ public class PingballModel {
         sendQueue = new LinkedBlockingQueue<>();
         receiveQueue = new LinkedBlockingQueue<>();
         board = new Board(sendQueue, file);
-
         if (host != null) {
+            System.out.println("Running server mode");
             try (Socket socket = new Socket(host, port)) {
                 Thread receiver = new Thread(new Receiver(socket, receiveQueue));
                 receiver.start();
@@ -163,27 +180,30 @@ public class PingballModel {
     public synchronized boolean start() throws IOException {
         boolean ready = isReady();
         if(ready){
+            System.out.println("Ready and Started");
             this.setup();
+            this.running = true;
         }
         return ready;
     }
     
     //Pause will send a pause message to all clients connected to this ie to the server.
     public synchronized void pause() {
-        //TODO
+        this.running = false;
     }
     
     public synchronized void resume() {
-        
+        this.running = true;
     }
     //Restart will restart the model
-    public synchronized void restart() {
+    public synchronized void restart() throws IOException {
         //send restart message
         
+        this.start();
     }
 
     public synchronized void stop(){
-        
+        //System.exit(0);
     }
     
     /*
