@@ -22,7 +22,8 @@ public abstract class GameObject {
         TRIANGLEBUMPER,
         FLIPPER,
         ABSORBER,
-        PORTAL
+        PORTAL,
+        BALLSPAWNER
     }
 
     protected final Set<Collidable> collidables = new HashSet<>();

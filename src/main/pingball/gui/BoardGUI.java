@@ -209,6 +209,12 @@ public class BoardGUI extends JPanel {
                     double radius = (double) data.get(1);
                     boolean active = (boolean) data.get(2);
                     drawPortal(g,topLeft.getFirst(),topLeft.getSecond(),radius, active);
+                } else if (type.equals(GameObjectType.BALLSPAWNER)){
+                    Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
+                    double radius = (double) data.get(1);
+                    TriggerState state = (TriggerState) data.get(2);
+                    drawBallSpawner(g,topLeft.getFirst(),topLeft.getSecond(),radius, state);
+                  
                 }
                 //            else if (gameObject instanceof SquareBumper){
                 //                SquareBumper squareBumper = (SquareBumper) gameObject;
@@ -252,6 +258,17 @@ public class BoardGUI extends JPanel {
 	    }
     	g.setPaint(gp);
     	g.fill(bumper);
+    }
+    private void drawBallSpawner(final Graphics2D g, double x,double y,double r, TriggerState state){
+        Ellipse2D bumper = new Ellipse2D.Double(x, y, 2*r, 2*r);
+        GradientPaint gp;
+        if (state == TriggerState.TRIGGERED){
+            gp = new GradientPaint((int)x, (int)y,Color.cyan.darker(),(int)(x +2*r), (int)(y +2*r),Color.cyan.darker());
+        } else{
+            gp = new GradientPaint((int)x, (int)y,Color.cyan,(int)(x +2*r), (int)(y +2*r),Color.cyan);
+        }
+        g.setPaint(gp);
+        g.fill(bumper);
     }
     
     private void drawPortal(final Graphics2D g, double x,double y,double r, boolean active){

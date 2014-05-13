@@ -34,6 +34,8 @@ public class Constants {
     public static final double ABSORBER_REFLECTION_COEFF = 0.0;
     
     public static final double ABSORBER_SHOOT_VELOCITY = 50.0;
+    
+    public static final double SPAWNER_SHOOT_VELOCITY = 50.0;
 
     public static final double BALL_DENSITY = 1.0;
     
@@ -46,5 +48,7 @@ public class Constants {
     public static final double DEGREE_TO_RADIAN_270 = 1.5 * Math.PI;
 
     public static final double PORTAL_REFLECTION_COEFF = 0;
+
+    public static final double BALLSPAWNER_REFLECTION_COEFF = 1.0;
     
 }
