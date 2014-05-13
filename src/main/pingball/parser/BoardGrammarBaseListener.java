@@ -51,8 +51,14 @@ public class BoardGrammarBaseListener implements BoardGrammarListener {
 	@Override public void enterBoardGravity(BoardGrammarParser.BoardGravityContext ctx) { }
 	@Override public void exitBoardGravity(BoardGrammarParser.BoardGravityContext ctx) { }
 
+	@Override public void enterKeyYUpLine(BoardGrammarParser.KeyYUpLineContext ctx) { }
+	@Override public void exitKeyYUpLine(BoardGrammarParser.KeyYUpLineContext ctx) { }
+
 	@Override public void enterFileLines(BoardGrammarParser.FileLinesContext ctx) { }
 	@Override public void exitFileLines(BoardGrammarParser.FileLinesContext ctx) { }
+
+	@Override public void enterKeyXDownLine(BoardGrammarParser.KeyXDownLineContext ctx) { }
+	@Override public void exitKeyXDownLine(BoardGrammarParser.KeyXDownLineContext ctx) { }
 
 	@Override public void enterKeyIntDownLine(BoardGrammarParser.KeyIntDownLineContext ctx) { }
 	@Override public void exitKeyIntDownLine(BoardGrammarParser.KeyIntDownLineContext ctx) { }
@@ -65,6 +71,12 @@ public class BoardGrammarBaseListener implements BoardGrammarListener {
 
 	@Override public void enterPortalLine(BoardGrammarParser.PortalLineContext ctx) { }
 	@Override public void exitPortalLine(BoardGrammarParser.PortalLineContext ctx) { }
+
+	@Override public void enterKeyYDownLine(BoardGrammarParser.KeyYDownLineContext ctx) { }
+	@Override public void exitKeyYDownLine(BoardGrammarParser.KeyYDownLineContext ctx) { }
+
+	@Override public void enterKeyXUpLine(BoardGrammarParser.KeyXUpLineContext ctx) { }
+	@Override public void exitKeyXUpLine(BoardGrammarParser.KeyXUpLineContext ctx) { }
 
 	@Override public void enterBoardName(BoardGrammarParser.BoardNameContext ctx) { }
 	@Override public void exitBoardName(BoardGrammarParser.BoardNameContext ctx) { }

@@ -48,8 +48,14 @@ public interface BoardGrammarListener extends ParseTreeListener {
 	void enterBoardGravity(BoardGrammarParser.BoardGravityContext ctx);
 	void exitBoardGravity(BoardGrammarParser.BoardGravityContext ctx);
 
+	void enterKeyYUpLine(BoardGrammarParser.KeyYUpLineContext ctx);
+	void exitKeyYUpLine(BoardGrammarParser.KeyYUpLineContext ctx);
+
 	void enterFileLines(BoardGrammarParser.FileLinesContext ctx);
 	void exitFileLines(BoardGrammarParser.FileLinesContext ctx);
+
+	void enterKeyXDownLine(BoardGrammarParser.KeyXDownLineContext ctx);
+	void exitKeyXDownLine(BoardGrammarParser.KeyXDownLineContext ctx);
 
 	void enterKeyIntDownLine(BoardGrammarParser.KeyIntDownLineContext ctx);
 	void exitKeyIntDownLine(BoardGrammarParser.KeyIntDownLineContext ctx);
@@ -62,6 +68,12 @@ public interface BoardGrammarListener extends ParseTreeListener {
 
 	void enterPortalLine(BoardGrammarParser.PortalLineContext ctx);
 	void exitPortalLine(BoardGrammarParser.PortalLineContext ctx);
+
+	void enterKeyYDownLine(BoardGrammarParser.KeyYDownLineContext ctx);
+	void exitKeyYDownLine(BoardGrammarParser.KeyYDownLineContext ctx);
+
+	void enterKeyXUpLine(BoardGrammarParser.KeyXUpLineContext ctx);
+	void exitKeyXUpLine(BoardGrammarParser.KeyXUpLineContext ctx);
 
 	void enterBoardName(BoardGrammarParser.BoardNameContext ctx);
 	void exitBoardName(BoardGrammarParser.BoardNameContext ctx);

@@ -31,7 +31,7 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 			"equals", "backspace", "openbracket", "closebracket",
 			"backslash", "semicolon", "quote", "enter", "comma",
 			"period", "slash", "0", "1", "2", "3", "4", "5", "6",
-			"7", "8", "9"));
+			"7", "8", "9", "x", "y"));
 	
 	private String username = "";
     private double gravity = Constants.DEFAULT_GRAVITY;
@@ -246,5 +246,47 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 			gameBoard.addKeyDownEvent(keyName, g);
 		}
 	}
+	
+	@Override 
+	public void exitKeyXUpLine(BoardGrammarParser.KeyXUpLineContext ctx) {
+		String keyName = "x";
+		String action = ctx.NAME().getText();
+		Gadget g = gadgets.get(action);
+		
+		if(keys.contains(keyName)){
+			gameBoard.addKeyUpEvent(keyName, g);
+		}
+	}
+	
+	@Override public void exitKeyXDownLine(BoardGrammarParser.KeyXDownLineContext ctx) {
+		String keyName = "x";
+		String action = ctx.NAME().getText();
+		Gadget g = gadgets.get(action);
+		
+		if(keys.contains(keyName)){
+			gameBoard.addKeyDownEvent(keyName, g);
+		}
+	}
+
+	@Override public void exitKeyYUpLine(BoardGrammarParser.KeyYUpLineContext ctx) { 
+		String keyName = "y";
+		String action = ctx.NAME().getText();
+		Gadget g = gadgets.get(action);
+		
+		if(keys.contains(keyName)){
+			gameBoard.addKeyUpEvent(keyName, g);
+		}
+	}
+
+	@Override public void exitKeyYDownLine(BoardGrammarParser.KeyYDownLineContext ctx) { 
+		String keyName = "y";
+		String action = ctx.NAME().getText();
+		Gadget g = gadgets.get(action);
+		
+		if(keys.contains(keyName)){
+			gameBoard.addKeyDownEvent(keyName, g);
+		}
+	}
+
 
 }
