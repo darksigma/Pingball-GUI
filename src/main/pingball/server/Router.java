@@ -49,7 +49,9 @@ public class Router {
     }
     
     /**
-     * Removes a client from the routing system.
+     * Removes a client from the routing system. Sends the appropriate notonboard
+     * messages to ensure that portals connecting boards on the server to the board
+     * most recently disconnected from the server are deactivated.
      *
      * @param caller The user to remove.
      *
@@ -203,7 +205,10 @@ public class Router {
     }
     
     /**
-     * Adds a client to the routing system.
+     * Adds a client to the routing system. Ensures that an onboard messages is sent
+     * to all of the boards regarding the most recently added board and to the recently
+     * added board regarding all of the boards already on the server. This enables
+     * proper connectivity and activation of portals.
      *
      * @param name The name of the board.
      *
