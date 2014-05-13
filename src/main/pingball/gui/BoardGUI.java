@@ -313,41 +313,53 @@ public class BoardGUI extends JPanel {
     	if (connected){
 
     	    if(side.equals(Side.TOP)){
-    	        g.drawString(connectedBoardName, 50, 0);
     	        wall = new Rectangle2D.Double(x, y, dimension, 1.0);
     	        g.setPaint(Color.BLUE);
     	        g.fill(wall);
+    	        Font f = new Font("Serif", Font.PLAIN, 1);
+    	        g.setFont(f);
+    	        g.setPaint(Color.BLACK);
+    	        g.drawString(connectedBoardName, (int)(10 - connectedBoardName.length()/2), 0);
     	    }
 
     	    if(side.equals(Side.BOTTOM)){
-    	        g.drawString(connectedBoardName, 50, 425);
     	        wall = new Rectangle2D.Double(x, y, dimension, 1.0);
     	        g.setPaint(Color.BLUE);
     	        g.fill(wall);
+    	        Font f = new Font("Serif", Font.PLAIN, 1);
+    	        g.setFont(f);
+    	        g.setPaint(Color.BLACK);
+    	        g.drawString(connectedBoardName, (int)(10 - connectedBoardName.length()/2), 21);
     	    }
 
     	    if(side.equals(Side.RIGHT)){
-    	        int curX = 0;
-    	        int curY = 50;
+                wall = new Rectangle2D.Double(x, y, 1.0, dimension);
+                g.setPaint(Color.BLUE);
+                g.fill(wall);
+                g.setPaint(Color.BLACK);
+                Font f = new Font("Serif", Font.PLAIN, 1);
+    	        g.setFont(f);
+                int curX = 20;
+    	        int curY = (int)(10 - connectedBoardName.length()/2);
     	        for(Character c : connectedBoardName.toCharArray()){
     	            g.drawString(c.toString(), curX, curY);
     	            curY += 1;
     	        }
-                wall = new Rectangle2D.Double(x, y, 1.0, dimension);
-                g.setPaint(Color.BLUE);
-                g.fill(wall);
     	    }
 
     	    if(side.equals(Side.LEFT)){
-    	        int curX = 425;
-    	        int curY = 50;
+                wall = new Rectangle2D.Double(x, y, 1.0, dimension);
+                g.setPaint(Color.BLUE);
+                g.fill(wall);
+                g.setPaint(Color.BLACK);
+                Font f = new Font("Serif", Font.PLAIN, 1);
+    	        g.setFont(f);
+                int curX = -1;
+    	        int curY = (int)(10 - connectedBoardName.length()/2);
     	        for(Character c : connectedBoardName.toCharArray()){
     	            g.drawString(c.toString(), curX, curY);
     	            curY += 1;
     	        }
-                wall = new Rectangle2D.Double(x, y, 1.0, dimension);
-                g.setPaint(Color.BLUE);
-                g.fill(wall);
     	    }
     	}
         //GlyphVector v = (new Font("Helvetica", Font.PLAIN, 12)).createGlyphVector(g.getFontRenderContext(), connectedBoardName);
