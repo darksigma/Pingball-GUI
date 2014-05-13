@@ -92,7 +92,7 @@ public class PingballModel {
                     } else if (flag.equals("--host")) {
                         host = arguments.remove();
                     } else if (file == null) {
-                        file = new File(flag);
+                        setFile(new File(flag));
                         if (!file.isFile()) {
                             throw new IllegalArgumentException("file not found: \"" + file + "\"");
                         }
@@ -159,6 +159,7 @@ public class PingballModel {
         return file!=null;
     }
     
+    
     //Set's up game, assumes is ready
     private void setup() throws IOException {
         modelSendQueue = new LinkedBlockingQueue<>();
@@ -191,13 +192,41 @@ public class PingballModel {
         modelSendQueue = new LinkedBlockingQueue<>();
         this.board = new Board(modelSendQueue,file); //Board is only for showing
     }
+
+    public synchronized boolean isFileSet() {
+        return (file!=null);
+    }
+    
+    public synchronized String getFileName() {
+        if(file!=null){
+            return file.getName();
+        }
+        else return "No file set";
+    }
     
     public synchronized void setHost(String _host){
         this.host = _host;
     }
     
+    public synchronized boolean isHostSet() {
+        return (this.host!=null);
+    }
+    
+    public synchronized String getHostName() {
+        if(host!=null) return host;
+        else return "No host set";
+    }
+    
     public synchronized void setPort(int _port){
         this.port = _port;
+    }
+    
+    public synchronized boolean isPortSet() {
+        return (port!=null);
+    }
+    
+    public synchronized int getPort() {
+        return port;
     }
     
     //start will start the model, called only if ready

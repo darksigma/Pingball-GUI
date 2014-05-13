@@ -125,8 +125,6 @@ public class PingballGUI extends JFrame {
         selectFile = new JLabel();
         selectFile.setName("selectFile");
         selectFile.setText("Select File :");
-        fileName = new JLabel();
-        fileName.setText("File Name: ");
         
         fc = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -144,7 +142,8 @@ public class PingballGUI extends JFrame {
         displayPort = new JLabel();
         displayPort.setPreferredSize(getMaximumSize());
         displayPort.setName("displayPort");
-        displayPort.setText("Port: 10987");
+        if(pingballModel.isPortSet()) displayPort.setText("Port: "+pingballModel.getPort());
+        else displayPort.setText("Port: ");
         
         setHost = new JTextField();
         setHost.setName("setHost");
@@ -156,13 +155,23 @@ public class PingballGUI extends JFrame {
         displayHost = new JLabel();
         displayHost.setPreferredSize(getMaximumSize());
         displayHost.setName("displayHost");
-        displayHost.setText("Host: ");
+        if(pingballModel.isHostSet()) displayHost.setText("Host: "+pingballModel.getHostName());
+        else displayHost.setText("Host: ");
         
         isConnected = new JLabel();
         isConnected.setName("isConnected");
         isConnected.setText("Welcome to Pingball!");
         
         boardGUI = new BoardGUI(pingballModel,10);
+        fileName = new JLabel();
+        if(pingballModel.isFileSet()) {
+            boardGUI.displayFile();
+            fileName.setText("File Name: "+pingballModel.getFileName());
+            startButton.setEnabled(true);
+            setHost.requestFocus(true);
+        }
+        else fileName.setText("File Name: ");
+        
         
         taskPerformer = new ActionListener() {
             
