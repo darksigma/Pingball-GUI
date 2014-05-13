@@ -44,23 +44,25 @@ import pingball.util.Pair;
  */
 public class PingballModel {
 
-    private boolean running;
+    private boolean running = false;
     
     private static final int DEFAULT_PORT = 10987;
 
     private static final double FRAMERATE = 20;
 
-    private Board board; // in FPS
+    private Board board = null; // in FPS
     
-//    private BlockingQueue<String> sendQueue;
+    private BlockingQueue<String> modelSendQueue = null;
 //    
-   private BlockingQueue<String> modelReceiveQueue;
+   private BlockingQueue<String> modelReceiveQueue = null;
 //    
     private File file = null;
     
     private String host = null;
     
     private Integer port = DEFAULT_PORT;
+
+    private Socket socket = null;
 
     /**
      * Start a PingballClient using the given arguments.
@@ -141,9 +143,11 @@ public class PingballModel {
     
     //TODO Remove at end
     public synchronized void consoleOutput(){
-        List<String> representation = board.gridRepresentation();
-        for (String line: representation) {
-            System.out.println(line);
+        if(board!=null){
+            List<String> representation = board.gridRepresentation();
+            for (String line: representation) {
+                System.out.println(line);
+            }
         }
     }
     
@@ -153,16 +157,19 @@ public class PingballModel {
     
     //Set's up game, assumes is ready
     private void setup() throws IOException {
-        final BlockingQueue<String> sendQueue = new LinkedBlockingQueue<>();
-        final BlockingQueue<String> receiveQueue = new LinkedBlockingQueue<>();
-        modelReceiveQueue = receiveQueue;
-        board = new Board(sendQueue, file);
+        modelSendQueue = new LinkedBlockingQueue<>();
+        modelReceiveQueue = new LinkedBlockingQueue<>();
+        board = new Board(modelSendQueue, file);
+        startServerConnection();  
+    }
+    
+    private void startServerConnection() {
         if (host != null) {
             try {
-                Socket socket = new Socket(host, port);
-            	Thread receiver = new Thread(new Receiver(socket, receiveQueue));
+                socket = new Socket(host, port);
+                Thread receiver = new Thread(new Receiver(socket, modelReceiveQueue));
                 receiver.start();
-                Thread sender = new Thread(new Sender(socket, sendQueue));
+                Thread sender = new Thread(new Sender(socket, modelSendQueue));
                 sender.start();
                 //mainLoop(board, receiveQueue);
 //                receiver.join();
@@ -171,13 +178,13 @@ public class PingballModel {
            catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-            //mainLoop(board, receiveQueue);
-        }   
+        } 
     }
-    
-    public synchronized void setFile(File _file){
+
+    public synchronized void setFile(File _file) throws IOException{
         this.file = _file;
+        modelSendQueue = new LinkedBlockingQueue<>();
+        this.board = new Board(modelSendQueue,file); //Board is only for showing
     }
     
     public synchronized void setHost(String _host){
@@ -198,25 +205,63 @@ public class PingballModel {
         return ready;
     }
     
-    //Pause will send a pause message to all clients connected to this ie to the server.
+    //Pause will disconnect this client from server.
     public synchronized void pause() {
+        endServerConnection();
+        
         this.running = false;
     }
     
+    //
     public synchronized void resume() {
+        startServerConnection();
         this.running = true;
     }
     //Restart will restart the model
     public synchronized void restart() throws IOException {
         //send restart message
-        
+        endServerConnection();
+        //don't unsetup
         this.start();
     }
 
     public synchronized void stop(){
+        endServerConnection();
+        unsetup();
         //this.
     }
     
+    private void unsetup() {
+        running = false;
+        modelSendQueue = null;
+        
+        modelReceiveQueue = null;
+            
+        file = null;
+        
+        board = null;
+
+        host = null;
+
+        port = DEFAULT_PORT;
+
+        socket = null;
+    }
+
+    private void endServerConnection(){
+        if(socket!=null){
+            try {
+                socket.close();
+            } catch (IOException e) {
+                System.out.println("Coudn't end connection");
+                e.printStackTrace();
+            }
+        }
+        sendMessage("disconnect left");
+        sendMessage("disconnect right");
+        sendMessage("disconnect top");
+        sendMessage("disconnect bottom");
+    }
     /*
      * Is used by GUI listeners to send a message to the model.
      * Messages can be key press messages etc
@@ -261,6 +306,7 @@ public class PingballModel {
                     receiveQueue.put(line);
                 }
             } catch (InterruptedException | IOException e) {
+                //Might have to end these threads, so might need to remove this stack trace.
                 e.printStackTrace();
             }
         }

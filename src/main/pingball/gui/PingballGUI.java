@@ -143,7 +143,6 @@ public class PingballGUI extends JFrame {
             
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                System.out.println("Performed");
                 pingballModel.evolveFrame();
                 //TODO: Remove console output at end
                 pingballModel.consoleOutput();
@@ -216,7 +215,12 @@ public class PingballGUI extends JFrame {
                 int returnVal = fc.showOpenDialog(PingballGUI.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File openFile = fc.getSelectedFile();
-                    pingballModel.setFile(openFile);
+                    try {
+                        pingballModel.setFile(openFile);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                     fileName.setText("File Name: ".concat(openFile.getName()));
                     //Display the file
                     boardGUI.displayFile();
@@ -306,6 +310,7 @@ public class PingballGUI extends JFrame {
         	public void actionPerformed(ActionEvent e){
         		timer.stop();
         		//UNLOCK buttons
+        		
         		setHost.setEnabled(true);
         		setPort.setEnabled(true);
         		openfileButton.setEnabled(true);
@@ -364,14 +369,8 @@ public class PingballGUI extends JFrame {
         @Override
         public void stop(){
             pingballModel.stop();
-            try {
-                pingballModel = new PingballModel(new String[] {});
-                
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            super.stop();
+            //So, I keep BoardGUI still running
+            //super.stop();
         }
 
         @Override

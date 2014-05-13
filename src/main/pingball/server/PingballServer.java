@@ -163,7 +163,6 @@ public class PingballServer {
                 for (String line = br.readLine(); line != null; line = br.readLine()) {
                     router.processClientMessage(line, socket);
                 }
-                while(true);
             } catch (IOException e) {
                 // socket closed, this is okay
             } finally {
