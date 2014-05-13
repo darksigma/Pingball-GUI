@@ -118,6 +118,7 @@ public class PingballGUI extends JFrame {
         exitButton = new JButton();
         exitButton.setName("exitButton");
         exitButton.setText("Exit");
+        exitButton.setEnabled(false);
         
         openfileButton = new JButton();
         openfileButton.setName("openfileButton");
@@ -382,14 +383,15 @@ public class PingballGUI extends JFrame {
         	public void actionPerformed(ActionEvent e){
         		timer.stop();
         		//UNLOCK buttons
-        		
+        		boardGUI.updateFrame();
         		setHost.setEnabled(true);
         		setPort.setEnabled(true);
         		openfileButton.setEnabled(true);
         		startButton.setEnabled(false);
         		pauseButton.setEnabled(false);
         		resumeButton.setEnabled(false);
-        		
+        		restartButton.setEnabled(false);
+        		exitButton.setEnabled(false);
         		openfileButton.requestFocus(true);
         		fileName.setText("File Name: ");
         		displayHost.setText("Host: ");
@@ -468,7 +470,7 @@ public class PingballGUI extends JFrame {
         public void stop(){
             pingballModel.stop();
             //So, I keep BoardGUI still running
-            //super.stop();
+            super.stop();
         }
 
         @Override

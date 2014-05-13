@@ -48,6 +48,7 @@ public class PingballModel {
     
     private boolean connected = false;
     
+    
     private static final int DEFAULT_PORT = 10987;
 
     private static final double FRAMERATE = 20;
