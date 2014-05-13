@@ -63,7 +63,16 @@ public class Router {
                 removeWallLinkOf(user, wall);
             }
             
+            String name = mapSocketName.getForward(caller);
             mapSocketName.removeForward(caller);
+            
+            for(Socket s : mapSocketName.keySet()){
+            	send(s, String.format("notonboard %s", name));
+            }
+        	
+        	for(String board : mapSocketName.valueSet()){
+        		send(caller, String.format("notonboard %s", board));
+        	}
         }
         checkRep();
     }
@@ -193,9 +202,19 @@ public class Router {
      * @param socket The socket corresponding to the client.
      */
     private synchronized void addUser(String name, Socket socket) {
-        if( !mapSocketName.containsReverse(name) ) {
+    	
+    	for(Socket s : mapSocketName.keySet()){
+        	send(s, String.format("onboard %s", name));
+        }
+    	
+    	for(String board : mapSocketName.valueSet()){
+    		send(socket, String.format("onboard %s", board));
+    	}
+    	
+    	if( !mapSocketName.containsReverse(name) ) {
             mapSocketName.putForward(socket, name);
         }
+        
         checkRep();
     }
     

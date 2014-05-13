@@ -344,6 +344,7 @@ public class Board {
           String key = split[1];
           triggerKeyDown(key);  
         } else if (message.matches(boardOnServermsg)){
+        	System.out.println(message);
         	String boardName = split[1];
         	for(GameObject g : gameObjects){
         		if(g instanceof Portal){
@@ -354,6 +355,7 @@ public class Board {
         		}
         	}
         } else if (message.matches(boardNotOnServermsg)) {
+        	System.out.println(message);
         	String boardName = split[1];
         	for(GameObject g : gameObjects){
         		if(g instanceof Portal){
