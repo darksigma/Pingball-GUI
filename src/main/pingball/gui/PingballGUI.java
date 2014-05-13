@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -51,6 +50,8 @@ public class PingballGUI extends JFrame {
     private int boardHeight;
     private final BoardGUI boardGUI;
     
+    //components of the GUI
+    
     private final JButton resumeButton;
     private final JButton pauseButton;
     private final JButton restartButton;
@@ -74,7 +75,7 @@ public class PingballGUI extends JFrame {
     
     /**
      * Constructor for PingballGUI. Creates the View that the user sees. This will
-     * contain buttons and textfields for user input, as well as a BoardGUI JPanel
+     * contain buttons, labels, and textfields for user input, as well as a BoardGUI JPanel
      * displaying the game that is constantly evolving. 
      * 
      * @param args
@@ -91,10 +92,18 @@ public class PingballGUI extends JFrame {
         super("Pingball");
 
         pingballModel = new PingballModel(args);
+       
+        //buttons: start, restart, pause, resume, exit
+        startButton = new JButton();
+        startButton.setName("startButton");
+        startButton.setText("Start");
+        startButton.setEnabled(false);       
+
+        restartButton = new JButton();
+        restartButton.setName("restartButton");
+        restartButton.setText("Restart");
+        restartButton.setEnabled(false);
         
-        //PLEASE LOOK AT THIS AND CHANGE WHAT YOU DON'T LIKE!!!
-        
-        //buttons: start, restart, pause
         resumeButton = new JButton();
         resumeButton.setName("resumeButton");
         resumeButton.setText("Resume");
@@ -103,22 +112,12 @@ public class PingballGUI extends JFrame {
         pauseButton = new JButton();
         pauseButton.setName("pauseButton");
         pauseButton.setText("Pause");
-        pauseButton.setEnabled(false);
-        
-        restartButton = new JButton();
-        restartButton.setName("restartButton");
-        restartButton.setText("Restart");
-        restartButton.setEnabled(false);        
-
-        startButton = new JButton();
-        startButton.setName("startButton");
-        startButton.setText("Start");
-        startButton.setEnabled(false);
+        pauseButton.setEnabled(false);        
         
         exitButton = new JButton();
         exitButton.setName("exitButton");
         exitButton.setText("Exit");
-        exitButton.setEnabled(false);
+        exitButton.setEnabled(false);      
         
         openfileButton = new JButton();
         openfileButton.setName("openfileButton");
