@@ -51,6 +51,7 @@ public class CircleBumperTest {
         ball = new Ball(center, velocity, "TestBall", 10, 1, 1);
     }
     
+    
     @Test public void testConstructor(){
         CircleBumper circularBumper = new CircleBumper(board, "TestCircleBumper", new GridLocation(2,2));
         //assertTrue(checkRep()) would be called inside classes

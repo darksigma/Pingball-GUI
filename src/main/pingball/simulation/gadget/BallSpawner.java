@@ -67,8 +67,7 @@ private int spawnCount = 0;
     /**
      * Adds a new ball to the board when a ball collides with a ballspawner gadget.
      * The colliding ball is reflected from its original direction, but the new ball
-     * is added to move in a random direction from a (0.5, 0.5) translation from the 
-     * ball spawner's position.
+     * is added to move in a random direction from the center of the ballspawner.
      */
     @Override 
     public void collide(Ball ball, Collidable collidable) {
