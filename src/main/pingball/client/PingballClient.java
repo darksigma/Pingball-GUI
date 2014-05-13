@@ -14,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import pingball.simulation.Board;
 
 /**
- * Client for a Pingball simulator.
+ * Client for a Pingball simulator FOR PHASE 1.
  *
  * This client supports operation in single player mode and multiplayer
  * mode, where it can connect to a server.

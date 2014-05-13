@@ -1,3 +1,7 @@
+# Note: Phase 1 spec indicates that if the ball that was shot by the absorber hasn't yet left the absorber
+# then the absorber doesn't shoot out any other ball that hits it in the meantime.
+# So, its okay for balls to vanish, they are inside the absorber. We can get them out by adding a key trigger.
+
 board name=juggler gravity = 10.0
 
 # define a ball

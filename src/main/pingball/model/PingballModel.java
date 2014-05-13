@@ -19,7 +19,7 @@ import pingball.simulation.GameObject.GameObjectType;
 import pingball.util.Pair;
 
 /**
- * Model for a Pingball simulator.
+ * Model for a Pingball Game for phase 2.
  *
  * This model supports operation in single player mode and multiplayer
  * mode, where it can connect to a server.
@@ -30,35 +30,36 @@ import pingball.util.Pair;
  * 
  * PingballModel has two background threads for sending and receiving 
  * messages from the server. Messages can include
- * adding/removing of balls, adding/removing transparent walls, etc.
+ * adding/removing of balls, adding/removing transparent walls, information about
+ * other boards on server, teleporting balls to/from etc.
+ * Keypress messages are put by the GUI in the model's receive queue, which is threadsafe.
  *
- * Each of the background threads will have a blocking queue shared with the
- * main render thread, for sending messages to and from the server.
- *
- * The main render thread, at every frame render, will poll to see if there
- * are any messages available from the background thread and perform the
- * corresponding actions. When there are messages to send to the server,
- * the messages will be put in the queue for the thread responsible for sending
- * messages to the server, and this background thread will perform the actual
- * sending operation.
+ * Each of the background threads will have a blocking queue for sending 
+ * messages to and from the server.
+ * 
+ * When the evolveFrame method is called by the GUI. it will poll to see if 
+ * there are any messages available in the receiveQueue and perform the
+ * corresponding actions. It will then evolve the model for a frame.
+ * When there are messages to send to the server, the messages will be put in the queue
+ * for the thread responsible for sending messages to the server, and this background thread 
+ * will perform the actual sending operation.
  */
 public class PingballModel {
 
     private boolean running = false;
-    
+
     private boolean connected = false;
-    
-    
+
     private static final int DEFAULT_PORT = 10987;
 
     private static final double FRAMERATE = 20;
 
-    private Board board = null; // in FPS
-    
+    private Board board = null; 
+
     private BlockingQueue<String> modelSendQueue = null;
-//    
-   private BlockingQueue<String> modelReceiveQueue = null;
-//    
+
+    private BlockingQueue<String> modelReceiveQueue = null;
+    
     private File file = null;
     
     private String host = null;
@@ -114,7 +115,10 @@ public class PingballModel {
     }
 
     /**
-     * Evolve the board for a frame.
+     * Evolve the board for a frame. 
+     * 
+     * Processes all the messages in the receive queue of the model, resets the trigger state of
+     * all gadgets, and evolves the board for a fixed period of time.
      */
     public synchronized void evolveFrame() {
         if(this.running){
