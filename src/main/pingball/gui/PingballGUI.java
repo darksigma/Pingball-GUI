@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -291,8 +292,13 @@ public class PingballGUI extends JFrame {
         	public void actionPerformed(ActionEvent e){
         		try{
         			int portNum = Integer.valueOf(setPort.getText());
-        			pingballModel.setPort(portNum);
-            		displayPort.setText("Port: " + portNum);
+        			if(pingballModel.isValidPort()){
+        				pingballModel.setPort(portNum);
+                		displayPort.setText("Port: " + portNum);
+        			}    
+        			else{
+        				JOptionPane.showMessageDialog(null, "Invalid port number.");
+        			}
         		}
         		catch(NumberFormatException nfe){
         			
