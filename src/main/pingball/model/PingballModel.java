@@ -262,6 +262,7 @@ public class PingballModel {
         sendMessage("disconnect right");
         sendMessage("disconnect top");
         sendMessage("disconnect bottom");
+        sendMessage("portalSelfOnly");
     }
     /*
      * Is used by GUI listeners to send a message to the model.

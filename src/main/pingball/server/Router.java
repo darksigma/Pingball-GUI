@@ -70,9 +70,10 @@ public class Router {
             	send(s, String.format("notonboard %s", name));
             }
         	
-        	for(String board : mapSocketName.valueSet()){
-        		send(caller, String.format("notonboard %s", board));
-        	}
+//            //TODO: We probably have the caller socket closed, so will this work?
+//        	for(String board : mapSocketName.valueSet()){
+//        		send(caller, String.format("notonboard %s", board));
+//        	}
         }
         checkRep();
     }
@@ -103,7 +104,7 @@ public class Router {
 
         String hellomsg = "^hello [A-Za-z_][A-Za-z_0-9]*$";
         String ballmsg = "^ball [A-Za-z_][A-Za-z_0-9]* (left|right|top|bottom)( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4}$";
-
+        String portalBallmsg = "^portalball [A-Za-z_][A-Za-z_0-9]* [A-Za-z_][A-Za-z_0-9]* [A-Za-z_][A-Za-z_0-9]*( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4}$";
         if (message.matches(hellomsg)) {
             addUser(split[1], caller);
         } else if (message.matches(ballmsg)) {
@@ -114,8 +115,15 @@ public class Router {
                 split[2] = wall.opposite().toString();
                 send(dest, StringUtils.join(" ", split));
             }
+        } else if (message.matches(portalBallmsg)){
+            String otherBoard = split[2];
+            Socket dest = mapSocketName.getReverse(otherBoard);
+            if(dest!=null){
+                send(dest, message);
+            }
         } else {
-            System.err.println("ignoring invalid message from client");
+            
+            System.err.println("ignoring invalid message from client:"+message);
         }
         checkRep();
     }

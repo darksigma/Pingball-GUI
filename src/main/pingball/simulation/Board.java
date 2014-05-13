@@ -315,7 +315,8 @@ public class Board {
         String keyDownmsg = "^keydown [a-z0-9]+";
         String boardOnServermsg = "^onboard [A-Za-z_][A-Za-z_0-9]*";
         String boardNotOnServermsg = "^notonboard [A-Za-z_][A-Za-z_0-9]*";
-        String portalBallmsg = "^portalball [A-Za-z_][A-Za-z_0-9]* ( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4} [A-Za-z_][A-Za-z_0-9]*";
+        String portalBallmsg = "^portalball [A-Za-z_][A-Za-z_0-9]* [A-Za-z_][A-Za-z_0-9]* [A-Za-z_][A-Za-z_0-9]*( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4}$";
+        String portalSelfOnlymsg = "^portalSelfOnly";
         if (message.matches(connectmsg)) {
             connectWall(Wall.Side.fromString(split[1]), split[2]);
         } else if (message.matches(disconnectmsg)) {
@@ -361,9 +362,10 @@ public class Board {
             }
         } else if (message.matches(portalBallmsg)){
           String ballName = split[1];
-          double x = parseDouble(split[2]), y = parseDouble(split[3]),
-                  vx = parseDouble(split[4]), vy = parseDouble(split[5]);
-          String portalname = split[6];
+          double x = parseDouble(split[4]), y = parseDouble(split[5]),
+                  vx = parseDouble(split[6]), vy = parseDouble(split[7]);
+          String portalname = split[3];
+          System.out.println(message);
           for(Portal portal: portals){
               if(portal.getName().equals(portalname)){
                   Vect transferLoc = new Vect(portal.getLocation().x()+0.5, portal.getLocation().y()+0.5);
@@ -371,7 +373,11 @@ public class Board {
               }
           }
           
-        } else {
+        } else if (message.matches(portalSelfOnlymsg)) {
+            for(Portal p: portals){
+                p.selfOnly();
+            }
+        }else {
             System.err.println("ignoring invalid message from server");
         }
     }

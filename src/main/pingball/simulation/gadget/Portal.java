@@ -79,8 +79,8 @@ public class Portal extends Gadget {
                 Vect velocity = ball.getVelocity();
                 try {
                     board.removeBall(ball);
-                    sendQueue.put(String.format("portalball %s %f %f %f %f %s",ball.getName(), center.x(), center.y(),
-                            velocity.x(), velocity.y(), otherPortal));
+                    sendQueue.put(String.format("portalball %s %s %s %f %f %f %f",ball.getName(), otherBoard, otherPortal, center.x(), center.y(),
+                            velocity.x(), velocity.y()));
                 }
                 catch (InterruptedException e) {
                     e.printStackTrace();
@@ -100,7 +100,7 @@ public class Portal extends Gadget {
      *          the ball will collide after that time. 
      */
     @Override public Pair<Double, Collidable> timeUntilCollision(Ball ball) {
-        if( !isBallInside(ball) ) {
+        if( !isBallInside(ball) && active ) {
             assert(checkRep());
             return super.timeUntilCollision(ball);
         } else {
@@ -189,5 +189,11 @@ public class Portal extends Gadget {
 
     public void setQueue(BlockingQueue<String> sendQueue) {
      this.sendQueue = sendQueue;   
+    }
+
+    public void selfOnly() {
+        if(!thisBoard){
+            this.active = false;
+        }
     }
 }
