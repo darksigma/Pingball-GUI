@@ -33,9 +33,8 @@ import pingball.util.Pair;
 import pingball.util.StringUtils;
 
 /**
- * This class is the CONTROLLER of our Model-View-Controller. Here, the board
- * file is created as a JPanel and is passed to the PingballGUI (View). This
- * class also contains all the listener methods that update the Model and the
+ * This class is the GUI for represeting the board. The board is created as a JPanel (View). This
+ * The class also contains all the listener methods that update the Model and the
  * View based on user input. Whenever there is a key press, we will put the
  * key press message on the Clients's blocking queue (Model) using the sendMessage method. 
  * 

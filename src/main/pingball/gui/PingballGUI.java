@@ -20,22 +20,22 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import pingball.model.PingballModel;
 
 /**
- * This class represents the VIEW of our Model-View-Controller. Here, we implement
- * changes based on user input (choosing the pingball file, starting, restarting, 
+ * This class represents the VIEW of our Model-View-Controller. The class also contains all the listener 
+ * methods that update the Model and the View based on user input, so its a VIEW-CONTROLLER. 
+ * Here, we implement changes based on user input (choosing the pingball file, starting, restarting, 
  * pausing, resuming, exiting, selecting port/host). 
  * This will contain the board that the user can see and play with. 
  * The board is represented as a BoardGUI JPanel.
  * 
  * This class will update the GUI at each time frame, based on changes to the
- * model. These updates will be made by using a Timer. Buttons can start, pause or stop the timer.
- * Timer will always run listener code on Swing event-handling thread.
+ * model. These updates will be made by using a Timer. Buttons can start, pause, resume, restart or stop the timer.
  * 
  * Thread safety argument:
- * We will ensure that any change in the GUI will be enclosed in the run() method of 
- * SwingUtilities.invokeLater. This will ensure that we don't have problems manipulating the
- * user interface. 
- * 
- * 
+ * The pingball GUI is instantiated inside a SwingUtils.invokeLater(), so all changes to the GUI from the main thread
+ * are on the Swing thread. Timer will always run task performer code on Swing event-handling thread. The taskperformed
+ * per call of the taskperformer is kept short so that the GUI doesn't slow down. No background threads used for updating the GUI.
+ * The only shared resource between the different views is the pingball Model.
+ * The pingball model has all its methods synchronized (follows monitor pattern), so it is thread safe.  
  * 
  * @author nconsul, nkbuduma, prafulla
  *
@@ -46,9 +46,12 @@ public class PingballGUI extends JFrame {
     private PingballModel pingballModel;
     private MyTimer timer;
     private ActionListener taskPerformer;
+    
+    /**
+     * The delay in milli-seconds before calling the timer task performer again.
+     */
     private int delay = 50;
-    private int boardWidth;
-    private int boardHeight;
+    
     private final BoardGUI boardGUI;
     
     //components of the GUI
@@ -177,7 +180,9 @@ public class PingballGUI extends JFrame {
         
         
         /**
-         * Timer method to update board and GUI every frame
+         * The task performer for the timer.
+         * Evolves the pingball model by a frame and updates the board GUI whenever
+         * called by the timer.  
          */
         taskPerformer = new ActionListener() {            
             @Override
@@ -298,7 +303,7 @@ public class PingballGUI extends JFrame {
         });
 
         /**
-         * Sets the hostnmae to user input in textfield when user clicks the button to 
+         * Sets the hostname to user input in textfield when user clicks the button to 
          * enter host.
          * Calls the helper method to update host.
          * If no host is given or an invalid host is given, game is set to 
@@ -315,7 +320,7 @@ public class PingballGUI extends JFrame {
         });
         
         /**
-         * Sets the hostnmae to user input in textfield when user clicks the button to 
+         * Sets the hostname to user input in textfield when user clicks the button to 
          * enter host.
          * Calls the helper method to update host.
          * If no host is given or an invalid host is given, game is set to 
@@ -494,7 +499,7 @@ public class PingballGUI extends JFrame {
 	}
     
     /**
-     * main method to run the GUI.
+     * Main method to run the GUI.
      */
     public static void main(final String[] args) {
         // set up the UI (on the event-handling thread)
@@ -518,28 +523,42 @@ public class PingballGUI extends JFrame {
         public MyTimer(int delay, ActionListener listener) {
             super(delay, listener);
         }
-
+        
+        /**
+         * Starts the timer.
+         * The pingabll model is started and then the task performer is started.
+         */
         @Override
-        public void start(){
-            System.out.println("Started");    
+        public void start(){   
             try {
                     pingballModel.start();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    System.out.println("error starting");
                     e.printStackTrace();
                 }
                 super.start();
         }
 
+        /**
+         * Pauses the game by pausing the pingball model.
+         * The task performer is still on.
+         */
         public void pause() {
             pingballModel.pause();
         }
 
+
+        /**
+         * Resumes the game by resuming pingball model.
+         * The task performer is still on.
+         */
         public void resume() {
             pingballModel.resume();
         }
 
+        /**
+         * Stops the timer.
+         * The pingball model is stopped and then the task performer is stopped.
+         */
         @Override
         public void stop(){
             pingballModel.stop();
@@ -547,13 +566,15 @@ public class PingballGUI extends JFrame {
             super.stop();
         }
 
+        /**
+         * Restarts the game by restarting the pingball model
+         * and starting the timer from start again.
+         */
         @Override
         public void restart(){
-            //RESTART IS DIFFERENT FROM START AS IT SENDS RESTART MESSAGE
             try {
                 pingballModel.restart();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             super.start();
