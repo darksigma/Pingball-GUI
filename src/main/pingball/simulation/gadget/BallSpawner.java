@@ -44,9 +44,9 @@ private int spawnCount = 0;
     }
 
     /**
-     * Performs the action of this circular bumper.
+     * Performs the action of this ball spawner.
      * 
-     * Circle bumpers have no action, so this does nothing.
+     * Ball spawners have no action, so this does nothing.
      */
     
     @Override public void action() {
@@ -64,6 +64,12 @@ private int spawnCount = 0;
         }
     }
     
+    /**
+     * Adds a new ball to the board when a ball collides with a ballspawner gadget.
+     * The colliding ball is reflected from its original direction, but the new ball
+     * is added to move in a random direction from a (0.5, 0.5) translation from the 
+     * ball spawner's position.
+     */
     @Override 
     public void collide(Ball ball, Collidable collidable) {
         super.collide(ball, collidable);
@@ -91,9 +97,9 @@ private int spawnCount = 0;
     }    
     
     /**
-     * Returns a list of strings for the string representation of the circular bumper.
+     * Returns a list of strings for the string representation of the ball spawner.
      * 
-     * Grid representation of the circular bumper is "O".
+     * Grid representation of the ball spawner is "@".
      * 
      * @return The grid representation
      */
@@ -102,6 +108,11 @@ private int spawnCount = 0;
         return representation;
     }
 
+
+    /**
+     * Returns the ballspawner's data in a list.
+     * Includes the grid location, the radius, and the trigger state.
+     */
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
         List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.getRadius(),this.triggerState));

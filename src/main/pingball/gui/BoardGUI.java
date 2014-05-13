@@ -9,12 +9,10 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.font.GlyphVector;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -24,11 +22,9 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import pingball.model.PingballModel;
-import pingball.simulation.*;
 import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.Wall.Side;
 import pingball.simulation.gadget.Gadget.TriggerState;
-import pingball.simulation.gadget.SquareBumper;
 import pingball.util.Pair;
 import pingball.util.StringUtils;
 
@@ -51,13 +47,11 @@ public class BoardGUI extends JPanel {
      * Constructor method that creates the JPanel representing the game board.
      * Keeps track of user input as well to modify the Model's board. 
      * @param pingballModel - contains the board that is displayed to the user
-     * @param width - sets the width of the game (JPanel) in the PingballGUI
-     * @param height - sets the height of the game (JPanel) in the PingballGUI
+     * @param scale - sets the scale of the board that is displayed
      */
     public BoardGUI(PingballModel _pingballModel,int _scale){
         this.pingballModel = _pingballModel;
         this.scale = _scale;
-        //this.setPreferredSize(new Dimension(22*scale,22*scale));
         setFocusable(true);
         requestFocusInWindow();
         addKeyListener(new KeyAdapter() {
@@ -72,52 +66,52 @@ public class BoardGUI extends JPanel {
                 pingballModel.sendMessage("keyup "+StringUtils.join("",KeyEvent.getKeyText(e.getKeyCode()).split("\\s+")).toLowerCase());
             }
         });
+        
+        /**
+         * Sets focus to the game display when user clicks on the BoardGUI JPanel.
+         */
         addMouseListener(new MouseListener() {
 
             @Override
             public void mouseClicked(MouseEvent arg0) {
-                // TODO Auto-generated method stub
                 BoardGUI.this.requestFocus();
             }
 
+            //Following methods are methods that all MouseListeners must have
             @Override
-            public void mouseEntered(MouseEvent e) {
-                // TODO Auto-generated method stub
-                
-            }
+            public void mouseEntered(MouseEvent e) { }
 
             @Override
-            public void mouseExited(MouseEvent e) {
-                // TODO Auto-generated method stub
-                
-            }
+            public void mouseExited(MouseEvent e) { }             
+               
+            @Override
+            public void mousePressed(MouseEvent e) { }            
 
             @Override
-            public void mousePressed(MouseEvent e) {
-                // TODO Auto-generated method stub
-                
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                // TODO Auto-generated method stub
-                
-            }
+            public void mouseReleased(MouseEvent e) { }               
 
         });
     }
     
-    
+    /**
+     * Helper method to set the size of JPanel to 425x425
+     */
     @Override
     public Dimension getMinimumSize() {
         return getPreferredSize();
     }
 
+    /**
+     * Helper method to set the size of JPanel to 425x425
+     */
     @Override
     public Dimension getMaximumSize() {
         return getPreferredSize();
     }
 
+    /**
+     * Method to set the size of JPanel to 425x425
+     */
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(425, 425);
@@ -148,7 +142,7 @@ public class BoardGUI extends JPanel {
     }
 
     /**
-     * Draws the current form of the board with all the objects in it
+     * Draws the current form of the board with all the objects in it.
      * @param g Graphics2D used to draw the board
      */
     private void drawBoard(final Graphics2D g) {
@@ -214,12 +208,7 @@ public class BoardGUI extends JPanel {
                     TriggerState state = (TriggerState) data.get(2);
                     drawBallSpawner(g,topLeft.getFirst(),topLeft.getSecond(),radius, state);
                   
-                }
-                //            else if (gameObject instanceof SquareBumper){
-                //                SquareBumper squareBumper = (SquareBumper) gameObject;
-                //                Pair<Double, Double> topLeft = squareBumper.topLeft();
-                //                
-                //            }
+                }              
             }
         }
     }
@@ -236,7 +225,7 @@ public class BoardGUI extends JPanel {
         g.fillRect(-1,  -1,  22, 22);
     }
 
-    //May change this code
+    //TODO: May change this code
     public void displayFile() {
         updateFrame();
     }
@@ -258,6 +247,7 @@ public class BoardGUI extends JPanel {
     	g.setPaint(gp);
     	g.fill(bumper);
     }
+    
     private void drawBallSpawner(final Graphics2D g, double x,double y,double r, TriggerState state){
         Ellipse2D bumper = new Ellipse2D.Double(x, y, 2*r, 2*r);
         GradientPaint gp;
@@ -324,7 +314,7 @@ public class BoardGUI extends JPanel {
     	g.fill(absorber);
     }
     
-    public void drawWall(final Graphics2D g, double x, double y, double dimension, boolean connected, String connectedBoardName, Side side){
+    private void drawWall(final Graphics2D g, double x, double y, double dimension, boolean connected, String connectedBoardName, Side side){
     	Rectangle2D wall;
     	if (side.equals(Side.TOP)){
     	    wall = new Rectangle2D.Double(x, y, dimension, 1.0);    
@@ -338,7 +328,6 @@ public class BoardGUI extends JPanel {
     	
         g.setPaint(Color.BLACK);
         g.fill(wall);
-    	//FontMetrics fm = g.getFontMetrics();
     	Rectangle2D transwall;
 
     	if (connected){
@@ -391,17 +380,12 @@ public class BoardGUI extends JPanel {
     	        g.setFont(f);
                 float curX = (float) -0.9;
     	        float curY = (float)(10.0 - connectedBoardName.length()/2.0);
-    	        for(Character c : connectedBoardName.toCharArray()){
-    	        	//FontMetrics fm = g.getFontMetrics();
-    	        	//int width = fm.charWidth(c);
+    	        for(Character c : connectedBoardName.toCharArray()){  	        	
     	            g.drawString(c.toString(), curX , curY);
     	            curY += 1;
     	        }
     	    }
     	}
-        //GlyphVector v = (new Font("Helvetica", Font.PLAIN, 12)).createGlyphVector(g.getFontRenderContext(), connectedBoardName);
-
-    	//g.drawGlyphVector(v, alignmentX, alignmentX)
     }
     
     
