@@ -65,7 +65,7 @@ public class PingballGUI extends JFrame {
     private final JLabel port;
     private final JLabel displayHost;
     private final JLabel displayPort;
-   // private final JLabel isConnected;
+    private final JLabel isConnected;
     
     private final JButton openfileButton;
     private final JFileChooser fc;
@@ -158,6 +158,9 @@ public class PingballGUI extends JFrame {
         displayHost.setName("displayHost");
         displayHost.setText("Host: ");
         
+        isConnected = new JLabel();
+        isConnected.setName("isConnected");
+        isConnected.setText("Welcome to Pingball!");
         
         boardGUI = new BoardGUI(pingballModel,10);
         
@@ -169,6 +172,20 @@ public class PingballGUI extends JFrame {
                 //TODO: Remove console output at end
                 pingballModel.consoleOutput();
                 boardGUI.updateFrame();
+                if(pingballModel.isConnected()){
+                	if(pingballModel.isRunning()){
+                		isConnected.setText("Playing in Server Mode");
+                	} else {
+                		isConnected.setText("Playing in Server Mode. Paused");
+                	}
+                }
+                else {
+                	if(pingballModel.isRunning()){
+                		isConnected.setText("Playing in Single Player Mode");
+                	} else {
+                		isConnected.setText("Playing in Single Player Mode. Paused");
+                	}
+                }
             }
             
         };
@@ -197,9 +214,11 @@ public class PingballGUI extends JFrame {
         					.addComponent(port)
         					.addComponent(setPort)
         					.addComponent(portButton))
-        			.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createSequentialGroup()        				
         					.addComponent(displayPort)
         					.addComponent(displayHost))
+        			.addGroup(layout.createSequentialGroup()
+        					.addComponent(isConnected))
         			.addGroup(layout.createSequentialGroup()
         					.addComponent(startButton)
         					.addComponent(pauseButton)
@@ -224,9 +243,11 @@ public class PingballGUI extends JFrame {
         					.addComponent(port)
         					.addComponent(setPort)
         					.addComponent(portButton))
-        		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-        					.addComponent(displayPort)
+        		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)       					
+        		    		.addComponent(displayPort)
         					.addComponent(displayHost))
+        			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        					.addComponent(isConnected))
         		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
         					.addComponent(startButton)
         					.addComponent(pauseButton)
@@ -290,20 +311,8 @@ public class PingballGUI extends JFrame {
         	
         	@Override
         	public void actionPerformed(ActionEvent e){
-        		try{
-        			int portNum = Integer.valueOf(setPort.getText());
-        			if(pingballModel.isValidPort()){
-        				pingballModel.setPort(portNum);
-                		displayPort.setText("Port: " + portNum);
-        			}    
-        			else{
-        				JOptionPane.showMessageDialog(null, "Invalid port number.");
-        			}
-        		}
-        		catch(NumberFormatException nfe){
-        			
-        		}
-        		startButton.requestFocus(true);
+        		updatePort();
+
         	}
         });
         
@@ -311,10 +320,7 @@ public class PingballGUI extends JFrame {
         	
         	@Override
         	public void actionPerformed(ActionEvent e){
-        		int portNum = Integer.valueOf(setPort.getText());
-        		pingballModel.setPort(portNum);
-        		startButton.requestFocus(true);
-        		displayPort.setText("Port: " + portNum);
+        		updatePort();
 
         	}
         });
@@ -387,13 +393,31 @@ public class PingballGUI extends JFrame {
         		openfileButton.requestFocus(true);
         		fileName.setText("File Name: ");
         		displayHost.setText("Host: ");
-        		displayPort.setText("Port: ");
+        		displayPort.setText("Port: 10987");
+        		isConnected.setText("Hope you enjoyed! Open file to play again.");
         		
         	}
         });
         
            //timer.start();
     }
+    
+    private void updatePort() {
+		try{
+			int portNum = Integer.valueOf(setPort.getText());
+			if(pingballModel.isValidPort(portNum)){
+				pingballModel.setPort(portNum);
+        		displayPort.setText("Port: " + portNum);
+			}    
+			else{
+				JOptionPane.showMessageDialog(null, "Invalid port number.");
+			}
+		}
+		catch(NumberFormatException nfe){
+			
+		}
+		startButton.requestFocus(true);
+	}
     
     public static void main(final String[] args) {
         // set up the UI (on the event-handling thread)

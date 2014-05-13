@@ -64,7 +64,7 @@ KEY : 'shift' | 'ctrl' | 'alt' | 'meta' | 'space' | 'left' | 'right' | 'up' | 'd
 //parsing rules
 
 root : fileLines EOF;
-fileLines : boardLine (ballLine | sqBumperLine | cirBumperLine | triBumperLine | rtFlipLine | lftFlipLine | absorberLine | fireLine | portalLine | keyIntDownLine | keyIntUpLine | keyNameDownLine | keyNameUpLine | keyXUpLine | keyXDownLine | keyYUpLine | keyYDownLine) * ;
+fileLines : boardLine (ballLine | sqBumperLine | cirBumperLine | triBumperLine | rtFlipLine | lftFlipLine | absorberLine | fireLine | portalLine | keyIntDownLine | keyIntUpLine | keyNameDownLine | keyNameUpLine | keyXUpLine | keyXDownLine | keyYUpLine | keyYDownLine | ballSpawnerLine) * ;
 boardLine : 'board' (boardName | boardGravity | boardFric1 | boardFric2)* ;
 boardName : 'name' EQUALS NAME;
 boardGravity : 'gravity' EQUALS (FLOAT | NAME) ;
@@ -91,4 +91,6 @@ keyXUpLine : 'keyup' 'key' EQUALS 'x' 'action' EQUALS NAME ;
 keyXDownLine : 'keydown' 'key' EQUALS 'x' 'action' EQUALS NAME ;
 keyYUpLine : 'keyup' 'key' EQUALS 'y' 'action' EQUALS NAME ;
 keyYDownLine : 'keydown' 'key' EQUALS 'y' 'action' EQUALS NAME ;
+
+ballSpawnerLine :  'ballSpawner' 'name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT ;
 

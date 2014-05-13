@@ -33,6 +33,9 @@ public interface BoardGrammarListener extends ParseTreeListener {
 	void enterRtFlipLine(BoardGrammarParser.RtFlipLineContext ctx);
 	void exitRtFlipLine(BoardGrammarParser.RtFlipLineContext ctx);
 
+	void enterBallSpawnerLine(BoardGrammarParser.BallSpawnerLineContext ctx);
+	void exitBallSpawnerLine(BoardGrammarParser.BallSpawnerLineContext ctx);
+
 	void enterKeyNameUpLine(BoardGrammarParser.KeyNameUpLineContext ctx);
 	void exitKeyNameUpLine(BoardGrammarParser.KeyNameUpLineContext ctx);
 

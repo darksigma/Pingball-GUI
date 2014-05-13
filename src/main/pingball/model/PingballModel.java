@@ -241,6 +241,8 @@ public class PingballModel {
     
     private void unsetup() {
         running = false;
+        
+        connected = false;
         modelSendQueue = null;
         
         modelReceiveQueue = null;
@@ -280,7 +282,9 @@ public class PingballModel {
     
     public synchronized void sendMessage(String message) {
         try {
-            modelReceiveQueue.put(message);
+        	if(modelReceiveQueue != null){
+                modelReceiveQueue.put(message);
+        	}
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -317,7 +321,7 @@ public class PingballModel {
                 }
             } catch (InterruptedException | IOException e) {
                 //Might have to end these threads, so might need to remove this stack trace.
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
 
@@ -353,9 +357,18 @@ public class PingballModel {
                     output.println(line);
                 }
             } catch (InterruptedException | IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
 
     }
+
+	public synchronized boolean isConnected() {
+		// TODO Auto-generated method stub
+		return this.connected;
+	}
+
+	public synchronized boolean isRunning() {
+		return this.running;
+	}
 }

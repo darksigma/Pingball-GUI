@@ -36,6 +36,9 @@ public class BoardGrammarBaseListener implements BoardGrammarListener {
 	@Override public void enterRtFlipLine(BoardGrammarParser.RtFlipLineContext ctx) { }
 	@Override public void exitRtFlipLine(BoardGrammarParser.RtFlipLineContext ctx) { }
 
+	@Override public void enterBallSpawnerLine(BoardGrammarParser.BallSpawnerLineContext ctx) { }
+	@Override public void exitBallSpawnerLine(BoardGrammarParser.BallSpawnerLineContext ctx) { }
+
 	@Override public void enterKeyNameUpLine(BoardGrammarParser.KeyNameUpLineContext ctx) { }
 	@Override public void exitKeyNameUpLine(BoardGrammarParser.KeyNameUpLineContext ctx) { }
 
