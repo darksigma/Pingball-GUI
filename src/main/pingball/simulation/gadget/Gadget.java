@@ -62,7 +62,7 @@ public abstract class Gadget extends GameObject {
 
     private final String name;
     
-    protected final TriggerState triggerState = TriggerState.UNTRIGGERED;
+    protected TriggerState triggerState = TriggerState.UNTRIGGERED;
     /**
      * Creates a Gadget.
      * 
@@ -132,6 +132,7 @@ public abstract class Gadget extends GameObject {
      * Triggers this gadget
      */
     public void trigger() {
+        this.triggerState = TriggerState.TRIGGERED;
         for (Gadget linkedGadget: linkedGadgets) {
             linkedGadget.action();
         }
@@ -144,6 +145,11 @@ public abstract class Gadget extends GameObject {
      */
     public String getName() {
         return name;
+    }
+    
+    @Override
+    public void deTrigger(){
+        this.triggerState = TriggerState.UNTRIGGERED;
     }
 
 }

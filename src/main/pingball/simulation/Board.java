@@ -588,4 +588,10 @@ public class Board {
     public Map<String, List<Gadget>> getDownMap(){
     	return this.keyDownMap;
     }
+
+    public void deTrigger() {
+      for(GameObject gameObject: gameObjects){
+          gameObject.deTrigger();
+      }
+    }
 }

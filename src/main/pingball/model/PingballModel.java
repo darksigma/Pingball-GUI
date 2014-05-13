@@ -120,6 +120,7 @@ public class PingballModel {
             for (String message: messages) {
                 board.processMessage(message);
             }
+            board.deTrigger();
             board.evolve(1.0 / FRAMERATE);
         }
     }

@@ -91,5 +91,11 @@ public abstract class GameObject {
     }
     
     public abstract Pair<GameObjectType,List<Object>> getObjectData();
+    
+    //By default, nothing. Overriden in gadget
+    public void deTrigger() {
+        // TODO Auto-generated method stub
+        
+    }
 
 }
