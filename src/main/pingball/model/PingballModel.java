@@ -46,6 +46,8 @@ public class PingballModel {
 
     private boolean running = false;
     
+    private boolean connected = false;
+    
     private static final int DEFAULT_PORT = 10987;
 
     private static final double FRAMERATE = 20;
@@ -168,6 +170,7 @@ public class PingballModel {
         if (host != null) {
             try {
                 socket = new Socket(host, port);
+                this.connected = true;
                 Thread receiver = new Thread(new Receiver(socket, modelReceiveQueue));
                 receiver.start();
                 Thread sender = new Thread(new Sender(socket, modelSendQueue));
@@ -177,7 +180,7 @@ public class PingballModel {
 //                sender.join();
             }
            catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         } 
     }
@@ -232,6 +235,10 @@ public class PingballModel {
         //this.
     }
     
+    public synchronized boolean isValidPort(Integer port){
+        return !(port < 0 || port > 65535);
+    }
+    
     private void unsetup() {
         running = false;
         modelSendQueue = null;
@@ -258,6 +265,7 @@ public class PingballModel {
                 e.printStackTrace();
             }
         }
+        this.connected = false;
         sendMessage("disconnect left");
         sendMessage("disconnect right");
         sendMessage("disconnect top");
