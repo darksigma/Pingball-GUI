@@ -22,8 +22,10 @@ import pingball.simulation.gadget.TriangleBumper;
 
 public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 
+	//keeps track of keys parsed and the gadgets that they trigger
 	private Map<String, Gadget> gadgets = new HashMap<>();
 	
+	//represents possible keys that trigger gadgets
 	private final String singleChar = "[a-z]";
 	private final List<String> keys = new ArrayList<String>(Arrays.asList(
 		    "shift", "ctrl", "alt", "meta",
@@ -39,11 +41,19 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
     private double mu2 = Constants.DEFAULT_FRICTION_MU2;
     private Board gameBoard;
 	
-	
+	/**
+	 * Returns the name of the board to be used in tests to make sure the name is correct through
+     * the BoardGrammar class. There, only the listener that is created can call this method.
+	 * @return String representing the name of the board
+	 */
     public String listenerName(){
     	return this.username;    	
     }
     
+    /**
+     * Returns the value of gravity defined in a board to make sure it is correct.
+     * @return
+     */
     public Double listenerGravity(){
     	return this.gravity;
     }

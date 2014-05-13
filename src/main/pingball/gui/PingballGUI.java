@@ -58,8 +58,12 @@ public class PingballGUI extends JFrame {
 
     private final JTextField setPort;
     private final JTextField setHost;
+    private final JButton hostButton;
+    private final JButton portButton;
     private final JLabel host;
     private final JLabel port;
+    //private final JLabel displayHost;
+    //private final JLabel displayPort;
     
     private final JButton openfileButton;
     private final JFileChooser fc;
@@ -131,11 +135,18 @@ public class PingballGUI extends JFrame {
         setPort.setName("setPort");
         port = new JLabel();
         port.setText("Port: ");
+        portButton = new JButton();
+        portButton.setName("portButton");
+        portButton.setText("Enter Port");
         
         setHost = new JTextField();
         setHost.setName("setHost");
         host = new JLabel();
         host.setText("Hostname: ");
+        hostButton = new JButton();
+        hostButton.setName("hostButton");
+        hostButton.setText("Enter Host");
+        
         
         boardGUI = new BoardGUI(pingballModel,10);
         
@@ -169,10 +180,12 @@ public class PingballGUI extends JFrame {
         					.addComponent(fileName))
         			.addGroup(layout.createSequentialGroup()
         					.addComponent(host)
-        					.addComponent(setHost))
+        					.addComponent(setHost)
+        					.addComponent(hostButton))
         			.addGroup(layout.createSequentialGroup()
         					.addComponent(port)
-        					.addComponent(setPort))
+        					.addComponent(setPort)
+        					.addComponent(portButton))
         			.addGroup(layout.createSequentialGroup()
         					.addComponent(startButton)
         					.addComponent(pauseButton)
@@ -191,10 +204,12 @@ public class PingballGUI extends JFrame {
         					.addComponent(fileName))
         		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
         			 		.addComponent(host)
-        					.addComponent(setHost))
+        					.addComponent(setHost)
+        					.addComponent(hostButton))
         		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
         					.addComponent(port)
-        					.addComponent(setPort))
+        					.addComponent(setPort)
+        					.addComponent(portButton))
         		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
         					.addComponent(startButton)
         					.addComponent(pauseButton)
@@ -208,9 +223,9 @@ public class PingballGUI extends JFrame {
         this.pack();
         
         
-    openfileButton.addActionListener(new ActionListener(){
+        openfileButton.addActionListener(new ActionListener(){
 
-            @Override
+        	@Override
             public void actionPerformed(ActionEvent e) {
                 int returnVal = fc.showOpenDialog(PingballGUI.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -227,7 +242,6 @@ public class PingballGUI extends JFrame {
                     startButton.setEnabled(true);                    
                 } 
             }
-            
         });
 
         setHost.addActionListener(new ActionListener(){
@@ -236,6 +250,18 @@ public class PingballGUI extends JFrame {
         	public void actionPerformed(ActionEvent e){
         		String hostname = setHost.getText();
         		pingballModel.setHost(hostname);
+        		setPort.requestFocus(true);
+        		System.out.println(hostname);
+        	}
+        });
+        
+        hostButton.addActionListener(new ActionListener(){
+        	
+        	@Override
+        	public void actionPerformed(ActionEvent e){
+        		String hostname = setHost.getText();
+        		pingballModel.setHost(hostname);
+        		setPort.requestFocus(true);
         		System.out.println(hostname);
         	}
         });
@@ -246,11 +272,21 @@ public class PingballGUI extends JFrame {
         	public void actionPerformed(ActionEvent e){
         		int portNum = Integer.valueOf(setPort.getText());
         		pingballModel.setPort(portNum);
+        		startButton.requestFocus(true);
         	
         	}
         });
         
-        
+        portButton.addActionListener(new ActionListener(){
+        	
+        	@Override
+        	public void actionPerformed(ActionEvent e){
+        		int portNum = Integer.valueOf(setPort.getText());
+        		pingballModel.setPort(portNum);
+        		startButton.requestFocus(true);
+
+        	}
+        });
         
         startButton.addActionListener(new ActionListener(){
         	@Override
