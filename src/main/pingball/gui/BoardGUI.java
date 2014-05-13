@@ -204,6 +204,12 @@ public class BoardGUI extends JPanel {
                     TriggerState state = (TriggerState) data.get(3);
                     drawAbsorber(g,topLeft.getFirst(),topLeft.getSecond(),width,height,state);
                 }
+                else if (type.equals(GameObjectType.PORTAL)){
+                    Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
+                    double radius = (double) data.get(1);
+                    boolean active = (boolean) data.get(2);
+                    drawPortal(g,topLeft.getFirst(),topLeft.getSecond(),radius, active);
+                }
                 //            else if (gameObject instanceof SquareBumper){
                 //                SquareBumper squareBumper = (SquareBumper) gameObject;
                 //                Pair<Double, Double> topLeft = squareBumper.topLeft();
@@ -246,6 +252,13 @@ public class BoardGUI extends JPanel {
 	    }
     	g.setPaint(gp);
     	g.fill(bumper);
+    }
+    
+    private void drawPortal(final Graphics2D g, double x,double y,double r, boolean active){
+        Ellipse2D portal = new Ellipse2D.Double(x, y, 2*r, 2*r);
+        if(active) g.setPaint(Color.BLACK);
+        else g.setPaint(Color.GRAY);
+        g.fill(portal);
     }
     
     private void drawSquareBumper(final Graphics2D g, double x, double y, int s , TriggerState state){

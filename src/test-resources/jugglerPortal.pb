@@ -14,6 +14,8 @@ squareBumper name=Square0 x=0 y=12
   squareBumper name=Square5 x=5 y=12
   squareBumper name=Square6 x=6 y=12
   
+portal name=Portal1 x=10 y=10 otherPortal=Portal2
+portal name=Portal2 x=15 y=10 otherPortal=Portal1
 triangleBumper name=Tri1 x=19 y=3 orientation=90
 
 leftFlipper name = lfA x = 3 y = 8 orientation = 270

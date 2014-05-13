@@ -1,5 +1,6 @@
 package pingball.simulation.gadget;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +12,7 @@ import pingball.simulation.Ball;
 import pingball.simulation.Board;
 import pingball.simulation.Constants;
 import pingball.simulation.GridLocation;
+import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.collidable.Collidable;
 import pingball.simulation.collidable.FixedCircle;
 import pingball.util.Pair;
@@ -159,8 +161,18 @@ public class Portal extends Gadget {
 
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.getRadius(),this.active));
+        return Pair.of(GameObjectType.PORTAL, objData);
+    }
+
+
+    private Pair<Double,Double> topLeft() {
+        return Pair.of((double) this.location.getFirst(),(double) this.location.getSecond());
+     }
+     
+
+    private double getRadius() {
+        return 0.5;
     }
 
     public void find(Set<Portal> portals) {
