@@ -203,17 +203,19 @@ public class Router {
      */
     private synchronized void addUser(String name, Socket socket) {
     	
-    	for(Socket s : mapSocketName.keySet()){
-        	send(s, String.format("onboard %s", name));
-        }
-    	
-    	for(String board : mapSocketName.valueSet()){
-    		send(socket, String.format("onboard %s", board));
-    	}
     	
     	if( !mapSocketName.containsReverse(name) ) {
+            
+            for(Socket s : mapSocketName.keySet()){
+                send(s, String.format("onboard %s", name));
+            }
+            
+            for(String board : mapSocketName.valueSet()){
+                send(socket, String.format("onboard %s", board));
+            }
+            
             mapSocketName.putForward(socket, name);
-        }
+    	}
         
         checkRep();
     }
