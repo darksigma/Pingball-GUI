@@ -13,13 +13,13 @@ import pingball.simulation.Board;
 import pingball.simulation.Constants;
 import pingball.simulation.GridLocation;
 import pingball.simulation.gadget.Absorber;
+import pingball.simulation.gadget.BallSpawner;
 import pingball.simulation.gadget.CircleBumper;
 import pingball.simulation.gadget.Flipper;
 import pingball.simulation.gadget.Gadget;
 import pingball.simulation.gadget.Portal;
 import pingball.simulation.gadget.SquareBumper;
 import pingball.simulation.gadget.TriangleBumper;
-import pingball.util.StringUtils;
 
 public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 
@@ -269,17 +269,14 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 		String startPortal = ctx.NAME(0).getText();
 		int x = Double.valueOf(ctx.FLOAT(0).getText()).intValue();
 		int y = Double.valueOf(ctx.FLOAT(1).getText()).intValue();
-		String endBoard = "";
 		String endPortal = ctx.NAME(1).getText();
 	
 		Portal p;	
 		if(this.portalOtherBoard){
 			p = new Portal(gameBoard, startPortal, new GridLocation(x, y), this.otherBoardName, endPortal, false);
-			endBoard = this.otherBoardName;
 		}
 		else{
 			p = new Portal(gameBoard, startPortal, new GridLocation(x, y), this.username, endPortal, true);
-			endBoard = this.username;
 		}
 		
 		gameBoard.addPortal(p);
