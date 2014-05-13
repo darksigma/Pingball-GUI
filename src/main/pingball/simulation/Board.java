@@ -344,27 +344,21 @@ public class Board {
           String key = split[1];
           triggerKeyDown(key);  
         } else if (message.matches(boardOnServermsg)){
-        	System.out.println(message);
-        	String boardName = split[1];
-        	for(GameObject g : gameObjects){
-        		if(g instanceof Portal){
-        			Portal p = (Portal) g;
-        			if(boardName.equals(p.getOtherBoard())){
-        				p.activate();
-        			}
-        		}
-        	}
+            System.out.println(message);
+            String boardName = split[1];
+            for(Portal p: portals){
+                if(boardName.equals(p.getOtherBoard())){
+                    p.activate();
+                }
+            }
         } else if (message.matches(boardNotOnServermsg)) {
-        	System.out.println(message);
-        	String boardName = split[1];
-        	for(GameObject g : gameObjects){
-        		if(g instanceof Portal){
-        			Portal p = (Portal) g;
-        			if(boardName.equals(p.getOtherBoard())){
-        				p.deactivate();
-        			}
-        		}
-        	}
+            System.out.println(message);
+            String boardName = split[1];
+            for(Portal p:portals){
+                if(boardName.equals(p.getOtherBoard())){
+                    p.deactivate();
+                }
+            }
         } else if (message.matches(portalBallmsg)){
           String ballName = split[1];
           double x = parseDouble(split[2]), y = parseDouble(split[3]),
