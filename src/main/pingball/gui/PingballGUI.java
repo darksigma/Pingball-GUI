@@ -22,8 +22,9 @@ import pingball.model.PingballModel;
 /**
  * This class represents the VIEW of our Model-View-Controller. Here, we implement
  * changes based on user input (choosing the pingball file, starting, restarting, 
- * pausing, port/host). This will contain the board that the user can see and play
- * with. The board is represented as a BoardGUI JPanel.
+ * pausing, resuming, exiting, selecting port/host). 
+ * This will contain the board that the user can see and play with. 
+ * The board is represented as a BoardGUI JPanel.
  * 
  * This class will update the GUI at each time frame, based on changes to the
  * model. These updates will be made by using a Timer. Buttons can start, pause or stop the timer.
@@ -119,21 +120,21 @@ public class PingballGUI extends JFrame {
         exitButton.setText("Exit");
         exitButton.setEnabled(false);      
         
+        //File chooser and open file button and label
         openfileButton = new JButton();
         openfileButton.setName("openfileButton");
         openfileButton.setText("Open File");
         selectFile = new JLabel();
         selectFile.setName("selectFile");
         selectFile.setText("Select File :");
-        
         fc = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "Pingball Boards", "txt", "pb");
         fc.setFileFilter(filter);
-        //textfield and labels: set the host/port, display the host/port (is this necessary?)
+
+        //Set port and host textfields, labels, buttons, displays
         setPort = new JTextField();
         setPort.setName("setPort");
-        //setPort.setText("10987");
         port = new JLabel();
         port.setText("Port: ");
         portButton = new JButton();
@@ -158,10 +159,12 @@ public class PingballGUI extends JFrame {
         if(pingballModel.isHostSet()) displayHost.setText("Host: "+pingballModel.getHostName());
         else displayHost.setText("Host: ");
         
+        //displays message based on connectivity mode
         isConnected = new JLabel();
         isConnected.setName("isConnected");
         isConnected.setText("Welcome to Pingball!");
         
+        //JPanel with game displayed
         boardGUI = new BoardGUI(pingballModel,10);
         fileName = new JLabel();
         if(pingballModel.isFileSet()) {
@@ -173,13 +176,14 @@ public class PingballGUI extends JFrame {
         else fileName.setText("File Name: ");
         
         
-        taskPerformer = new ActionListener() {
-            
+        /**
+         * Timer method to update board and GUI every frame
+         */
+        taskPerformer = new ActionListener() {            
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                pingballModel.evolveFrame();
-                //TODO: Remove console output at end
-                pingballModel.consoleOutput();
+                pingballModel.evolveFrame();             
+                pingballModel.consoleOutput(); //displays output in console
                 boardGUI.updateFrame();
                 if(pingballModel.isConnected()){
                 	if(pingballModel.isRunning()){
@@ -200,13 +204,12 @@ public class PingballGUI extends JFrame {
         };
         timer = new MyTimer(delay,taskPerformer);
     
+        //sets the layout of GUI
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        Container cp = this.getContentPane();
-        
+        Container cp = this.getContentPane();        
         GroupLayout layout = new GroupLayout(cp);
         cp.setLayout(layout);
-        // get some margins around components by default
-        layout.setAutoCreateContainerGaps(true);
+        layout.setAutoCreateContainerGaps(true); //default margins
         layout.setAutoCreateGaps(true);
         
         layout.setHorizontalGroup(
@@ -269,9 +272,12 @@ public class PingballGUI extends JFrame {
         
         this.pack();
         
-        
+        /**
+         * Opens file chooser when user clicks button to open a game file.
+         * Updates the label to show the chosen file. Allows user to start game
+         * once file is chosen.
+         */
         openfileButton.addActionListener(new ActionListener(){
-
         	@Override
             public void actionPerformed(ActionEvent e) {
                 int returnVal = fc.showOpenDialog(PingballGUI.this);
@@ -280,7 +286,6 @@ public class PingballGUI extends JFrame {
                     try {
                         pingballModel.setFile(openFile);
                     } catch (IOException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                     fileName.setText("File Name: ".concat(openFile.getName()));
@@ -292,30 +297,43 @@ public class PingballGUI extends JFrame {
             }
         });
 
+        /**
+         * Sets the hostnmae to user input in textfield when user clicks the button to 
+         * enter host.
+         * Calls the helper method to update host.
+         * If no host is given or an invalid host is given, game is set to 
+         * single-player mode
+         */
         setHost.addActionListener(new ActionListener(){
         	
         	@Override
         	public void actionPerformed(ActionEvent e){
-        		String hostname = setHost.getText();
-        		pingballModel.setHost(hostname);
-        		setPort.requestFocus(true);
-        		displayHost.setText("Host: ".concat(hostname));
-        		System.out.println(hostname);
+        		updateHost();
         	}
+
+			
         });
         
+        /**
+         * Sets the hostnmae to user input in textfield when user clicks the button to 
+         * enter host.
+         * Calls the helper method to update host.
+         * If no host is given or an invalid host is given, game is set to 
+         * single-player mode
+         */
         hostButton.addActionListener(new ActionListener(){
         	
         	@Override
         	public void actionPerformed(ActionEvent e){
-        		String hostname = setHost.getText();
-        		pingballModel.setHost(hostname);
-        		setPort.requestFocus(true);
-        		displayHost.setText("Host: ".concat(hostname));
-        		System.out.println(hostname);
+        		updateHost();
         	}
         });
         
+        /**
+         * Sets the port number to user input in textfield when user hits Enter/Return.
+         * Calls the helper method to update the port.
+         * If no port or an invalid port is given, it defaults to '10987'.
+         */
         setPort.addActionListener(new ActionListener(){
         	
         	@Override
@@ -325,6 +343,11 @@ public class PingballGUI extends JFrame {
         	}
         });
         
+        /**
+         * Sets the port number to user input in textfield when user clicks the enter port button.
+         * Calls the helper method to update the port.
+         * If no port or an invalid port is given, it defaults to '10987'.
+         */
         portButton.addActionListener(new ActionListener(){
         	
         	@Override
@@ -334,64 +357,89 @@ public class PingballGUI extends JFrame {
         	}
         });
         
+        /**
+         * Starts the timer and game when the user clicks Start button.
+         * Allows the user to also click pause, restart, and exit.
+         * Disallows the user to set the file, host, port, or hit start and resume.
+         */
         startButton.addActionListener(new ActionListener(){
         	@Override
         	public void actionPerformed(ActionEvent arg0) {
-        		//Put this in swingUtils.invokeLater ?
         		timer.start();
-        		//LOCK other buttons
+        		//LOCK and UNLOCK other buttons
         		setPort.setEnabled(false);
         		setHost.setEnabled(false);
         		openfileButton.setEnabled(false);
-        		startButton.setEnabled(false);
-        		
+        		startButton.setEnabled(false);        		
         		pauseButton.setEnabled(true);
         		restartButton.setEnabled(true);
+        		exitButton.setEnabled(true);
         		
         		boardGUI.requestFocus(true);
         	}
         });
 
+        /**
+         * Pauses the timer/game, disconnecting the user from server mode
+         * if the user was originally in server mode. Otherwise, user stays
+         * in single-player mode.
+         * Enables the user to resume the game.
+         */
         pauseButton.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 timer.pause();
-               //UNLOCK BUTTONS?
+               //lock and unlock other buttons
                 pauseButton.setEnabled(false);
                 resumeButton.setEnabled(true);
             }
         });
 
+        /**
+         * Resumes the timer/game, re-connecting the user to server mode if
+         * the user was originally in server mode. Otherwise, the user stays
+         * in single-player mode.
+         * Engables the user to pause the game.
+         */
         resumeButton.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 timer.resume();
-               //UNLOCK BUTTONS?
+               //lock and unlock other buttons
                 pauseButton.setEnabled(true);
                 resumeButton.setEnabled(false);
             }
         });
 
+        /**
+         * Restarts the timer/game and reconnects the user to the server, if in server mode.
+         * Re-loads and starts the game file in the BoardGUI display
+         */
         restartButton.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
                timer.restart();
-               //UNLOCK BUTTONS?
+               //Unlock and lock buttons
                pauseButton.setEnabled(true);
                resumeButton.setEnabled(false);
                startButton.setEnabled(false);
             }
         });
         
+        /**
+         * Stops the timer/game and clears the BoardGUI display, host, and port
+         * Enables the user to choose a new file and play a new game.
+         */
         exitButton.addActionListener(new ActionListener(){
         	@Override
         	public void actionPerformed(ActionEvent e){
         		timer.stop();
-        		//UNLOCK buttons
         		boardGUI.updateFrame();
+        		
+        		//unlock and lock other buttons
         		setHost.setEnabled(true);
         		setPort.setEnabled(true);
         		openfileButton.setEnabled(true);
@@ -401,6 +449,7 @@ public class PingballGUI extends JFrame {
         		restartButton.setEnabled(false);
         		exitButton.setEnabled(false);
         		openfileButton.requestFocus(true);
+        		
         		fileName.setText("File Name: ");
         		displayHost.setText("Host: ");
         		displayPort.setText("Port: 10987");
@@ -408,10 +457,25 @@ public class PingballGUI extends JFrame {
         		
         	}
         });
-        
-           //timer.start();
     }
     
+    /**
+     * Helper method to update and display the host based on user's input in textfield.
+     */
+    private void updateHost() {
+    	String hostname = setHost.getText();
+		pingballModel.setHost(hostname);
+		setPort.requestFocus(true);
+		displayHost.setText("Host: ".concat(hostname));
+		System.out.println(hostname);
+		
+	}
+    
+    /**
+     * Helper method to update and display the port number based on user's input in textfield.
+     * If the port number is invalid, a message dialog is generated, giving message
+     * "Invalid port number."
+     */
     private void updatePort() {
 		try{
 			int portNum = Integer.valueOf(setPort.getText());
@@ -429,6 +493,9 @@ public class PingballGUI extends JFrame {
 		startButton.requestFocus(true);
 	}
     
+    /**
+     * main method to run the GUI.
+     */
     public static void main(final String[] args) {
         // set up the UI (on the event-handling thread)
         SwingUtilities.invokeLater(new Runnable() {
@@ -437,7 +504,6 @@ public class PingballGUI extends JFrame {
                 try {
                     main = new PingballGUI(args);
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 main.setVisible(true);
