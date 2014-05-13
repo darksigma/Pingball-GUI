@@ -28,4 +28,4 @@ fire trigger=Abs1 action=lfA
 fire trigger=Abs1 action=rfA
 fire trigger=Abs1 action=Abs1
 
-ballspawner name=Spawner1 x=10 y=10
+ballSpawner name=Spawner1 x=10 y=10
