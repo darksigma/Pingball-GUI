@@ -28,6 +28,7 @@ triangleBumper name = triB x = 5 y = 9 orientation = 270
 circleBumper name = circX x = 13 y = 3
 
 leftFlipper name = lfA x = 8 y = 3 orientation = 0
+rightFlipper name = rfA x = 10 y = 2 orientation = 0
 
 circleBumper name = circA x = 15 y = 12
 
@@ -177,8 +178,8 @@ keydown key = b action = lfA
 keydown key = n action = lfA
 keydown key = m action = lfA
 
-keydown key = shift action = sqE
-keyup key = shift action = sqE
+keydown key = shift action = rfA
+keyup key = shift action = rfA
 keydown key = space action = triA
 keyup key = space action = triA
 keydown key = enter action = circA

@@ -350,6 +350,12 @@ public class PingballGUI extends JFrame {
         		setHost.setEnabled(true);
         		setPort.setEnabled(true);
         		openfileButton.setEnabled(true);
+        		startButton.setEnabled(false);
+        		pauseButton.setEnabled(false);
+        		resumeButton.setEnabled(false);
+        		
+        		openfileButton.requestFocus(true);
+        		fileName.setText("File Name: ");
         		
         	}
         });

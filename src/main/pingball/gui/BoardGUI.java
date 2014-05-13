@@ -320,40 +320,46 @@ public class BoardGUI extends JPanel {
             wall = new Rectangle2D.Double(x, y, 1.0, dimension);
         }
     	
-        g.setPaint(Color.GRAY);
+        g.setPaint(Color.BLACK);
         g.fill(wall);
-    	FontMetrics fm = g.getFontMetrics();
+    	//FontMetrics fm = g.getFontMetrics();
+    	Rectangle2D transwall;
+
     	if (connected){
 
     	    if(side.equals(Side.TOP)){
-    	        wall = new Rectangle2D.Double(x, y, dimension, 1.0);
-    	        g.setPaint(Color.BLUE);
-    	        g.fill(wall);
+    	    	transwall = new Rectangle2D.Double(0, -1, 20, 1.0);
+    	    	g.setPaint(Color.GRAY);
+    	        g.fill(transwall);
     	        Font f = new Font("Serif", Font.PLAIN, 1);
     	        g.setFont(f);
     	        g.setPaint(Color.BLACK);
-    	        g.drawString(connectedBoardName, (int)(10 - connectedBoardName.length()/2), 0);
+    	        FontMetrics fm = g.getFontMetrics();
+	        	int width = fm.stringWidth(connectedBoardName);
+    	        g.drawString(connectedBoardName, (float)(10.0 - width / 2.0), (float)-0.3);
     	    }
 
     	    if(side.equals(Side.BOTTOM)){
-    	        wall = new Rectangle2D.Double(x, y, dimension, 1.0);
-    	        g.setPaint(Color.BLUE);
-    	        g.fill(wall);
+    	    	transwall = new Rectangle2D.Double(0, 20, 20, 1.0);
+    	    	g.setPaint(Color.GRAY);
+    	        g.fill(transwall);
     	        Font f = new Font("Serif", Font.PLAIN, 1);
     	        g.setFont(f);
     	        g.setPaint(Color.BLACK);
-    	        g.drawString(connectedBoardName, (int)(10 - connectedBoardName.length()/2), 21);
+    	        FontMetrics fm = g.getFontMetrics();
+	        	int width = fm.stringWidth(connectedBoardName);
+    	        g.drawString(connectedBoardName, (float)(10.0 - width / 2.0), (float)20.7);
     	    }
 
     	    if(side.equals(Side.RIGHT)){
-                wall = new Rectangle2D.Double(x, y, 1.0, dimension);
-                g.setPaint(Color.BLUE);
-                g.fill(wall);
+    	    	transwall = new Rectangle2D.Double(20, 0, 1.0, 20);
+    	    	g.setPaint(Color.GRAY);
+    	        g.fill(transwall);
                 g.setPaint(Color.BLACK);
                 Font f = new Font("Serif", Font.PLAIN, 1);
     	        g.setFont(f);
-                int curX = 20;
-    	        int curY = (int)(10 - connectedBoardName.length()/2);
+                float curX = (float) 20.1;
+    	        float curY = (float)(10.0 - connectedBoardName.length()/2.0);
     	        for(Character c : connectedBoardName.toCharArray()){
     	            g.drawString(c.toString(), curX, curY);
     	            curY += 1;
@@ -361,16 +367,18 @@ public class BoardGUI extends JPanel {
     	    }
 
     	    if(side.equals(Side.LEFT)){
-                wall = new Rectangle2D.Double(x, y, 1.0, dimension);
-                g.setPaint(Color.BLUE);
-                g.fill(wall);
+    	    	transwall = new Rectangle2D.Double(-1, 0, 1.0, 20);
+    	    	g.setPaint(Color.GRAY);
+    	        g.fill(transwall);
                 g.setPaint(Color.BLACK);
                 Font f = new Font("Serif", Font.PLAIN, 1);
     	        g.setFont(f);
-                int curX = -1;
-    	        int curY = (int)(10 - connectedBoardName.length()/2);
+                float curX = (float) -0.9;
+    	        float curY = (float)(10.0 - connectedBoardName.length()/2.0);
     	        for(Character c : connectedBoardName.toCharArray()){
-    	            g.drawString(c.toString(), curX, curY);
+    	        	//FontMetrics fm = g.getFontMetrics();
+    	        	//int width = fm.charWidth(c);
+    	            g.drawString(c.toString(), curX , curY);
     	            curY += 1;
     	        }
     	    }
