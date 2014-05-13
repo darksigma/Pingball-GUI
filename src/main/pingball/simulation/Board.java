@@ -305,6 +305,8 @@ public class Board {
         String ballmsg = "^ball [A-Za-z_][A-Za-z_0-9]* (left|right|top|bottom)( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4}$";
         String keyUpmsg = "^keyup [a-z0-9]+";
         String keyDownmsg = "^keydown [a-z0-9]+";
+        String boardOnServermsg = "^onboard [A-Za-z_][A-Za-z_0-9]*";
+        String boardNotOnServermsg = "^notonboard [A-Za-z_][A-Za-z_0-9]*";
         if (message.matches(connectmsg)) {
             connectWall(Wall.Side.fromString(split[1]), split[2]);
         } else if (message.matches(disconnectmsg)) {
@@ -332,6 +334,26 @@ public class Board {
         } else if (message.matches(keyDownmsg)){
           String key = split[1];
           triggerKeyDown(key);  
+        } else if (message.matches(boardOnServermsg)){
+        	String boardName = split[1];
+        	for(GameObject g : gameObjects){
+        		if(g instanceof Portal){
+        			Portal p = (Portal) g;
+        			if(boardName.equals(p.getOtherBoard())){
+        				p.activate();
+        			}
+        		}
+        	}
+        } else if (message.matches(boardNotOnServermsg)) {
+        	String boardName = split[1];
+        	for(GameObject g : gameObjects){
+        		if(g instanceof Portal){
+        			Portal p = (Portal) g;
+        			if(boardName.equals(p.getOtherBoard())){
+        				p.deactivate();
+        			}
+        		}
+        	}
         } else {
             System.err.println("ignoring invalid message from server");
         }
