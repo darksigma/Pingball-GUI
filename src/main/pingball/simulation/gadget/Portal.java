@@ -25,16 +25,25 @@ import pingball.util.Pair;
  */
 public class Portal extends Gadget {
     
-    //private final List<String> representation;
-    
     private final boolean thisBoard;
-    private boolean active = false;
 	private final String otherBoard;
 	private final String otherPortal;
-	private BlockingQueue<String> sendQueue;
-	private Vect transferLoc;
-    private final List<String> representation;
 
+    private final List<String> representation;
+	private BlockingQueue<String> sendQueue;
+	
+	private boolean active = false;
+	private Vect transferLoc;
+    
+    /**
+     * Creates a portal
+     * @param board The board on which the portal is.
+     * @param name The name of this portal.
+     * @param location The grid locaiton of the top left corner of the portal.
+     * @param otherBoard The name of the of the otherBoard which has the connected portal.
+     * @param otherPortal The name of the portal to which this portal is connected
+     * @param thisBoard Whether the connected portal is on this board.
+     */
     public Portal(Board board, String name, GridLocation location, String otherBoard, String otherPortal, boolean thisBoard ) {
         super(board, name, location, Constants.PORTAL_REFLECTION_COEFF);
         collidables.add(new FixedCircle(location.toVect().plus(new Vect(0.5,0.5)), 0.5, reflectionCoeff));
@@ -53,13 +62,25 @@ public class Portal extends Gadget {
         return location.x() >= 0 && location.x() < board.getWidth() && 
                location.y() >= 0 && location.y() < board.getHeight();         
     }
-
+    
+    /**
+     * Performs the action of this circular bumper.
+     * 
+     * Portals have no action, so this does nothing.
+     */
     @Override
     public void action() {
-        // TODO Auto-generated method stub
-        
+        //Do nothing
     }
 
+
+    /**
+     * Returns a list of strings for the string representation of the circular bumper.
+     * 
+     * Grid representation of the portal is "0".
+     * 
+     * @return The grid representation
+     */
     @Override public List<String> gridRepresentation() {
         assert(checkRep());
         return representation;

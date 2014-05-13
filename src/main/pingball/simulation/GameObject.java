@@ -14,6 +14,10 @@ import pingball.simulation.collidable.Collidable;
  */
 public abstract class GameObject {
     
+    /**
+     * An enum to represent the type of the game object. 
+     *
+     */
     public enum GameObjectType {
         BALL,
         WALL,
@@ -91,12 +95,16 @@ public abstract class GameObject {
         return Pair.of(minTime,collidesWith);
     }
     
+    /**
+     * Returns all the data about the current state of the game object.
+     * @return The object data
+     */
     public abstract Pair<GameObjectType,List<Object>> getObjectData();
     
-    //By default, nothing. Overriden in gadget
+    /**
+     * Resets the trigger state of the game object to not triggered.
+     */
     public void deTrigger() {
-        // TODO Auto-generated method stub
-        
     }
 
 }

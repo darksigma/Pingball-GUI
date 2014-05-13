@@ -71,7 +71,7 @@ public class CircleBumper extends Gadget {
         assert(checkRep());
         return representation;
     }
-
+    
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
         List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.getRadius(),this.triggerState));

@@ -128,12 +128,12 @@ public class PingballModel {
         }
     }
     
-    //VERY UNSAFE
-//    public synchronized Set<GameObject> getGameObjects(){
-//        if(board!=null) return this.board.getGameObjects();
-//        else return new HashSet<GameObject>();
-//    }
-
+    /**
+     * Returns all the data for the current state of all the game objects on the board.
+     * 
+     * Each data entry has the type of the game object and data representing its current state.
+     * @return The data of all the objects 
+     */
     public synchronized List<Pair<GameObjectType, List<Object>>> getObjectData(){
         List<Pair<GameObjectType,List<Object>>> objectData = new ArrayList<>();
         if(board!=null) {
@@ -144,8 +144,9 @@ public class PingballModel {
         return objectData;
     }
     
-    
-    //TODO Remove at end
+    /**
+     * Shows the current state of the board in the console.
+     */
     public synchronized void consoleOutput(){
         if(board!=null){
             List<String> representation = board.gridRepresentation();
@@ -155,12 +156,10 @@ public class PingballModel {
         }
     }
     
-    private boolean isReady() {
-        return file!=null;
-    }
-    
-    
-    //Set's up game, assumes is ready
+    /**
+     * Sets up the pingball game. Assumes game is ready to be set up.
+     * @throws IOException
+     */
     private void setup() throws IOException {
         modelSendQueue = new LinkedBlockingQueue<>();
         modelReceiveQueue = new LinkedBlockingQueue<>();
@@ -168,6 +167,9 @@ public class PingballModel {
         startServerConnection();  
     }
     
+    /**
+     * Connects the client to the server.
+     */
     private void startServerConnection() {
         if (host != null) {
             try {
@@ -177,16 +179,99 @@ public class PingballModel {
                 receiver.start();
                 Thread sender = new Thread(new Sender(socket, modelSendQueue));
                 sender.start();
-                //mainLoop(board, receiveQueue);
-//                receiver.join();
-//                sender.join();
             }
            catch (IOException e) {
-                //e.printStackTrace();
+             
             }
         } 
     }
+    
+    /**
+     * Disconnects the client from the server.
+     * Disconnects all the connected walls and portals as well, if any.
+     */
+    private void endServerConnection(){
+        if(socket!=null){
+            try {
+                socket.close();
+            } catch (IOException e) {
+                System.out.println("Coudn't end connection");
+                e.printStackTrace();
+            }
+        }
+        this.connected = false;
+        sendMessage("disconnect left");
+        sendMessage("disconnect right");
+        sendMessage("disconnect top");
+        sendMessage("disconnect bottom");
+        sendMessage("portalSelfOnly");
+    }
+    
+    /**
+     * Return if the pingball model is ready to start.
+     * @return true if model is ready to start, false otherwise.
+     */
+    private boolean isReady() {
+        return file!=null;
+    }
+    
+    /**
+     * Starts the pingball model. 
+     * @return true if model was ready to start, false otherwise
+     * @throws IOException
+     */
+    public synchronized boolean start() throws IOException {
+        boolean ready = isReady();
+        if(ready){
+            this.setup();
+            this.running = true;
+        }
+        return ready;
+    }
+    
+    /**
+     * Pause the pingball client.
+     * Pausing the client will disconnect it from the server.
+     */
+    public synchronized void pause() {
+        endServerConnection();
+        
+        this.running = false;
+    }
+    
+    /**
+     * Resume the pingball client.
+     * Resuming the client reconnects it to the server. 
+     * Note: Server does not automatically rejoin old walls, as this is a new connection.
+     */
+    public synchronized void resume() {
+        startServerConnection();
+        this.running = true;
+    }
+    
+    /**
+     * Restarts the pingball model. 
+     * 
+     * Starts the pingball model again with same file, host, port.
+     * Restarting disconnects the client from the server and reconnects again.
+     * Note: Server does not automatically rejoin old walls, as this is a new connection.
+     * @throws IOException
+     */
+    public synchronized void restart() throws IOException {
+        endServerConnection();
+        this.start();
+    }
 
+    /**
+     * Stops the pingball client completely.
+     * Resets file, host and port to defaults.
+     */
+    public synchronized void stop(){
+        endServerConnection();
+        unsetup();
+    }
+    
+    
     public synchronized void setFile(File _file) throws IOException{
         this.file = _file;
         modelSendQueue = new LinkedBlockingQueue<>();
@@ -228,47 +313,30 @@ public class PingballModel {
     public synchronized int getPort() {
         return port;
     }
-    
-    //start will start the model, called only if ready
-    public synchronized boolean start() throws IOException {
-        boolean ready = isReady();
-        if(ready){
-            this.setup();
-            this.running = true;
-        }
-        return ready;
-    }
-    
-    //Pause will disconnect this client from server.
-    public synchronized void pause() {
-        endServerConnection();
-        
-        this.running = false;
-    }
-    
-    //
-    public synchronized void resume() {
-        startServerConnection();
-        this.running = true;
-    }
-    //Restart will restart the model
-    public synchronized void restart() throws IOException {
-        //send restart message
-        endServerConnection();
-        //don't unsetup
-        this.start();
-    }
 
-    public synchronized void stop(){
-        endServerConnection();
-        unsetup();
-        //this.
-    }
-    
     public synchronized boolean isValidPort(Integer port){
         return !(port < 0 || port > 65535);
     }
+
+    /**
+     * Returns whether the pingball client is connected to the server.
+     * @return true if successfully connected, false otherwise.
+     */
+    public synchronized boolean isConnected() {
+        return this.connected;
+    }
+
+    /**
+     * Returns whether the pingball model is currently running.
+     * @return true if running, false otherwise.
+     */
+    public synchronized boolean isRunning() {
+        return this.running;
+    }
     
+    /**
+     * Resets all the fields to thier default values.
+     */
     private void unsetup() {
         running = false;
         
@@ -288,28 +356,12 @@ public class PingballModel {
         socket = null;
     }
 
-    private void endServerConnection(){
-        if(socket!=null){
-            try {
-                socket.close();
-            } catch (IOException e) {
-                System.out.println("Coudn't end connection");
-                e.printStackTrace();
-            }
-        }
-        this.connected = false;
-        sendMessage("disconnect left");
-        sendMessage("disconnect right");
-        sendMessage("disconnect top");
-        sendMessage("disconnect bottom");
-        sendMessage("portalSelfOnly");
-    }
-    /*
-     * Is used by GUI listeners to send a message to the model.
-     * Messages can be key press messages etc
-     * 
+
+    /**
+     * Send a message to the model.
+     * Message can be a key press etc.
+     * @param message the message to be sent to this model
      */
-    
     public synchronized void sendMessage(String message) {
         try {
         	if(modelReceiveQueue != null){
@@ -393,12 +445,5 @@ public class PingballModel {
 
     }
 
-	public synchronized boolean isConnected() {
-		// TODO Auto-generated method stub
-		return this.connected;
-	}
 
-	public synchronized boolean isRunning() {
-		return this.running;
-	}
 }

@@ -47,6 +47,10 @@ public abstract class Gadget extends GameObject {
         }
     }
     
+    /**
+     * An enum to represent whether the gadget was triggered in the current frame. 
+     *      
+     */
     public enum TriggerState {
         TRIGGERED,
         UNTRIGGERED;
@@ -147,6 +151,9 @@ public abstract class Gadget extends GameObject {
         return name;
     }
     
+    /**
+     * Resets the trigger state of this gadget to not triggered.
+     */
     @Override
     public void deTrigger(){
         this.triggerState = TriggerState.UNTRIGGERED;
