@@ -250,14 +250,9 @@ public class BoardGUI extends JPanel {
     
     private void drawBallSpawner(final Graphics2D g, double x,double y,double r, TriggerState state){
         Ellipse2D bumper = new Ellipse2D.Double(x, y, 2*r, 2*r);
-        GradientPaint gp;
-        if (state == TriggerState.TRIGGERED){
-            gp = new GradientPaint((int)x, (int)y,Color.cyan.darker(),(int)(x +2*r), (int)(y +2*r),Color.cyan.darker());
-        } else{
-            gp = new GradientPaint((int)x, (int)y,Color.cyan,(int)(x +2*r), (int)(y +2*r),Color.cyan);
-        }
-        g.setPaint(gp);
-        g.fill(bumper);
+        g.setPaint(Color.BLUE);
+    	g.setStroke(new BasicStroke(0.10f));
+        g.draw(bumper);
     }
     
     private void drawPortal(final Graphics2D g, double x,double y,double r, boolean active){
@@ -296,8 +291,7 @@ public class BoardGUI extends JPanel {
         Point2D pend1 = new Point2D.Double(end1.getFirst(), end1.getSecond());
         Point2D pend2 = new Point2D.Double(end2.getFirst(), end2.getSecond());
         Line2D flipper = new Line2D.Double(pend1,pend2);
-    	GradientPaint gp = new GradientPaint(0f,0f,Color.PINK,0f,30f,Color.MAGENTA);
-    	g.setPaint(gp);
+    	g.setPaint(Color.MAGENTA);
     	g.setStroke(new BasicStroke(0.10f));
     	g.draw(flipper);
     }
