@@ -1,11 +1,18 @@
 package pingball.simulation.gadget;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.BlockingQueue;
 
+import physics.Vect;
 import pingball.simulation.Ball;
 import pingball.simulation.Board;
+import pingball.simulation.Constants;
 import pingball.simulation.GridLocation;
 import pingball.simulation.collidable.Collidable;
+import pingball.simulation.collidable.FixedCircle;
 import pingball.util.Pair;
 
 
@@ -18,25 +25,31 @@ public class Portal extends Gadget {
     
     //private final List<String> representation;
     
-    private boolean active;
-	private String otherBoard;
-	private String otherPortal;
+    private final boolean thisBoard;
+    private boolean active = false;
+	private final String otherBoard;
+	private final String otherPortal;
+	private BlockingQueue<String> sendQueue;
+	private Vect transferLoc;
+    private final List<String> representation;
 
-    public Portal(Board board, String name, GridLocation location, double reflectionCoeff, String otherBoard, String otherPortal, boolean thisBoard ) {
-        super(board, name, location, reflectionCoeff);
+    public Portal(Board board, String name, GridLocation location, String otherBoard, String otherPortal, boolean thisBoard ) {
+        super(board, name, location, Constants.PORTAL_REFLECTION_COEFF);
+        collidables.add(new FixedCircle(location.toVect().plus(new Vect(0.5,0.5)), 0.5, reflectionCoeff));
         this.otherBoard = otherBoard;
         this.otherPortal = otherPortal;
-        if(thisBoard){
-        	this.active = true;
-        } else {
-        	this.active = false;
-        }
+        this.thisBoard = thisBoard;
+        representation = Collections.unmodifiableList(Arrays.asList("0"));
         // TODO Auto-generated constructor stub
     }
-
-    private boolean checkRep() {
-        // TODO Auto-generated method stub
-        return false;
+    
+    /**
+     * Check the rep-invariant of this object
+     * @return whether the rep is ok
+     */
+    public boolean checkRep() {
+        return location.x() >= 0 && location.x() < board.getWidth() && 
+               location.y() >= 0 && location.y() < board.getHeight();         
     }
 
     @Override
@@ -45,10 +58,9 @@ public class Portal extends Gadget {
         
     }
 
-    @Override
-    public List<String> gridRepresentation() {
-        // TODO Auto-generated method stub
-        return null;
+    @Override public List<String> gridRepresentation() {
+        assert(checkRep());
+        return representation;
     }
     
     /**
@@ -56,8 +68,60 @@ public class Portal extends Gadget {
      */
     @Override 
     public void collide(Ball ball, Collidable collidable) {
-        
+        if (active) {
+            if(thisBoard){
+                ball.setCenter(transferLoc);
+            }
+            else{
+                Vect center = ball.getCircle().getCircle().getCenter();
+                Vect velocity = ball.getVelocity();
+                try {
+                    board.removeBall(ball);
+                    sendQueue.put(String.format("portalball %s %f %f %f %f %s",ball.getName(), center.x(), center.y(),
+                            velocity.x(), velocity.y(), otherPortal));
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } 
+        }
+        this.trigger();
     }
+    
+    /**
+     * Returns the minimum time after which the ball will collide with 
+     * some collidable in this game object, and also returns the collidable 
+     * with which it will collide. 
+     * 
+     * @param ball The ball that will collide
+     * @return The pair of the minimum time and the collidable with which 
+     *          the ball will collide after that time. 
+     */
+    @Override public Pair<Double, Collidable> timeUntilCollision(Ball ball) {
+        if( !isBallInside(ball) ) {
+            assert(checkRep());
+            return super.timeUntilCollision(ball);
+        } else {
+            assert(checkRep());
+            return Pair.of(Double.POSITIVE_INFINITY, null);
+        }
+    }
+    
+    /**
+     * Returns whether ball is inside the portal
+     * @param ball The ball to check
+     * @return true if ball is inside, false otherwise (false only if whole ball has left the portal)
+     */
+    private boolean isBallInside(Ball ball) {
+        Vect ballCenter = ball.getCircle().getCircle().getCenter();
+        Double ballX = ballCenter.x();
+        Double ballY = ballCenter.y();
+        Double radius = ball.getCircle().getCircle().getRadius();
+        Double centerX = this.location.x()+0.5;
+        Double centerY = this.location.y()+0.5;
+        assert(checkRep());
+        return ((ballX-centerX)*(ballX-centerX)+(ballY-centerY)*(ballY-centerY)) < ((0.5+radius)*(0.5+radius));
+    }    
     /**
      * Connect the portal to a particular portal on a particular board. 
      * In special case, this will be the same board.
@@ -97,5 +161,21 @@ public class Portal extends Gadget {
     public Pair<GameObjectType, List<Object>> getObjectData() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public void find(Set<Portal> portals) {
+        if(thisBoard){
+            for(Portal portal: portals){
+                if(portal.getName().equals(otherPortal)){
+                    this.active = true;
+                    this.transferLoc = new Vect(portal.location.x()+0.5, portal.location.y()+0.5);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void setQueue(BlockingQueue<String> sendQueue) {
+     this.sendQueue = sendQueue;   
     }
 }

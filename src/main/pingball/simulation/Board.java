@@ -45,7 +45,11 @@ public class Board {
     private String name;
 
     private final Set<Ball> balls = new HashSet<>();
-
+    
+    private final Set<Portal> portals = new HashSet<>();
+    
+ //   private final Map<String,Portal> portalNameMap = new HashMap<>();
+    
     private final Set<GameObject> gameObjects = new HashSet<>();
 
     private final Map<String,List<Gadget>> keyUpMap = new HashMap<>(); 
@@ -92,6 +96,10 @@ public class Board {
             e.printStackTrace();
         }
         hello();
+        for(Portal portal: portals){
+            portal.find(portals);
+            portal.setQueue(sendQueue);
+        }
     }
     
     /**
@@ -307,6 +315,7 @@ public class Board {
         String keyDownmsg = "^keydown [a-z0-9]+";
         String boardOnServermsg = "^onboard [A-Za-z_][A-Za-z_0-9]*";
         String boardNotOnServermsg = "^notonboard [A-Za-z_][A-Za-z_0-9]*";
+        String portalBallmsg = "^portalball [A-Za-z_][A-Za-z_0-9]* ( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4} [A-Za-z_][A-Za-z_0-9]*";
         if (message.matches(connectmsg)) {
             connectWall(Wall.Side.fromString(split[1]), split[2]);
         } else if (message.matches(disconnectmsg)) {
@@ -354,6 +363,18 @@ public class Board {
         			}
         		}
         	}
+        } else if (message.matches(portalBallmsg)){
+          String ballName = split[1];
+          double x = parseDouble(split[2]), y = parseDouble(split[3]),
+                  vx = parseDouble(split[4]), vy = parseDouble(split[5]);
+          String portalname = split[6];
+          for(Portal portal: portals){
+              if(portal.getName().equals(portalname)){
+                  Vect transferLoc = new Vect(portal.getLocation().x()+0.5, portal.getLocation().y()+0.5);
+                  addBall(new Ball(transferLoc, new Vect(vx, vy), ballName, gravity, mu1, mu2));
+              }
+          }
+          
         } else {
             System.err.println("ignoring invalid message from server");
         }
@@ -512,6 +533,10 @@ public class Board {
      */
     public boolean addBall(Ball ball) {
         return balls.add(ball) && addGameObject(ball);
+    }
+
+    public boolean addPortal(Portal portal) {
+        return portals.add(portal) && addGameObject(portal);
     }
 
     /**

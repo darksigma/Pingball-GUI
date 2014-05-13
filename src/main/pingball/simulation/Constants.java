@@ -44,5 +44,7 @@ public class Constants {
     public static final double DEGREE_TO_RADIAN_180 = Math.PI;
     
     public static final double DEGREE_TO_RADIAN_270 = 1.5 * Math.PI;
+
+    public static final double PORTAL_REFLECTION_COEFF = 0;
     
 }
