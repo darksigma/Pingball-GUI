@@ -45,6 +45,7 @@ public class BoardGrammarTests {
     File f7 = new File("src/test-resources/sampleBoard6.pb");
     File f8 = new File("src/test-resources/sampleBoard7.pb");
     File f9 = new File("src/test-resources/sampleBoard8.pb");
+    File f10 = new File("src/test-resources/jugglerPortal.pb");
 
     BlockingQueue<String> sendQueue = new LinkedBlockingQueue<String>();
     
@@ -377,6 +378,13 @@ public class BoardGrammarTests {
 
         
 
+    }
+    
+    @Test
+    public void testPortal() throws IOException{
+    	Board b = new Board(sendQueue, f10);
+    	
+    	assertEquals("juggler", b.getName());
     }
 
 }

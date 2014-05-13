@@ -16,8 +16,10 @@ import pingball.simulation.gadget.Absorber;
 import pingball.simulation.gadget.CircleBumper;
 import pingball.simulation.gadget.Flipper;
 import pingball.simulation.gadget.Gadget;
+import pingball.simulation.gadget.Portal;
 import pingball.simulation.gadget.SquareBumper;
 import pingball.simulation.gadget.TriangleBumper;
+import pingball.util.StringUtils;
 
 
 public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
@@ -33,13 +35,15 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 			"equals", "backspace", "openbracket", "closebracket",
 			"backslash", "semicolon", "quote", "enter", "comma",
 			"period", "slash", "0", "1", "2", "3", "4", "5", "6",
-			"7", "8", "9", "x", "y"));
+			"7", "8", "9"));
 	
 	private String username = "";
     private double gravity = Constants.DEFAULT_GRAVITY;
     private double mu = Constants.DEFAULT_FRICTION_MU1;
     private double mu2 = Constants.DEFAULT_FRICTION_MU2;
     private Board gameBoard;
+    private boolean portalOtherBoard = false;
+    private String otherBoardName = "";
 	
 	/**
 	 * Returns the name of the board to be used in tests to make sure the name is correct through
@@ -207,9 +211,33 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 		String startPortal = ctx.NAME(0).getText();
 		int x = Double.valueOf(ctx.FLOAT(0).getText()).intValue();
 		int y = Double.valueOf(ctx.FLOAT(1).getText()).intValue();
-		String endBoard = ctx.NAME(1).getText();
-		String endPortal = ctx.NAME(2).getText();
+		String endBoard = "";
+		String endPortal = ctx.NAME(1).getText();
+	
+		Portal p;	
+		if(this.portalOtherBoard){
+			p = new Portal(gameBoard, startPortal, new GridLocation(x, y), this.otherBoardName, endPortal, false);
+			endBoard = this.otherBoardName;
+		}
+		else{
+			p = new Portal(gameBoard, startPortal, new GridLocation(x, y), this.username, endPortal, true);
+			endBoard = this.username;
+		}
+		gameBoard.addGameObject(p);
+		/*System.out.println(p.getName());
+		System.out.println(endBoard);
+		System.out.print(StringUtils.join("\n", gameBoard.gridRepresentation()));*/
+		gadgets.put(startPortal, p);
 	}
+	
+	@Override 
+	public void exitPortalOtherBoard(BoardGrammarParser.PortalOtherBoardContext ctx) {
+		String endBoard = ctx.NAME().getText();
+		this.portalOtherBoard = true;
+		this.otherBoardName = endBoard;
+		
+	}
+
 
 	
 	@Override 

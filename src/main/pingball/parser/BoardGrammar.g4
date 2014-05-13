@@ -79,7 +79,8 @@ lftFlipLine : 'leftFlipper' 'name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT
 absorberLine : 'absorber' 'name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'width' EQUALS FLOAT 'height' EQUALS FLOAT ;
 fireLine : 'fire' 'trigger' EQUALS NAME 'action' EQUALS NAME ;
 
-portalLine : 'portal' 'name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT 'otherBoard' EQUALS NAME 'otherPortal' EQUALS NAME ;
+portalLine : 'portal' 'name' EQUALS NAME 'x' EQUALS FLOAT 'y' EQUALS FLOAT (portalOtherBoard)* 'otherPortal' EQUALS NAME ;
+portalOtherBoard : 'otherBoard' EQUALS NAME ;
 
 keyIntDownLine : 'keydown' 'key' EQUALS FLOAT 'action' EQUALS NAME ;
 keyNameDownLine : 'keydown' 'key' EQUALS NAME 'action' EQUALS NAME ;
