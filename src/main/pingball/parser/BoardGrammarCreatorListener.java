@@ -223,11 +223,12 @@ public class BoardGrammarCreatorListener extends BoardGrammarBaseListener{
 			p = new Portal(gameBoard, startPortal, new GridLocation(x, y), this.username, endPortal, true);
 			endBoard = this.username;
 		}
-		gameBoard.addGameObject(p);
+		//gameBoard.addGameObject(p);
 		/*System.out.println(p.getName());
 		System.out.println(endBoard);
 		System.out.print(StringUtils.join("\n", gameBoard.gridRepresentation()));*/
-		gadgets.put(startPortal, p);
+		//gadgets.put(startPortal, p);
+		gameBoard.addPortal(p);
 	}
 	
 	@Override 
