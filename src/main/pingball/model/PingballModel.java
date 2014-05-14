@@ -183,12 +183,15 @@ public class PingballModel {
                 receiver.start();
                 Thread sender = new Thread(new Sender(socket, modelSendQueue));
                 sender.start();
+                //board.hello();
+                board.portalMsg();
             }
            catch (IOException e) {
              
             }
         } 
     }
+    
     
     /**
      * Disconnects the client from the server.
@@ -238,7 +241,7 @@ public class PingballModel {
      * Pausing the client will disconnect it from the server.
      */
     public synchronized void pause() {
-        endServerConnection();
+        //endServerConnection();
         
         this.running = false;
     }
@@ -249,7 +252,7 @@ public class PingballModel {
      * Note: Server does not automatically rejoin old walls, as this is a new connection.
      */
     public synchronized void resume() {
-        startServerConnection();
+        //startServerConnection();
         this.running = true;
     }
     

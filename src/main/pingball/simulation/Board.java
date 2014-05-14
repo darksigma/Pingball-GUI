@@ -95,15 +95,13 @@ public class Board {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        hello();
         for(Portal portal: portals){
             portal.find(portals);
             portal.setQueue(sendQueue);
         }
-        portalMsg();
     }
     
-    private void portalMsg() {
+    public void portalMsg() {
     	if (!named) {
             throw new RuntimeException("cannot connect to server with unnamed board");
         }
@@ -114,6 +112,7 @@ public class Board {
         		myportalmsg = myportalmsg + " "+ portal.getName();
         	}
             sendQueue.put(myportalmsg);
+            System.out.println(myportalmsg);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

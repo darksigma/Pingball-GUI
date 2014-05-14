@@ -67,12 +67,11 @@ public class Router {
                 removeWallLinkOf(user, wall);
             }
             
-            String name = mapSocketName.getForward(caller);
             mapSocketName.removeForward(caller);
-            mapNamePortalmsg.remove(name);
+            mapNamePortalmsg.remove(user);
             
             for(Socket s : mapSocketName.keySet()){
-            	send(s, String.format("notonboard %s", name));
+            	send(s, String.format("notonboard %s", user));
             }
         	
 //            //TODO: We probably have the caller socket closed, so will this work?
@@ -107,12 +106,25 @@ public class Router {
     public synchronized void processClientMessage(String message, Socket caller) {
         String[] split = message.split(" ");
 
-        String hellomsg = "^hello [A-Za-z_][A-Za-z_0-9]*$";
+        //String hellomsg = "^hello [A-Za-z_][A-Za-z_0-9]*$";
         String ballmsg = "^ball [A-Za-z_][A-Za-z_0-9]* (left|right|top|bottom)( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4}$";
         String portalBallmsg = "^portalball [A-Za-z_][A-Za-z_0-9]* [A-Za-z_][A-Za-z_0-9]* [A-Za-z_][A-Za-z_0-9]*( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4}$";
         String myportalmsg = "^myportals( [A-Za-z_][A-Za-z_0-9]*)+";
-        if (message.matches(hellomsg)) {
-            addUser(split[1], caller);
+        if (message.matches(myportalmsg)){
+            String boardName = split[1];
+            for(Socket s : mapSocketName.keySet()){
+                send(s, message);
+            }
+
+            for(String board : mapSocketName.valueSet()){
+                send(caller, mapNamePortalmsg.get(board));
+            }
+            addUser(boardName, caller);
+            System.out.println(message);
+            mapNamePortalmsg.put(boardName, message);
+            //TODO
+
+
         } else if (message.matches(ballmsg)) {
             String clientName = mapSocketName.getForward(caller);
             Wall.Side wall = Wall.Side.fromString(split[2]);
@@ -127,20 +139,8 @@ public class Router {
             if(dest!=null){
                 send(dest, message);
             }
-        } else if (message.matches(myportalmsg)){
-        	String boardName = split[1];
-        	mapNamePortalmsg.put(boardName, message);
-        	//TODO
-            for(Socket s : mapSocketName.keySet()){
-                send(s, message);
-            }
-            
-            for(String board : mapSocketName.valueSet()){
-                send(mapSocketName.getReverse(boardName), mapNamePortalmsg.get(board));
-            }
-            
         } else {
-            
+
             System.err.println("ignoring invalid message from client:"+message);
         }
         checkRep();
@@ -236,6 +236,7 @@ public class Router {
     	if( !mapSocketName.containsReverse(name) ) {
             
             mapSocketName.putForward(socket, name);
+            
     	}
         
         checkRep();
