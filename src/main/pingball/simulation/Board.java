@@ -530,4 +530,8 @@ public class Board {
           gameObject.deTrigger();
       }
     }
+    
+    public Set<Ball>getBalls(){
+    	return this.balls;
+    }
 }
