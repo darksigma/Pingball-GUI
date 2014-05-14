@@ -65,8 +65,15 @@ public class BoardGrammarLexer extends Lexer {
 	     * of the generated tree. The tree starts at root and ends at EOF (end of file). root consists
 	     * of filelines, which represent each line in the parsed file. In order, this consists of a single
 	     * boardLine, followed by any number of ballLine, sqBumperLine, cirBumperLine, triBumperLine, 
-	     * rtFlipLine, lftFlipLine, absorberLine, and fireLine, in that specific order. Each line defines
-	     * the type of object - board, ball, or specific gadget.
+	     * rtFlipLine, lftFlipLine, absorberLine, and fireLine, keyPressLine, portalLine, ballSpawnerLine
+	     * in any order. Each line defines the type of object - board, ball, keypress, or specific gadget.
+	     *
+	     * Keypress parsing has to be handled with special cases for keys that are numerics, text, and
+	     * the letters 'x' or 'y', because all of these behave specially as tokens. Numerics and text are
+	     * two different types of tokens and therefore can't be possibilities for the same token.
+	     * 'x' and 'y' are fields that are used to parse and therefore can't be tokens. In addition, anything
+	     * else used for parsing cannot be a token in ANTLR (unless parsed specially like with keypresses of
+	     * 'x' and 'y'), so no tokens can have values of 'name', 'x', 'y', 'xVelocity', 'yVelocity', etc.
 	     */
 
 	    /**

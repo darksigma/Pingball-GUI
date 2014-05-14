@@ -22,12 +22,14 @@ public class BoardGrammarTests {
      * -Board: parse through file with boardname and optional gravity and friction values
      * -Ball: parse through file with single ball, multiple balls, balls with non-unique names (which
      * isn't allowed)
-     * -Bumpers/flippers/absorber: parse through file with combinations of some and not the others,
-     * multiple of each, non-unique names (which isn't allowed)
+     * -Bumpers/flippers/absorber/ballspawner: parse through file with combinations of some and 
+     * not the others, multiple of each, non-unique names (which isn't allowed)
      * -Comments and whitespace: ignore comments and whitespace throughout, have multiple comments at a time,
      * have single comments.
      * -Integers and doubles: values that are FLOAT or double can be given as integers in the file, but
      * should be double  when creating the board.
+     * -Portals: parse through file with portals that have connecting portals on the same board
+     * and connecting portals on different boards.
      * 
      * Parsing for key presses:
      * 		We created a temporary Board object method that would get the map of key

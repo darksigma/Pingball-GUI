@@ -115,11 +115,5 @@ public class BallSpawnerTest {
         assertTrue(p1.getSecond()==null);
         assertEquals(numBalls, board.getBalls().size());
     }
-    
-
-    
-    
-    
-    
-    
+   
 }
