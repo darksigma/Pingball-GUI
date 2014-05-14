@@ -104,6 +104,7 @@ public class BallSpawnerTest {
         Pair<Double, Collidable> p2 = ballSpawner.timeUntilCollision(ball2);
         ballSpawner.collide(ball2, p2.getSecond());
         assertTrue(ball2.getVelocity().x()<0);
+        assertEquals(ballSpawner.triggerState, Gadget.TriggerState.TRIGGERED);
         assertEquals(numBalls + 2, board.getBalls().size());
     }
     
@@ -113,6 +114,7 @@ public class BallSpawnerTest {
         BallSpawner ballSpawner = new BallSpawner(board, "TestBallSpawner", new GridLocation(2,2));
         Pair<Double, Collidable> p1 = ballSpawner.timeUntilCollision(ball);
         assertTrue(p1.getSecond()==null);
+        assertEquals(ballSpawner.triggerState, Gadget.TriggerState.UNTRIGGERED);
         assertEquals(numBalls, board.getBalls().size());
     }
    
