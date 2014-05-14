@@ -120,10 +120,7 @@ public class Router {
                 send(caller, mapNamePortalmsg.get(board));
             }
             addUser(boardName, caller);
-            System.out.println(message);
             mapNamePortalmsg.put(boardName, message);
-            //TODO
-
 
         } else if (message.matches(ballmsg)) {
             String clientName = mapSocketName.getForward(caller);

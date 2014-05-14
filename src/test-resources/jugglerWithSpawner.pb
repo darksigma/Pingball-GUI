@@ -2,7 +2,7 @@
 # then the absorber doesn't shoot out any other ball that hits it in the meantime.
 # So, its okay for balls to vanish, they are inside the absorber. We can get them out by adding a key trigger.
 
-board name=juggler gravity = 10.0
+board name=jugglerWithSpawner gravity = 10.0
 
 # define a ball
 ball name=BallB x=18 y=4.5 xVelocity=0 yVelocity=10 

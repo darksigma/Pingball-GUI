@@ -1,4 +1,4 @@
-board name=juggler gravity = 10.0
+board name=jugglerWithKeypress gravity = 10.0
 
 # define a ball
 ball name=BallB x=18 y=4.5 xVelocity=0 yVelocity=10 
