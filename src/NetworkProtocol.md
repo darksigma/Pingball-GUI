@@ -33,10 +33,6 @@ DisconnectMessage -- Disconnect the wall of the recipient from another board
 
 BallMessage -- Receive a ball from another board via passing through a wall
 
-KeyUpMessage -- Lets the client know a key was released after being pressed
-
-KeyDownMessage -- Lets the client know how a key was pushed down
-
 MyPortalMessage -- Lets the receipient know what other boards/portals are on the server so that the appropriate portals can be activated
 
 BoardNotOnServerMessage -- Lets the board know that a client has been disconnected from the server so that the appropriate portals can be deactivated
@@ -53,10 +49,6 @@ DisconnectMessage ::= 'disconnect' SPACE Wall
 
 BallMessage ::= 'ball' SPACE BallName SPACE Wall SPACE xPosition SPACE yPosition SPACE xVelocity SPACE yVelocity
 
-KeyUpMessage ::= 'keyup' SPACE Key
-
-KeyDownMessage ::= 'keydown' SPACE Key
-
 MyPortalMessage ::= 'myportals' SPACE BoardName (SPACE PortalName)*
 
 BoardNotOnServerMessage ::= 'notonboard' SPACE BoardNAme
@@ -67,6 +59,17 @@ PortalSelfOnlyMessage ::= 'portalSelfOnly'
 
 Wall = 'left' | 'right' | 'top' | 'bottom'
 
-Client to GUI
+GUI to Client
 -------------
 
+### Summary of Messages
+
+KeyUpMessage -- Lets the client know a key was released after being pressed
+
+KeyDownMessage -- Lets the client know how a key was pushed down
+
+### Informal Grammar
+
+KeyUpMessage ::= 'keyup' SPACE Key
+
+KeyDownMessage ::= 'keydown' SPACE Key
