@@ -62,7 +62,11 @@ public class PingballGUITest {
 	 * 		
 	 * The BoardGUI JPanel is in its correct location in the PingballGUI. It does not change
 	 * size when we shrink or stretch the PingballGUI window, which is what we want. This is because
-	 * we don't want the game objects to shrink/stretch, since they will lose their shape.
+	 * we don't want the game objects to shrink/stretch, since they will lose their shape. This held
+	 * for all the sampleBoard.pb files in the test/resources, as well as boards we created, listed
+	 * above. Additionally, these boards ran for several minutes and sometimes hours, depending on
+	 * their layout and the number of balls they started with. This is what was expected for the
+	 * functionality of the game.
 	 * 
 	 * Single-Player Mode:
 	 * 
