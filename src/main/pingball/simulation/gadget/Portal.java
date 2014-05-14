@@ -228,6 +228,13 @@ public class Portal extends Gadget {
     }
     
     /**
+     * Returns if the portal is active
+     * @return true if active, false otherwise
+     */
+    public boolean isActive() {
+        return this.active;
+    }
+    /**
      * Sets the portal to self only mode, meaning the board is disconnected from the server.
      * Thus, portal will remain active only if its connected portal is on this board.
      */

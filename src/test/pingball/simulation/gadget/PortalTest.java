@@ -20,6 +20,25 @@ import pingball.simulation.GridLocation;
 import pingball.simulation.collidable.Collidable;
 import pingball.util.Pair;
 
+/*
+ * Testing Strategy:
+ *
+ * Partitioning based on 
+ * 1. Location of portal on board
+ * 2. Triggering each possible collidable in it.
+ * 3. Colliding zero, one or multiple balls
+ * 4. Checking working in active and inactive state
+ * 
+ * We check the working of:
+ * 1. The constructor
+ * 2. The action
+ * 3. The gridRepresentation
+ * 4. The getLocation method
+ * 5. The timeUntil collision method
+ * 6. The collide method.
+ * 7. The find method
+ *  in both active and inactive state  
+ */
 public class PortalTest {
     private static Vect center = new Vect(4,4);
     private static Vect velocity = new Vect(-1,-1);
@@ -61,6 +80,18 @@ public class PortalTest {
         assertEquals(new GridLocation(2,2),portal.getLocation());
     }
     
+    @Test public void testActivate() {
+        Portal portal = new Portal(board, "TestPortal", new GridLocation(2,2), "testBoard", "testPortal", false);
+        portal.activate();
+        assertTrue(portal.isActive());
+    }
+    
+    @Test public void testDeactivate() {
+        Portal portal = new Portal(board, "TestPortal", new GridLocation(2,2), "testBoard", "testPortal", false);
+        portal.deactivate();
+        assertTrue(!portal.isActive());
+    }
+    
     @Test public void testTimeUntilCollisionWhenActive(){
         Ball ball = new Ball(new Vect(5,3), new Vect(-1,0), "TestBall", 10, 1, 1);
         Portal portal = new Portal(board, "TestPortal", new GridLocation(2,2), "testBoard", "testPortal", false);
@@ -88,10 +119,27 @@ public class PortalTest {
         Portal portal = new Portal(board, "TestPortal", new GridLocation(2,2), "BlankBoard", "OtherPortal", true);
         Portal portal2 = new Portal(board,"OtherPortal", new GridLocation(10,12),"testBoard","testPortal",false);
         portal.find(new HashSet<>(Arrays.asList(portal,portal2)));
+        assertTrue(portal.isActive());
         Pair<Double, Collidable> p1 = portal.timeUntilCollision(ball);
         portal.collide(ball, p1.getSecond());
         assertEquals(10,ball.getLocation().x(),0.01);
         assertEquals(12,ball.getLocation().y(),0.01); 
+    }
+    
+    @Test public void testFindOtherPortalNotThere(){
+        Ball ball = new Ball(new Vect(5,3), new Vect(-1,0), "TestBall", 10, 0, 0);
+        Portal portal = new Portal(board, "TestPortal", new GridLocation(2,2), "BlankBoard", "OtherPortal", true);
+        Portal portal2 = new Portal(board,"NotOtherPortal", new GridLocation(10,12),"testBoard","testPortal",false);
+        portal.find(new HashSet<>(Arrays.asList(portal,portal2)));
+        assertTrue(!portal.isActive());
+    }
+
+    @Test public void testFindOtherPortalThere(){
+        Ball ball = new Ball(new Vect(5,3), new Vect(-1,0), "TestBall", 10, 0, 0);
+        Portal portal = new Portal(board, "TestPortal", new GridLocation(2,2), "BlankBoard", "OtherPortal", true);
+        Portal portal2 = new Portal(board,"OtherPortal", new GridLocation(10,12),"testBoard","testPortal",false);
+        portal.find(new HashSet<>(Arrays.asList(portal,portal2)));
+        assertTrue(portal.isActive());
     }
 /*
     @Test public void testCollideMultipleBallsWhenInactive(){
