@@ -64,7 +64,7 @@ public class Portal extends Gadget {
     }
     
     /**
-     * Performs the action of this circular bumper.
+     * Performs the action of this portal.
      * 
      * Portals have no action, so this does nothing.
      */
@@ -75,7 +75,7 @@ public class Portal extends Gadget {
 
 
     /**
-     * Returns a list of strings for the string representation of the circular bumper.
+     * Returns a list of strings for the string representation of the portal.
      * 
      * Grid representation of the portal is "0".
      * 
@@ -87,7 +87,8 @@ public class Portal extends Gadget {
     }
     
     /**
-     * If the portal is not connected, then the collide method allows the ball 
+     * If the portal is not yet active, then the collide method allows the ball to pass through.
+     * Else, the ball is teleported.
      */
     @Override 
     public void collide(Ball ball, Collidable collidable) {
@@ -179,7 +180,12 @@ public class Portal extends Gadget {
     public String getOtherBoard(){
     	return this.otherBoard;
     }
-
+    
+    /**
+     * Returns the data of the portal.
+     * Data is the location, its radius, and its trigger state.
+     * 
+     */
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
         List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.getRadius(),this.active));
@@ -196,6 +202,11 @@ public class Portal extends Gadget {
         return 0.5;
     }
 
+    /**
+     * Finds if the other portal to which it is connected to exists on the given board.
+     * 
+     * @param portals The set of portals on the board.
+     */
     public void find(Set<Portal> portals) {
         if(thisBoard){
             for(Portal portal: portals){

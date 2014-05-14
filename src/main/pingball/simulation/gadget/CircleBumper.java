@@ -72,6 +72,11 @@ public class CircleBumper extends Gadget {
         return representation;
     }
     
+    /**
+     * Returns the data of the circular bumper.
+     * Data is the location, its radius, and its trigger state.
+     * 
+     */
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
         List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.getRadius(),this.triggerState));
