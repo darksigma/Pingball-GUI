@@ -217,4 +217,8 @@ public class Portal extends Gadget {
             this.active = false;
         }
     }
+
+	public String getOtherPortal() {
+		return this.otherPortal;
+	}
 }

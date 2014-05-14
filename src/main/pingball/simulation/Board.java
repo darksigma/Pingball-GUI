@@ -100,9 +100,26 @@ public class Board {
             portal.find(portals);
             portal.setQueue(sendQueue);
         }
+        portalMsg();
     }
     
-    /**
+    private void portalMsg() {
+    	if (!named) {
+            throw new RuntimeException("cannot connect to server with unnamed board");
+        }
+        assert name != null;
+        try {
+        	String myportalmsg = "myportals "+this.name;
+        	for(Portal portal: portals){
+        		myportalmsg = myportalmsg + " "+ portal.getName();
+        	}
+            sendQueue.put(myportalmsg);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+	}
+
+	/**
      * Send a hello message to the server.
      */
     public void hello() {
@@ -177,7 +194,7 @@ public class Board {
         String ballmsg = "^ball [A-Za-z_][A-Za-z_0-9]* (left|right|top|bottom)( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4}$";
         String keyUpmsg = "^keyup [a-z0-9]+";
         String keyDownmsg = "^keydown [a-z0-9]+";
-        String boardOnServermsg = "^onboard [A-Za-z_][A-Za-z_0-9]*";
+        String myportalmsg = "^myportals( [A-Za-z_][A-Za-z_0-9]*)+";
         String boardNotOnServermsg = "^notonboard [A-Za-z_][A-Za-z_0-9]*";
         String portalBallmsg = "^portalball [A-Za-z_][A-Za-z_0-9]* [A-Za-z_][A-Za-z_0-9]* [A-Za-z_][A-Za-z_0-9]*( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4}$";
         String portalSelfOnlymsg = "^portalSelfOnly";
@@ -208,13 +225,19 @@ public class Board {
         } else if (message.matches(keyDownmsg)){
           String key = split[1];
           triggerKeyDown(key);  
-        } else if (message.matches(boardOnServermsg)){
+        } else if (message.matches(myportalmsg)){
             System.out.println(message);
             String boardName = split[1];
-            for(Portal p: portals){
-                if(boardName.equals(p.getOtherBoard())){
-                    p.activate();
+            if(split.length>2){
+                List<String> otherPortals = Arrays.asList(split).subList(2, split.length);
+                for(Portal p: portals){
+                    if(boardName.equals(p.getOtherBoard())){
+                    	if(otherPortals.contains(p.getOtherPortal())) {
+                    		p.activate();
+                    	}
+                    }
                 }
+                	
             }
         } else if (message.matches(boardNotOnServermsg)) {
             System.out.println(message);

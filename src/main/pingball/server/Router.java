@@ -41,6 +41,8 @@ public class Router {
     // (b, right) -> a
     private final Map<Pair<String, Wall.Side>, String> wallLinkMap = new HashMap<>();
     
+    private final Map<String, String> mapNamePortalmsg = new HashMap<>();
+    
     /**
      * Make a Router.
      */
@@ -67,6 +69,7 @@ public class Router {
             
             String name = mapSocketName.getForward(caller);
             mapSocketName.removeForward(caller);
+            mapNamePortalmsg.remove(name);
             
             for(Socket s : mapSocketName.keySet()){
             	send(s, String.format("notonboard %s", name));
@@ -107,6 +110,7 @@ public class Router {
         String hellomsg = "^hello [A-Za-z_][A-Za-z_0-9]*$";
         String ballmsg = "^ball [A-Za-z_][A-Za-z_0-9]* (left|right|top|bottom)( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4}$";
         String portalBallmsg = "^portalball [A-Za-z_][A-Za-z_0-9]* [A-Za-z_][A-Za-z_0-9]* [A-Za-z_][A-Za-z_0-9]*( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4}$";
+        String myportalmsg = "^myportals( [A-Za-z_][A-Za-z_0-9]*)+";
         if (message.matches(hellomsg)) {
             addUser(split[1], caller);
         } else if (message.matches(ballmsg)) {
@@ -123,6 +127,18 @@ public class Router {
             if(dest!=null){
                 send(dest, message);
             }
+        } else if (message.matches(myportalmsg)){
+        	String boardName = split[1];
+        	mapNamePortalmsg.put(boardName, message);
+        	//TODO
+            for(Socket s : mapSocketName.keySet()){
+                send(s, message);
+            }
+            
+            for(String board : mapSocketName.valueSet()){
+                send(mapSocketName.getReverse(boardName), mapNamePortalmsg.get(board));
+            }
+            
         } else {
             
             System.err.println("ignoring invalid message from client:"+message);
@@ -218,14 +234,6 @@ public class Router {
     	
     	
     	if( !mapSocketName.containsReverse(name) ) {
-            
-            for(Socket s : mapSocketName.keySet()){
-                send(s, String.format("onboard %s", name));
-            }
-            
-            for(String board : mapSocketName.valueSet()){
-                send(socket, String.format("onboard %s", board));
-            }
             
             mapSocketName.putForward(socket, name);
     	}
