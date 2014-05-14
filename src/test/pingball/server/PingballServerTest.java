@@ -82,7 +82,7 @@ public class PingballServerTest {
         Pair<PingballServer, Thread> p = createServer();
         try (Socket a = connect(p.getFirst().getPort())) {
             BufferedReader ar = reader(a);
-            sendln(a, "hello a");
+            sendln(a, "myportals a");
             sleep();
             p.getFirst().handleCommand("v a a");
             assertEquals("connect bottom a", ar.readLine());
@@ -96,12 +96,17 @@ public class PingballServerTest {
         try (Socket a = connect(p.getFirst().getPort())) {
             try (Socket b = connect(p.getFirst().getPort())) {
                 BufferedReader ar = reader(a), br = reader(b);
-                sendln(a, "hello a");
-                sendln(b, "hello b");
+                sendln(a, "myportals a");
+                sendln(b, "myportals b");
                 sleep();
                 p.getFirst().handleCommand("h a b");
-                assertEquals("connect right b", ar.readLine());
-                assertEquals("connect left a", br.readLine());
+                String line;
+                line = ar.readLine();
+                while(line.startsWith("myportals")) line= ar.readLine();
+                assertEquals("connect right b", line);
+                line = br.readLine();
+                while(line.startsWith("myportals")) line= br.readLine();
+                assertEquals("connect left a", line);
             }
         }
         p.getSecond().interrupt();
@@ -112,12 +117,17 @@ public class PingballServerTest {
         try (Socket a = connect(p.getFirst().getPort())) {
             try (Socket b = connect(p.getFirst().getPort())) {
                 BufferedReader ar = reader(a), br = reader(b);
-                sendln(a, "hello a");
-                sendln(b, "hello b");
+                sendln(a, "myportals a");
+                sendln(b, "myportals b");
                 sleep();
                 p.getFirst().handleCommand("v a b");
-                assertEquals("connect bottom b", ar.readLine());
-                assertEquals("connect top a", br.readLine());
+                String line;
+                line = ar.readLine();
+                while(line.startsWith("myportals")) line= ar.readLine();
+                assertEquals("connect bottom b", line);
+                line = br.readLine();
+                while(line.startsWith("myportals")) line= br.readLine();
+                assertEquals("connect top a", line);
             }
         }
         p.getSecond().interrupt();
@@ -128,12 +138,18 @@ public class PingballServerTest {
         try (Socket a = connect(p.getFirst().getPort())) {
             try (Socket b = connect(p.getFirst().getPort())) {
                 BufferedReader ar = reader(a), br = reader(b);
-                sendln(a, "hello a");
-                sendln(b, "hello b");
+                sendln(a, "myportals a");
+                sendln(b, "myportals b");
                 sleep();
                 p.getFirst().handleCommand("v a b");
-                assertEquals("connect bottom b", ar.readLine());
-                assertEquals("connect top a", br.readLine());
+                String line;
+                line = ar.readLine();
+                while(line.startsWith("myportals")) line= ar.readLine();
+                assertEquals("connect bottom b", line);
+
+                line = br.readLine();
+                while(line.startsWith("myportals")) line= br.readLine();
+                assertEquals("connect top a", line);
                 p.getFirst().handleCommand("h b a");
                 assertEquals("connect left b", ar.readLine());
                 assertEquals("connect right a", br.readLine());
@@ -147,12 +163,18 @@ public class PingballServerTest {
         try (Socket a = connect(p.getFirst().getPort())) {
             Socket b = connect(p.getFirst().getPort());
             BufferedReader ar = reader(a), br = reader(b);
-            sendln(a, "hello a");
-            sendln(b, "hello b");
+            sendln(a, "myportals a");
+            sendln(b, "myportals b");
             sleep();
             p.getFirst().handleCommand("v a b");
-            assertEquals("connect bottom b", ar.readLine());
-            assertEquals("connect top a", br.readLine());
+            String line;
+            line = ar.readLine();
+            while(line.startsWith("myportals")) line= ar.readLine();
+            assertEquals("connect bottom b", line);
+
+            line = br.readLine();
+            while(line.startsWith("myportals")) line= br.readLine();
+            assertEquals("connect top a", line);
             b.close();
             assertEquals("disconnect bottom", ar.readLine());
         }
@@ -164,12 +186,17 @@ public class PingballServerTest {
         try (Socket a = connect(p.getFirst().getPort())) {
             try (Socket b = connect(p.getFirst().getPort())) {
                 BufferedReader ar = reader(a), br = reader(b);
-                sendln(a, "hello a");
-                sendln(b, "hello b");
+                sendln(a, "myportals a");
+                sendln(b, "myportals b");
                 sleep();
                 p.getFirst().handleCommand("v a b");
-                assertEquals("connect bottom b", ar.readLine());
-                assertEquals("connect top a", br.readLine());
+                String line;
+                line = ar.readLine();
+                while(line.startsWith("myportals")) line= ar.readLine();
+                assertEquals("connect bottom b", line);
+                line = br.readLine();
+                while(line.startsWith("myportals")) line= br.readLine();
+                assertEquals("connect top a", line);
                 p.getFirst().handleCommand("v b b");
                 assertEquals("disconnect bottom", ar.readLine());
             }
@@ -182,12 +209,17 @@ public class PingballServerTest {
         try (Socket a = connect(p.getFirst().getPort())) {
             try (Socket b = connect(p.getFirst().getPort())) {
                 BufferedReader ar = reader(a), br = reader(b);
-                sendln(a, "hello a");
-                sendln(b, "hello b");
+                sendln(a, "myportals a");
+                sendln(b, "myportals b");
                 sleep();
                 p.getFirst().handleCommand("v a b");
-                assertEquals("connect bottom b", ar.readLine());
-                assertEquals("connect top a", br.readLine());
+                String line;
+                line = ar.readLine();
+                while(line.startsWith("myportals")) line= ar.readLine();
+                assertEquals("connect bottom b", line);
+                line = br.readLine();
+                while(line.startsWith("myportals")) line= br.readLine();
+                assertEquals("connect top a", line);
                 sendln(a, "ball testball bottom 1.2 2.2 3.4 5.5");
                 assertEquals("ball testball top 1.2 2.2 3.4 5.5", br.readLine());
                 sendln(b, "ball testball top 5.55 2.22 -4.1 1.5");
@@ -201,7 +233,7 @@ public class PingballServerTest {
         Pair<PingballServer, Thread> p = createServer();
         try (Socket a = connect(p.getFirst().getPort())) {
             BufferedReader ar = reader(a);
-            sendln(a, "hello a");
+            sendln(a, "myportals a");
             sleep();
             p.getFirst().handleCommand("v a a");
             assertEquals("connect bottom a", ar.readLine());
@@ -218,16 +250,25 @@ public class PingballServerTest {
             try (Socket b = connect(p.getFirst().getPort())) {
                 try (Socket c = connect(p.getFirst().getPort())) {
                     BufferedReader ar = reader(a), br = reader(b), cr = reader(c);
-                    sendln(a, "hello a");
-                    sendln(b, "hello b");
-                    sendln(c, "hello c");
+                    sendln(a, "myportals a");
+                    sendln(b, "myportals b");
+                    sendln(c, "myportals c");
                     sleep();
                     p.getFirst().handleCommand("h a b");
-                    assertEquals("connect right b", ar.readLine());
-                    assertEquals("connect left a", br.readLine());
+                    String line;
+                    line = ar.readLine();
+                    while(line.startsWith("myportals")) line= ar.readLine();
+                    assertEquals("connect right b", line);
+
+                    line = br.readLine();
+                    while(line.startsWith("myportals")) line= br.readLine();
+                    assertEquals("connect left a", line);
                     p.getFirst().handleCommand("h b c");
+
+                    line = cr.readLine();
+                    while(line.startsWith("myportals")) line= cr.readLine();
                     assertEquals("connect right c", br.readLine());
-                    assertEquals("connect left b", cr.readLine());
+                    assertEquals("connect left b", line);
                     p.getFirst().handleCommand("h c a");
                     assertEquals("connect left c", ar.readLine());
                     assertEquals("connect right a", cr.readLine());

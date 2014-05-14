@@ -386,7 +386,7 @@ public class BoardGrammarTests {
     public void testPortal() throws IOException{
     	Board b = new Board(sendQueue, f10);
     	
-    	assertEquals("juggler", b.getName());
+    	assertEquals("jugglerPortal", b.getName());
     }
 
 }
