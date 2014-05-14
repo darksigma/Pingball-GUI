@@ -36,10 +36,18 @@ public class PingballGUITest {
 	 * pause immediately and the balls would stop exactly where they were. In multi-palyer mode,
 	 * the game would pause only for the board that paused. The boards would remain connected, so any
 	 * balls that were passed from some baord to the paused board (either by wall or portal) would
-	 * disappear from the boards and appear in the paused board when it was resumed.
+	 * disappear from the boards and appear in the paused board when it was resumed. Furthermore,
+	 * while paused, the label above the BoardGUI displayed that the game was paused.
 	 *		When we would click restart, the original board file would reload. In single-player mode,
-	 * the game would restart. In multi-player mode, the game would restart
-	 * 
+	 * the game would restart as it was supposed to. In multi-player mode, the game would restart and
+	 * close connection to any boards it was connected to. It would not affect the state of the other
+	 * boards however. (If connected boards had fewer balls than they started off with, they would 
+	 * still have fewer balls.) The board that restarted would reload the file as it's supposed to,
+	 * still in server mode, but with no connections.
+	 * 		When we clicked Exit, the message would display a "Hope you enjoyed!..." message, as it
+	 * was supposed to. In addition, the user would only be able to choose a file, or enter host/port
+	 * to start a new game. The BoardGUI JPanel would clear completely to how it was before loading
+	 * any file. This is what we expected to see.
 	 * 
 	 * BoardGUI display accuracy:
 	 * 		See BoardGUITest.java
