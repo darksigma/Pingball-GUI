@@ -35,7 +35,8 @@ import pingball.util.Pair;
  * Keypress messages are put by the GUI in the model's receive queue, which is threadsafe.
  *
  * Each of the background threads will have a blocking queue for sending 
- * messages to and from the server.
+ * messages to and from the server. The only shared data between the threads
+ * are these queues and the socket, both of which are thread safe.
  * 
  * When the evolveFrame method is called by the GUI. it will poll to see if 
  * there are any messages available in the receiveQueue and perform the

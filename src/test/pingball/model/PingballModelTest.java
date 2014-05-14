@@ -8,6 +8,17 @@ import java.io.IOException;
 import org.junit.Test;
 
 public class PingballModelTest {
+    
+    /*
+     * The pingball model is a modification of the old pingball client and board for the GUI
+     * These are tests for the additional methods added in phase 2. The testing for the functioning
+     * of the phase 1 is written in pingballClientTest.java. 
+     * 
+     * The server operations of the model were tested by console output givn when running it in server mode.
+     * The evolve frame was tested by seeing the visual output in the GUI.
+     * Similarly, startServerConnection and endServerConnection were tested by manually checking the console
+     * output on the server to see if connections were successfully made/removed.
+     */
 
     @Test
     public void testContructorNoArguments() throws IOException {
@@ -50,7 +61,7 @@ public class PingballModelTest {
     @Test
     public void testSetHost() throws IOException {
         PingballModel pingballModel = new PingballModel(new String[] {});
-        pingballModel.setHost("locahost");
+        pingballModel.setHost("localhost");
         assertTrue(pingballModel.isHostSet());
         assertEquals("localhost",pingballModel.getHostName());
     }
@@ -69,13 +80,65 @@ public class PingballModelTest {
         File file = new File("src/test-resources/juggler.pb");
         pingballModel.setFile(file);
         assertTrue(pingballModel.isFileSet());
-        assertTrue(pingballModel.start()); //Start returns true if started successfully
+        assertTrue(pingballModel.start()); 
+        //Start returns true if started successfully. 
+        //Test also checks if no exceptions thrown
         assertTrue(pingballModel.isRunning());
     }
     
     @Test
-    public void testPause() {
-        
+    public void testPause() throws IOException {
+        PingballModel pingballModel = new PingballModel(new String[] {});
+        File file = new File("src/test-resources/juggler.pb");
+        pingballModel.setFile(file);
+        assertTrue(pingballModel.isFileSet());
+        assertTrue(pingballModel.start()); 
+        assertTrue(pingballModel.isRunning());
+        pingballModel.pause();
+        assertFalse(pingballModel.isRunning());
     }
+    
+    @Test
+    public void testResume() throws IOException {
+        PingballModel pingballModel = new PingballModel(new String[] {});
+        File file = new File("src/test-resources/juggler.pb");
+        pingballModel.setFile(file);
+        assertTrue(pingballModel.isFileSet());
+        assertTrue(pingballModel.start()); 
+        assertTrue(pingballModel.isRunning());
+        pingballModel.pause();
+        assertFalse(pingballModel.isRunning());
+        pingballModel.resume();
+        assertTrue(pingballModel.isRunning());
+    }
+    
+    @Test
+    public void testRestart() throws IOException{
+        PingballModel pingballModel = new PingballModel(new String[] {});
+        File file = new File("src/test-resources/juggler.pb");
+        pingballModel.setFile(file);
+        assertTrue(pingballModel.isFileSet());
+        assertTrue(pingballModel.start()); 
+        assertTrue(pingballModel.isRunning());
+        pingballModel.pause();
+        assertFalse(pingballModel.isRunning());
+        pingballModel.restart();
+        assertTrue(pingballModel.isFileSet());
+        assertTrue(pingballModel.isRunning());
+    }
+    
+    @Test
+    public void testStop() throws IOException{
+        PingballModel pingballModel = new PingballModel(new String[] {});
+        File file = new File("src/test-resources/juggler.pb");
+        pingballModel.setFile(file);
+        assertTrue(pingballModel.isFileSet());
+        assertTrue(pingballModel.start()); 
+        assertTrue(pingballModel.isRunning());
+        pingballModel.stop();
+        assertFalse(pingballModel.isFileSet());
+        assertFalse(pingballModel.isRunning());
+    }
+    
     
 }
