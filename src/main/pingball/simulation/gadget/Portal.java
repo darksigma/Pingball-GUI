@@ -39,7 +39,7 @@ public class Portal extends Gadget {
      * Creates a portal
      * @param board The board on which the portal is.
      * @param name The name of this portal.
-     * @param location The grid locaiton of the top left corner of the portal.
+     * @param location The grid location of the top left corner of the portal.
      * @param otherBoard The name of the of the otherBoard which has the connected portal.
      * @param otherPortal The name of the portal to which this portal is connected
      * @param thisBoard Whether the connected portal is on this board.
@@ -88,7 +88,7 @@ public class Portal extends Gadget {
     
     /**
      * If the portal is not yet active, then the collide method allows the ball to pass through.
-     * Else, the ball is teleported by putting the corresponding meesage in the send queue.
+     * Else, the ball is teleported by putting the corresponding message in the send queue.
      */
     @Override 
     public void collide(Ball ball, Collidable collidable) {
