@@ -173,6 +173,11 @@ public class Ball extends GameObject{
         return name;
     }
 
+    /**
+     * Returns the ballspawner's data in a list.
+     * The data is a list containing the grid location of its top left corner,
+     * and its radius.
+     */
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
         List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.getRadius()));

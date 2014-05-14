@@ -15,20 +15,26 @@ import pingball.simulation.collidable.Collidable;
 import pingball.simulation.collidable.FixedCircle;
 import pingball.util.Pair;
 
+/**
+ * This is our new feature. Ball spawner is a new gadget that spawns a new ball whenever a ball
+ * collides with it. The ball that collides is reflected of the spawner. The newly spawned ball
+ * gets a velocity of 50 in a random direction. Size of a ball spawner is 1x1 grid. The location 
+ * of this object is relative to the board. 
+ * 
+ * Rep-Invariant:
+ *      The gridlocation must be in the way that the ballspawner does not exceed the board when combining with the width/height
+ */
+
 public class BallSpawner extends Gadget {
 
-private final List<String> representation;
-private int spawnCount = 0;
-    
-/**
- * This is our new fetaure. Ball spawner is a new gadget that spawns a new ball whenever a ball
- * collides with it. The ball that collides is reflected of the spawner. The newly spawned ball
- * gets a velocity of 50 in a random direction.
- */
+    private final List<String> representation;
+    private int spawnCount = 0;
+        
+   
     /**
      * Creates a ball spawner.
      * 
-     * @param board The board on which the ball swpaner is.
+     * @param board The board on which the ball spawner is.
      * @param name The name of this spawner.
      * @param location The grid location of the top left corner of the ball spawner.
      */
@@ -115,7 +121,8 @@ private int spawnCount = 0;
 
     /**
      * Returns the ballspawner's data in a list.
-     * Includes the grid location, the radius, and the trigger state.
+     * The data is a list containing the grid location of its top left corner,
+     * the radius, and the trigger state.
      */
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {

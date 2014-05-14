@@ -147,7 +147,11 @@ public class BoardGUI extends JPanel {
     }
 
     /**
-     * Draws the current form of the board with all the objects in it
+     * Draws the current form of the board with all the objects in it.
+     * We first get the object data for all the game objects from the model.
+     * Then, according to the type of the game object, we call the corresponding draw method
+     * by passing the corrresponding parameters we got for that object.
+     * 
      * @param g Graphics2D used to draw the board
      */
     private void drawBoard(final Graphics2D g) {

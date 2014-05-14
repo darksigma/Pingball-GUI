@@ -276,6 +276,12 @@ public class Wall extends GameObject {
         return gridRepresentation;
     }
 
+    /**
+     * Returns the wall's data in a list.
+     * The data is a list containing the grid location of its top left corner,
+     * the side of the board on which the wall is, whether its connected, and the name
+     * of the connectedBoard if it is connected.
+     */
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
         List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),this.side,this.connected,this.connectedBoardName));

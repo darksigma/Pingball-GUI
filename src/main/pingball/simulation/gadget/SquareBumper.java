@@ -88,6 +88,10 @@ public class SquareBumper extends Gadget {
         return 1;
     }
 
+    /**
+     * Returns the square bumper's data in a list.
+     * Includes the grid location, the size, and the trigger state.
+     */
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
         List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),1.0,this.triggerState));

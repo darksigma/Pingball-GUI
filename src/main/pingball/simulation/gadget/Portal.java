@@ -12,7 +12,6 @@ import pingball.simulation.Ball;
 import pingball.simulation.Board;
 import pingball.simulation.Constants;
 import pingball.simulation.GridLocation;
-import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.collidable.Collidable;
 import pingball.simulation.collidable.FixedCircle;
 import pingball.util.Pair;
@@ -88,7 +87,8 @@ public class Portal extends Gadget {
     
     /**
      * If the portal is not yet active, then the collide method allows the ball to pass through.
-     * Else, the ball is teleported by putting the corresponding message in the send queue.
+     * Else, the ball is teleported by putting the corresponding ballmessage in the send queue.
+     * (portalBall message protocol written in NetworkProtocol.md)
      */
     @Override 
     public void collide(Ball ball, Collidable collidable) {

@@ -95,6 +95,11 @@ public class TriangleBumper extends Gadget {
         return representation;
     }
 
+    /**
+     * Returns the triangle bumper's data in a list.
+     * Data is a list containing an array of the x coordinates of the corners, 
+     * an array of the y coordinates of the corners, and the trigger state.
+     */
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
         int[] x = {location.add(displaceBy[0]).getFirst(),location.add(displaceBy[1]).getFirst(),location.add(displaceBy[2]).getFirst()};

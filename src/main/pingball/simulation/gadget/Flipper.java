@@ -272,6 +272,10 @@ public class Flipper extends Gadget {
         return null;
     }
     
+    /**
+     * Returns the flipper's data in a list.
+     * Includes the location of its two end points, and the trigger state.
+     */
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
         Line line = this.getLine();

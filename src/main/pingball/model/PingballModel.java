@@ -29,9 +29,9 @@ import pingball.util.Pair;
  * pattern is threadsafe.
  * 
  * PingballModel has two background threads for sending and receiving 
- * messages from the server. Messages can include
- * adding/removing of balls, adding/removing transparent walls, information about
- * other boards on server, teleporting balls to/from etc.
+ * messages from the server. (MESSAGE PROTOCOL IN NetworkProtcol.md file)
+ * Messages can include adding/removing of balls, adding/removing transparent walls,
+ * information about other boards on server, teleporting balls to/from etc.
  * Keypress messages are put by the GUI in the model's receive queue, which is threadsafe.
  *
  * Each of the background threads will have a blocking queue for sending 
@@ -239,18 +239,16 @@ public class PingballModel {
     
     /**
      * Pause the pingball client.
-     * Pausing the client will disconnect it from the server.
+     * Pausing the client keeps it connected to the server.
+     * So, it is still receiveing balls etc in its receive queue.
      */
     public synchronized void pause() {
-        //endServerConnection();
-        
         this.running = false;
     }
     
     /**
      * Resume the pingball client.
-     * Resuming the client reconnects it to the server. 
-     * Note: Server does not automatically rejoin old walls, as this is a new connection.
+     * Resuming the client starts the processing of messages from the server again.
      */
     public synchronized void resume() {
         //startServerConnection();

@@ -172,6 +172,11 @@ public class Absorber extends Gadget {
         
     }
 
+    /**
+     * Returns the triangle bumper's data in a list.
+     * Data is a list containing an the location of the top left corner of the absorber, 
+     * its width, its height, and its trigger state.
+     */
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
         List<Object> objData = new ArrayList<Object>(Arrays.asList(this.topLeft(),(double) this.width, (double) this.height,this.triggerState));

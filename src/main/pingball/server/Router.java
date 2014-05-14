@@ -26,7 +26,12 @@ import pingball.util.StringUtils;
  * bidirectional. The links in wallLinkMap have to be bidirectional at all
  * times. If a link such as (a, left) -> b is in the wallLinkMap, then the
  * opposite link (b, right) -> a must be present in the map.
- *
+ * The router also keeps a map of every board's portalMsg which it sends when it first connects.
+ * On receiveing the portalMsg, this message is routed to every other board on the server.
+ * Also, every other boards portalMsg is routed back to the sender. 
+ * These maps are accordingly updated whenever a new client connects/disconnects so that 
+ * they store the correct information for the current state of the server.
+ * 
  * Thread safety argument:
  *
  * This class is meant to be shared between threads. All methods on router are
@@ -34,6 +39,9 @@ import pingball.util.StringUtils;
  */
 public class Router {
     
+    /**
+     * Bidirectional map between a board's name and its socket.
+     */
     private final BidirectionalMap<Socket, String> mapSocketName = new BidirectionalMap<>();
     
     // store bidirectional links in here like:
@@ -41,6 +49,9 @@ public class Router {
     // (b, right) -> a
     private final Map<Pair<String, Wall.Side>, String> wallLinkMap = new HashMap<>();
     
+    /**
+     * Map between name of board and its portalMsg
+     */
     private final Map<String, String> mapNamePortalmsg = new HashMap<>();
     
     /**
@@ -73,11 +84,6 @@ public class Router {
             for(Socket s : mapSocketName.keySet()){
             	send(s, String.format("notonboard %s", user));
             }
-        	
-//            //TODO: We probably have the caller socket closed, so will this work?
-//        	for(String board : mapSocketName.valueSet()){
-//        		send(caller, String.format("notonboard %s", board));
-//        	}
         }
         checkRep();
     }
@@ -106,7 +112,6 @@ public class Router {
     public synchronized void processClientMessage(String message, Socket caller) {
         String[] split = message.split(" ");
 
-        //String hellomsg = "^hello [A-Za-z_][A-Za-z_0-9]*$";
         String ballmsg = "^ball [A-Za-z_][A-Za-z_0-9]* (left|right|top|bottom)( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4}$";
         String portalBallmsg = "^portalball [A-Za-z_][A-Za-z_0-9]* [A-Za-z_][A-Za-z_0-9]* [A-Za-z_][A-Za-z_0-9]*( -?(?:[0-9]+\\.[0-9]*|\\.?[0-9]+)){4}$";
         String myportalmsg = "^myportals( [A-Za-z_][A-Za-z_0-9]*)+";

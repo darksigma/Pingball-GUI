@@ -71,11 +71,10 @@ public class CircleBumper extends Gadget {
         assert(checkRep());
         return representation;
     }
-    
     /**
-     * Returns the data of the circular bumper.
-     * Data is the location, its radius, and its trigger state.
-     * 
+     * Returns the ballspawner's data in a list.
+     * The data is a list containing the grid location of its top left corner,
+     * the radius, and the trigger state.
      */
     @Override
     public Pair<GameObjectType, List<Object>> getObjectData() {
