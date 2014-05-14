@@ -88,7 +88,7 @@ public class Portal extends Gadget {
     
     /**
      * If the portal is not yet active, then the collide method allows the ball to pass through.
-     * Else, the ball is teleported.
+     * Else, the ball is teleported by putting the corresponding meesage in the send queue.
      */
     @Override 
     public void collide(Ball ball, Collidable collidable) {
@@ -212,23 +212,35 @@ public class Portal extends Gadget {
             for(Portal portal: portals){
                 if(portal.getName().equals(otherPortal)){
                     this.active = true;
-                    this.transferLoc = new Vect(portal.location.x()+0.5, portal.location.y()+0.5);
+                    this.transferLoc = new Vect(portal.getLocation().x()+0.5, portal.getLocation().y()+0.5);
                     break;
                 }
             }
         }
     }
-
+    
+    /**
+     * Sets the queue in which the portal will send the message to teleport balls.
+     * @param sendQueue the queue to send portalball msg.
+     */
     public void setQueue(BlockingQueue<String> sendQueue) {
      this.sendQueue = sendQueue;   
     }
-
+    
+    /**
+     * Sets the portal to self only mode, meaning the board is disconnected from the server.
+     * Thus, portal will remain active only if its connected portal is on this board.
+     */
     public void selfOnly() {
         if(!thisBoard){
             this.active = false;
         }
     }
-
+    
+    /**
+     * Returns the name of the other portal connected to this portal
+     * @return the other portal name
+     */
 	public String getOtherPortal() {
 		return this.otherPortal;
 	}
