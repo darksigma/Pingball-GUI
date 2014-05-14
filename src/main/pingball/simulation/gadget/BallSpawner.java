@@ -20,6 +20,11 @@ public class BallSpawner extends Gadget {
 private final List<String> representation;
 private int spawnCount = 0;
     
+/**
+ * This is our new fetaure. Ball spawner is a new gadget that spawns a new ball whenever a ball
+ * collides with it. The ball that collides is reflected of the spawner. The newly spawned ball
+ * gets a velocity of 50 in a random direction.
+ */
     /**
      * Creates a ball spawner.
      * 
