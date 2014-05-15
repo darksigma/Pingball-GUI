@@ -275,17 +275,29 @@ public class PingballModel {
         unsetup();
     }
     
-    
+    /**
+     * Sets the file of the game
+     * @param _file that the game is set to
+     * @throws IOException
+     */
     public synchronized void setFile(File _file) throws IOException{
         this.file = _file;
         modelSendQueue = new LinkedBlockingQueue<>();
         this.board = new Board(modelSendQueue,file); //Board is only for showing
     }
 
+    /**
+     * Returns true if the file has been set, otherwise false
+     * @return true if file has been set, false otherwise
+     */
     public synchronized boolean isFileSet() {
         return (file!=null);
     }
     
+    /**
+     * Returns the file name if a file has been set
+     * @return the file name of the game, otherwise "No file set" message
+     */
     public synchronized String getFileName() {
         if(file!=null){
             return file.getName();
@@ -293,31 +305,60 @@ public class PingballModel {
         else return "No file set";
     }
     
+    /**
+     * Sets the game hostname to the given String
+     * @param _host name of host
+     */
     public synchronized void setHost(String _host){
         this.host = _host;
     }
     
+    /**
+     * Returns true if the hostnmae has been set, otherwise false
+     * @return true if hostname is set, false otherwise
+     */
     public synchronized boolean isHostSet() {
         return (this.host!=null);
     }
     
+    /**
+     * Retunrs the hostname if set
+     * @return String representing the hostname, or "no host set"
+     */
     public synchronized String getHostName() {
         if(host!=null) return host;
         else return "No host set";
     }
     
+    /**
+     * Sets the port number that is given
+     * @param _port the port number that is given
+     */
     public synchronized void setPort(int _port){
         this.port = _port;
     }
     
+    /**
+     * Returns whether the port has been set or not
+     * @return true if port has been set, false if the port is null / hasn't been set
+     */
     public synchronized boolean isPortSet() {
         return (port!=null);
     }
     
+    /**
+     * Returns the port number
+     * @return port number that was set
+     */
     public synchronized int getPort() {
         return port;
     }
 
+    /**
+     * Returns whether the port is valid or not, which means it's between 0 and 65535 inclusive
+     * @param port number given
+     * @return true if the port is valid, false otherwise
+     */
     public synchronized boolean isValidPort(Integer port){
         return !(port < 0 || port > 65535);
     }
@@ -371,8 +412,7 @@ public class PingballModel {
         	if(modelReceiveQueue != null){
                 modelReceiveQueue.put(message);
         	}
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
+        } catch (InterruptedException e) {           
             e.printStackTrace();
         }
     }
@@ -406,8 +446,7 @@ public class PingballModel {
                     receiveQueue.put(line);
                 }
             } catch (InterruptedException | IOException e) {
-                //Might have to end these threads, so might need to remove this stack trace.
-                //e.printStackTrace();
+                //socket ended, so ignore stacktrace
             }
         }
 

@@ -189,6 +189,5 @@ keydown key = enter action = sqK
 # Triggers
 
 fire trigger = absA action = absA
-#fire trigger = sqG action = absB
 fire trigger = sqK action = lfA
-#fire trigger = sqL action = lfA
+fire trigger = sqL action = lfA

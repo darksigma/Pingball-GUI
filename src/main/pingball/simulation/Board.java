@@ -514,20 +514,21 @@ public class Board {
     public double getGravity() {
         return this.gravity;
     }
+    
+
+    public void deTrigger() {
+      for(GameObject gameObject: gameObjects){
+          gameObject.deTrigger();
+      }
+    }
   
-    //FOR TESTING PURPOSES ONLY-- remove later
+    //FOR TESTING PURPOSES ONLY-- no rep exposure, only PingballModel can call these methods
     public Map<String, List<Gadget>> getUpMap(){
     	return this.keyUpMap;
     }
     
     public Map<String, List<Gadget>> getDownMap(){
     	return this.keyDownMap;
-    }
-
-    public void deTrigger() {
-      for(GameObject gameObject: gameObjects){
-          gameObject.deTrigger();
-      }
     }
     
     public Set<Ball>getBalls(){
