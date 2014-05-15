@@ -16,9 +16,11 @@ import physics.Vect;
 import pingball.simulation.Ball;
 import pingball.simulation.Board;
 import pingball.simulation.Constants;
+import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.GridLocation;
 import pingball.simulation.collidable.Collidable;
 import pingball.simulation.gadget.Gadget.Orientation;
+import pingball.simulation.gadget.Gadget.TriggerState;
 import pingball.util.Pair;
 import pingball.util.StringUtils;
 
@@ -36,6 +38,7 @@ import pingball.util.StringUtils;
  * 3. Checking if shot ball doesn't hit the top
  * 4. Check grid representation
  * 5. Check getLocation
+ * 6. Check object data
  *  
  */
 public class AbsorberTest {
@@ -137,5 +140,20 @@ public class AbsorberTest {
         assertEquals(new GridLocation(2,2),absorber.getLocation());
     }
     
+    @Test public void getObjectData() {
+        Absorber absorber = new Absorber(board, "TestAbsorber", new GridLocation(2,2), 10, 4);
+        Pair<GameObjectType, List<Object>> p = absorber.getObjectData();
+        GameObjectType type = p.getFirst();
+        List<Object> data = p.getSecond();
+        assertTrue(type.equals(GameObjectType.ABSORBER));
+        Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
+        double width = (double) data.get(1);
+        double height = (double) data.get(2);
+        TriggerState state = (TriggerState) data.get(3);
+        assertEquals(10, width, 0.001);
+        assertEquals(4, height, 0.001);
+        assertEquals(2.0,topLeft.getFirst(),0.001);
+        assertEquals(2.0,topLeft.getSecond(),0.001);
+    }
     
 }

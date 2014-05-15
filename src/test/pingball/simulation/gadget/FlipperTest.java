@@ -18,10 +18,12 @@ import pingball.simulation.Ball;
 import pingball.simulation.Board;
 import pingball.simulation.Constants;
 import pingball.simulation.GridLocation;
+import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.collidable.Collidable;
 import pingball.simulation.gadget.Flipper.FlipDirection;
 import pingball.simulation.gadget.Flipper.FlipperType;
 import pingball.simulation.gadget.Gadget.Orientation;
+import pingball.simulation.gadget.Gadget.TriggerState;
 import pingball.util.Pair;
 
 /*
@@ -176,4 +178,20 @@ public class FlipperTest {
         flipper.collide(ball2, p2.getSecond());
         assertTrue(ball2.getVelocity().x()<0);
     }
+    
+    @Test public void getObjectData() {
+        Flipper flipper = new Flipper(board, "TestFlipper", new GridLocation(2,2), FlipperType.LEFT, Orientation.ANGLE_0);
+        Pair<GameObjectType, List<Object>> p = flipper.getObjectData();
+        GameObjectType type = p.getFirst();
+        List<Object> data = p.getSecond();
+        assertTrue(type.equals(GameObjectType.FLIPPER));
+        Pair<Double, Double> end1 = (Pair<Double, Double>) data.get(0);
+        Pair<Double, Double> end2 = (Pair<Double, Double>) data.get(1);
+        TriggerState state = (TriggerState) data.get(2);
+        assertEquals(2.0,end1.getFirst(),0.001);
+        assertEquals(2.0,end1.getSecond(),0.001);
+        assertEquals(2.0,end2.getFirst(),0.001);
+        assertEquals(4.0,end2.getSecond(),0.001);
+    }
+
 }

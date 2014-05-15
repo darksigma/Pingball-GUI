@@ -43,6 +43,10 @@ import pingball.model.PingballModel;
 
 public class PingballGUI extends JFrame {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private PingballModel pingballModel;
     private MyTimer timer;
     private ActionListener taskPerformer;

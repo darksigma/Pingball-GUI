@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -16,8 +17,10 @@ import physics.Vect;
 import pingball.simulation.Ball;
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
+import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.collidable.Collidable;
 import pingball.simulation.gadget.Gadget.Orientation;
+import pingball.simulation.gadget.Gadget.TriggerState;
 import pingball.util.Pair;
 
 /*
@@ -124,5 +127,22 @@ public class TriangleBumperTest {
         Pair<Double, Collidable> p2 = triangleBumper.timeUntilCollision(ball2);
         triangleBumper.collide(ball2, p2.getSecond());
         assertTrue(ball2.getVelocity().x()<0);
+    }
+    
+    @Test public void getObjectData() {
+        TriangleBumper triangleBumper = new TriangleBumper(board, "TestTriangleBumper", new GridLocation(2,2), Orientation.ANGLE_0);
+        Pair<GameObjectType, List<Object>> p = triangleBumper.getObjectData();
+        GameObjectType type = p.getFirst();
+        List<Object> data = p.getSecond();
+        assertTrue(type.equals(GameObjectType.TRIANGLEBUMPER));
+        int x[] = (int[]) data.get(0);
+        int y[] = (int[]) data.get(1);
+        TriggerState state = (TriggerState) data.get(2);
+        assertEquals(x[0],2);
+        assertEquals(x[1],2);
+        assertEquals(x[2],3);
+        assertEquals(y[0],2);
+        assertEquals(y[1],3);
+        assertEquals(y[2],2);
     }
 }

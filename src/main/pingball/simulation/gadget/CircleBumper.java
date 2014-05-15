@@ -9,7 +9,6 @@ import physics.Vect;
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
 import pingball.simulation.Constants;
-import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.collidable.FixedCircle;
 import pingball.util.Pair;
 

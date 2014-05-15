@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -17,7 +18,9 @@ import physics.Vect;
 import pingball.simulation.Ball;
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
+import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.collidable.Collidable;
+import pingball.simulation.gadget.Gadget.TriggerState;
 import pingball.util.Pair;
 
 /*
@@ -140,6 +143,22 @@ public class PortalTest {
         Portal portal2 = new Portal(board,"OtherPortal", new GridLocation(10,12),"testBoard","testPortal",false);
         portal.find(new HashSet<>(Arrays.asList(portal,portal2)));
         assertTrue(portal.isActive());
+    }
+    
+    @Test public void getObjectData() {
+        Portal portal = new Portal(board, "TestPortal", new GridLocation(2,2), "BlankBoard", "OtherPortal", true);
+        portal.activate();
+        Pair<GameObjectType, List<Object>> p = portal.getObjectData();
+        GameObjectType type = p.getFirst();
+        List<Object> data = p.getSecond();
+        assertTrue(type.equals(GameObjectType.PORTAL));
+        Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
+        double radius = (double) data.get(1);
+        boolean active = (boolean) data.get(2);
+        assertEquals(0.5, radius, 0.001);
+        assertEquals(2.0,topLeft.getFirst(),0.001);
+        assertEquals(2.0,topLeft.getSecond(),0.001);
+        assertEquals(true,active);
     }
 /*
     @Test public void testCollideMultipleBallsWhenInactive(){

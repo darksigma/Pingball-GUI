@@ -9,12 +9,10 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.font.GlyphVector;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -24,11 +22,9 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import pingball.model.PingballModel;
-import pingball.simulation.*;
 import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.Wall.Side;
 import pingball.simulation.gadget.Gadget.TriggerState;
-import pingball.simulation.gadget.SquareBumper;
 import pingball.util.Pair;
 import pingball.util.StringUtils;
 
@@ -41,6 +37,10 @@ import pingball.util.StringUtils;
  *
  */
 public class BoardGUI extends JPanel {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     Color backgroundColor = Color.white;
     //Board board;
     PingballModel pingballModel;
@@ -154,6 +154,7 @@ public class BoardGUI extends JPanel {
      * 
      * @param g Graphics2D used to draw the board
      */
+    @SuppressWarnings("unchecked")
     private void drawBoard(final Graphics2D g) {
         //This will draw the current form of all the objects on the board.
         List<Pair<GameObjectType,List<Object>>> objectData = pingballModel.getObjectData();

@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -14,10 +15,12 @@ import physics.Vect;
 import pingball.simulation.Ball;
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
+import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.collidable.Collidable;
 import pingball.simulation.gadget.Flipper.FlipDirection;
 import pingball.simulation.gadget.Flipper.FlipperType;
 import pingball.simulation.gadget.Gadget.Orientation;
+import pingball.simulation.gadget.Gadget.TriggerState;
 import pingball.util.Pair;
 
 /*
@@ -109,5 +112,20 @@ public class SquareBumperTest {
         Pair<Double, Collidable> p1 = squareBumper.timeUntilCollision(ball);
         assertTrue(p1.getSecond()==null);
     }
+    
+    @Test public void getObjectData() {
+        SquareBumper squareBumper = new SquareBumper(board, "TestSquareBumper", new GridLocation(1,3));
+        Pair<GameObjectType, List<Object>> p = squareBumper.getObjectData();
+        GameObjectType type = p.getFirst();
+        List<Object> data = p.getSecond();
+        assertTrue(type.equals(GameObjectType.SQUAREBUMPER));
+        Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
+        double side = (double) data.get(1);
+        TriggerState state = (TriggerState) data.get(2);
+        assertEquals(1.0, side, 0.001);
+        assertEquals(1.0,topLeft.getFirst(),0.001);
+        assertEquals(3.0,topLeft.getSecond(),0.001);
+    }
+    
     
 }

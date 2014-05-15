@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -15,7 +16,9 @@ import physics.Vect;
 import pingball.simulation.Ball;
 import pingball.simulation.Board;
 import pingball.simulation.GridLocation;
+import pingball.simulation.GameObject.GameObjectType;
 import pingball.simulation.collidable.Collidable;
+import pingball.simulation.gadget.Gadget.TriggerState;
 import pingball.util.Pair;
 
 /*
@@ -117,5 +120,18 @@ public class BallSpawnerTest {
         assertEquals(ballSpawner.triggerState, Gadget.TriggerState.UNTRIGGERED);
         assertEquals(numBalls, board.getBalls().size());
     }
-   
+    
+    @Test public void getObjectData() {
+        BallSpawner ballSpawner = new BallSpawner(board, "TestBallSpawner", new GridLocation(2,2));
+        Pair<GameObjectType, List<Object>> p = ballSpawner.getObjectData();
+        GameObjectType type = p.getFirst();
+        List<Object> data = p.getSecond();
+        assertTrue(type.equals(GameObjectType.BALLSPAWNER));
+        Pair<Double, Double> topLeft = (Pair<Double, Double>) data.get(0);
+        double radius = (double) data.get(1);
+        TriggerState state = (TriggerState) data.get(2);
+        assertEquals(0.5, radius, 0.001);
+        assertEquals(2.0,topLeft.getFirst(),0.001);
+        assertEquals(2.0,topLeft.getSecond(),0.001);
+    }
 }
